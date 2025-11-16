@@ -1,10 +1,19 @@
-from models import db, Category, User, Project
+from app import create_app
+from models import db, User, Category, Project
 from auth import hash_password
+import os
 
 def seed_database():
+    app = create_app()
+
+    with app.app_context():
+        # إنشاء جداول قاعدة البيانات
+        db.create_all()
+        print("✓ تم إنشاء جداول قاعدة البيانات")
+
     if Category.query.count() > 0:
         return
-    
+
     categories_data = [
         {'name': 'تعليم', 'slug': 'education', 'description': 'تطبيقات تعليمية', 'icon': '📚'},
         {'name': 'ترفيه', 'slug': 'entertainment', 'description': 'تطبيقات ترفيهية', 'icon': '🎮'},
@@ -15,11 +24,11 @@ def seed_database():
         {'name': 'عمليات', 'slug': 'operations', 'description': 'إدارة العمليات', 'icon': '⚙️'},
         {'name': 'أدوات المطورين', 'slug': 'developer-tools', 'description': 'أدوات التطوير', 'icon': '💻'},
     ]
-    
+
     for cat_data in categories_data:
         category = Category(**cat_data)
         db.session.add(category)
-    
+
     demo_user = User(
         email='demo@replit.com',
         username='demo',
@@ -29,11 +38,11 @@ def seed_database():
         is_active=True
     )
     db.session.add(demo_user)
-    
+
     db.session.commit()
-    
+
     education_cat = Category.query.filter_by(slug='education').first()
-    
+
     demo_projects = [
         {
             'title': 'تطبيق تعليم الرياضيات',
@@ -56,11 +65,11 @@ def seed_database():
             'category_id': None
         }
     ]
-    
+
     for proj_data in demo_projects:
         project = Project(**proj_data)
         db.session.add(project)
-    
+
     db.session.commit()
-    
+
     print("✅ تم إنشاء البيانات التجريبية بنجاح")

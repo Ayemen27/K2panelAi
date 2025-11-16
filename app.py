@@ -13,21 +13,25 @@ def create_app(config_class=Config):
         static_url_path='/static'
     )
     app.config.from_object(config_class)
-    
+
     CORS(app)
-    
+
     db.init_app(app)
     bcrypt.init_app(app)
     jwt.init_app(app)
-    
+
     with app.app_context():
         db.create_all()
         from seed_data import seed_database
         seed_database()
-    
+
     from routes import register_routes
     register_routes(app)
-    
+
+    # تهيئة قاعدة البيانات
+    with app.app_context():
+        db.create_all()
+
     @app.after_request
     def add_cache_headers(response):
         if request.path.startswith('/static/'):
@@ -37,5 +41,5 @@ def create_app(config_class=Config):
             response.headers['Pragma'] = 'no-cache'
             response.headers['Expires'] = '0'
         return response
-    
+
     return app

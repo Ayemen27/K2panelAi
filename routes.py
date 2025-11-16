@@ -197,6 +197,16 @@ def home():
     return send_from_directory('.', 'index.html')
 
 
+@main_bp.route('/login')
+def login_page():
+    return render_template('pages/auth/login.html')
+
+
+@main_bp.route('/signup')
+def signup_page():
+    return render_template('pages/auth/signup.html')
+
+
 @main_bp.route('/<path:path>')
 def serve_static_pages(path):
     # إذا كان path ملف موجود مباشرة، قدمه
