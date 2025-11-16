@@ -199,10 +199,24 @@ def home():
 
 @main_bp.route('/<path:path>')
 def serve_static_pages(path):
-    if os.path.exists(path):
+    # إذا كان path ملف موجود مباشرة، قدمه
+    if os.path.isfile(path):
         return send_from_directory('.', path)
-    if os.path.exists(path + '.html'):
-        return send_from_directory('.', path + '.html')
+    
+    # إذا كان path.html موجود، قدمه
+    html_path = path + '.html'
+    if os.path.isfile(html_path):
+        return send_from_directory('.', html_path)
+    
+    # إذا كان path/ مجلد، ابحث عن index.html داخله
+    if os.path.isdir(path):
+        index_path = os.path.join(path, 'index.html')
+        if os.path.isfile(index_path):
+            return send_from_directory('.', index_path)
+    
+    # fallback: أعد index.html الرئيسي
+    # ملاحظة: المجلدات بدون index.html (مثل /products) ستعيد الصفحة الرئيسية
+    # هذا سلوك مؤقت - يمكن تحسينه لاحقاً
     return send_from_directory('.', 'index.html')
 
 
