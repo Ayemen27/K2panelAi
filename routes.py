@@ -100,6 +100,7 @@ def get_projects():
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
 
     return jsonify({
+        'success': True,
         'projects': [project.to_dict() for project in pagination.items],
         'total': pagination.total,
         'page': page,
@@ -118,7 +119,10 @@ def get_project(slug):
     project.views_count += 1
     db.session.commit()
 
-    return jsonify({'project': project.to_dict()}), 200
+    return jsonify({
+        'success': True,
+        'project': project.to_dict()
+    }), 200
 
 
 @api.route('/projects', methods=['POST'])
@@ -166,6 +170,7 @@ def create_project():
 def get_categories():
     categories = Category.query.all()
     return jsonify({
+        'success': True,
         'categories': [category.to_dict() for category in categories]
     }), 200
 
