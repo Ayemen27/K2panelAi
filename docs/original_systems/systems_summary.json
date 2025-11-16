@@ -1,0 +1,282 @@
+{
+  "Next.js": {
+    "name": "Next.js Framework",
+    "type": "Frontend Framework",
+    "role": "إطار العمل الرئيسي للواجهة الأمامية",
+    "evidence": [
+      "وجود __NEXT_DATA__ في @Prodia.html",
+      "وجود __NEXT_DATA__ في @TheDrone7.html",
+      "وجود __NEXT_DATA__ في @deno.html",
+      "وجود __NEXT_DATA__ في about.html",
+      "وجود __NEXT_DATA__ في additional-resources.html"
+    ],
+    "how_it_works": [
+      "1. Next.js يعمل كإطار عمل React مع Server-Side Rendering (SSR)",
+      "2. يولد صفحات HTML ثابتة مع بيانات ديناميكية في __NEXT_DATA__",
+      "3. يستخدم نظام routing تلقائي بناءً على بنية الملفات",
+      "4. يدعم API routes للتواصل مع الخادم",
+      "5. يوفر تحسين أداء تلقائي مع code splitting"
+    ],
+    "integration": [
+      "• يتكامل مع Apollo GraphQL لإدارة البيانات",
+      "• يستخدم CDN (Cloudflare) لتوزيع الملفات الثابتة",
+      "• يعمل مع أنظمة Analytics (Segment, Datadog)",
+      "• يدعم Server-Side API للمصادقة والبيانات"
+    ],
+    "buildId": "replit.com--QiM7dfY9mLTjbJ6QLoSk7",
+    "page": "/[slug]"
+  },
+  "Apollo GraphQL": {
+    "name": "Apollo GraphQL",
+    "type": "Data Management",
+    "role": "إدارة البيانات والاستعلامات",
+    "evidence": [
+      "apolloState موجود في @Prodia.html",
+      "apolloState موجود في @TheDrone7.html",
+      "apolloState موجود في @deno.html"
+    ],
+    "how_it_works": [
+      "1. يستخدم GraphQL للاستعلام عن البيانات من الخادم",
+      "2. يخزن حالة البيانات في apolloState على العميل",
+      "3. يوفر caching ذكي لتقليل طلبات الشبكة",
+      "4. يدعم subscriptions للبيانات الفورية",
+      "5. يدير queries و mutations بشكل مركزي"
+    ],
+    "integration": [
+      "• يتكامل مع Next.js عبر getServerSideProps",
+      "• يعمل مع React Hooks (useQuery, useMutation)",
+      "• يتصل بـ GraphQL API على الخادم",
+      "• يدعم optimistic UI updates"
+    ]
+  },
+  "Segment Analytics": {
+    "name": "Segment Analytics",
+    "type": "Analytics & Tracking",
+    "role": "تتبع سلوك المستخدمين والتحليلات",
+    "evidence": [
+      "ذكر في 00edda238dc46d4a.js"
+    ],
+    "how_it_works": [
+      "1. يتتبع أحداث المستخدم (page views, clicks, conversions)",
+      "2. يرسل البيانات إلى Segment API",
+      "3. Segment يوزع البيانات على أدوات التحليل الأخرى",
+      "4. يدعم user identification و traits",
+      "5. يسمح بإنشاء audiences و segments"
+    ],
+    "integration": [
+      "• يتكامل مع Google Analytics 4",
+      "• يرسل بيانات إلى Mixpanel",
+      "• يعمل مع Amplitude",
+      "• يدعم customer data platforms (CDPs)"
+    ]
+  },
+  "Firebase": {
+    "name": "Firebase",
+    "type": "Authentication & Real-time Database",
+    "role": "المصادقة وقاعدة البيانات الفورية",
+    "evidence": [],
+    "how_it_works": [
+      "1. Firebase Auth يدير تسجيل الدخول (Email, Google, GitHub)",
+      "2. Firestore يخزن بيانات المستخدمين والمشاريع",
+      "3. Real-time listeners تحدث الواجهة تلقائيًا",
+      "4. Security Rules تحمي البيانات",
+      "5. Firebase Functions تعالج المنطق على الخادم"
+    ],
+    "integration": [
+      "• يتكامل مع Next.js للمصادقة",
+      "• يعمل مع React Context لحالة المستخدم",
+      "• يدعم OAuth providers",
+      "• يتصل بـ Firebase Cloud Functions"
+    ]
+  },
+  "Stripe": {
+    "name": "Stripe Payments",
+    "type": "Payment Processing",
+    "role": "معالجة المدفوعات والاشتراكات",
+    "evidence": [
+      "موجود في صفحة Pricing"
+    ],
+    "how_it_works": [
+      "1. يعرض خطط الأسعار على صفحة Pricing",
+      "2. عند الاشتراك، يفتح Stripe Checkout",
+      "3. يعالج معلومات الدفع بشكل آمن (PCI compliant)",
+      "4. يرسل webhooks عند نجاح الدفع",
+      "5. يدير الاشتراكات المتكررة تلقائيًا"
+    ],
+    "integration": [
+      "• يتكامل مع Firebase لتخزين بيانات الاشتراك",
+      "• يرسل أحداث إلى Segment Analytics",
+      "• يعمل مع Next.js API routes",
+      "• يدعم customer portal للإدارة الذاتية"
+    ]
+  },
+  "Coframe": {
+    "name": "Coframe",
+    "type": "User Experience Optimization",
+    "role": "تحسين تجربة المستخدم والتجارب A/B",
+    "evidence": [
+      "رسائل [Coframe] في وحدة التحكم",
+      "Coframe watcher loaded في الصفحات"
+    ],
+    "how_it_works": [
+      "1. يراقب تفاعلات المستخدم مع الصفحة",
+      "2. يجري تجارب A/B testing تلقائية",
+      "3. يحسن النصوص والعناصر بناءً على الأداء",
+      "4. يستخدم AI لاقتراح تحسينات",
+      "5. يحفظ نتائج التجارب في cookies"
+    ],
+    "integration": [
+      "• يعمل كـ watcher في الصفحات",
+      "• يتكامل مع analytics لقياس النتائج",
+      "• يدعم multi-variant testing",
+      "• يحدث المحتوى ديناميكيًا"
+    ]
+  },
+  "Datadog": {
+    "name": "Datadog",
+    "type": "Monitoring & Error Tracking",
+    "role": "مراقبة الأخطاء والأداء",
+    "evidence": [
+      "ذكر في ملفات JS"
+    ],
+    "how_it_works": [
+      "1. يجمع logs من المتصفح والخادم",
+      "2. يتتبع الأخطاء JavaScript",
+      "3. يراقب أداء الصفحات (Core Web Vitals)",
+      "4. يسجل API requests و response times",
+      "5. يرسل alerts عند حدوث مشاكل"
+    ],
+    "integration": [
+      "• يتكامل مع Next.js error boundaries",
+      "• يرصد أخطاء في React components",
+      "• يتتبع API calls",
+      "• يعمل مع RUM (Real User Monitoring)"
+    ]
+  },
+  "LaunchDarkly": {
+    "name": "LaunchDarkly",
+    "type": "Feature Flags Management",
+    "role": "إدارة الميزات وإطلاقها",
+    "evidence": [
+      "ذكر في ملفات JS"
+    ],
+    "how_it_works": [
+      "1. يخزن feature flags على الخادم",
+      "2. يقرر أي ميزات تظهر لأي مستخدمين",
+      "3. يدعم gradual rollouts (نسب مئوية)",
+      "4. يسمح بإيقاف الميزات بدون deployment",
+      "5. يدعم targeting بناءً على user attributes"
+    ],
+    "integration": [
+      "• يتكامل مع React للعرض الشرطي",
+      "• يعمل مع Next.js للتحقق من الميزات",
+      "• يدعم server-side و client-side flags",
+      "• يرسل events إلى analytics"
+    ]
+  },
+  "Statsig": {
+    "name": "Statsig",
+    "type": "Experimentation Platform",
+    "role": "التجارب والتحليلات المتقدمة",
+    "evidence": [
+      "ذكر في ملفات JS"
+    ],
+    "how_it_works": [
+      "1. يدير A/B tests و multivariate tests",
+      "2. يحلل نتائج التجارب إحصائيًا",
+      "3. يدعم feature gates و dynamic configs",
+      "4. يوفر metrics dashboards",
+      "5. يقيس impact على business metrics"
+    ],
+    "integration": [
+      "• يعمل مع LaunchDarkly للتجارب",
+      "• يتكامل مع Segment للبيانات",
+      "• يدعم custom events",
+      "• يحلل user funnels"
+    ]
+  },
+  "Sanity CMS": {
+    "name": "Sanity CMS",
+    "type": "Content Management System",
+    "role": "إدارة المحتوى والصور",
+    "evidence": [
+      "مجلد الصور bj34pdbp/ (Sanity CDN)"
+    ],
+    "how_it_works": [
+      "1. يخزن المحتوى كـ structured data",
+      "2. يوفر GROQ API للاستعلام عن المحتوى",
+      "3. يدير الصور مع تحسين تلقائي",
+      "4. يدعم real-time collaboration",
+      "5. يوفر preview mode للمحررين"
+    ],
+    "integration": [
+      "• يتكامل مع Next.js عبر getStaticProps",
+      "• يستخدم Sanity Image URLs للصور",
+      "• يدعم incremental static regeneration",
+      "• يعمل مع webhooks للتحديثات"
+    ]
+  },
+  "Cloudflare CDN": {
+    "name": "Cloudflare CDN",
+    "type": "Content Delivery Network",
+    "role": "توزيع المحتوى وتسريع التحميل",
+    "evidence": [
+      "مجلد cdn-cgi/ موجود"
+    ],
+    "how_it_works": [
+      "1. يخزن الملفات الثابتة في edge servers",
+      "2. يقدم المحتوى من أقرب موقع للمستخدم",
+      "3. يوفر image optimization تلقائي",
+      "4. يحمي من DDoS attacks",
+      "5. يدعم caching ذكي مع purge API"
+    ],
+    "integration": [
+      "• يعمل مع Next.js للملفات الثابتة",
+      "• يدعم responsive images",
+      "• يوفر SSL/TLS termination",
+      "• يدير DNS و routing"
+    ]
+  },
+  "AppsFlyer": {
+    "name": "AppsFlyer",
+    "type": "Mobile Attribution & Analytics",
+    "role": "تتبع تطبيقات الموبايل",
+    "evidence": [
+      "ذكر في console errors"
+    ],
+    "how_it_works": [
+      "1. يتتبع تثبيت التطبيقات من الإعلانات",
+      "2. يقيس ROI للحملات التسويقية",
+      "3. يدعم deep linking",
+      "4. يحلل user journey من الإعلان للتحويل",
+      "5. يوفر fraud detection"
+    ],
+    "integration": [
+      "• يعمل مع Replit Mobile App",
+      "• يتكامل مع ad networks",
+      "• يرسل بيانات إلى analytics platforms",
+      "• يدعم cross-platform attribution"
+    ]
+  },
+  "Webflow": {
+    "name": "Webflow",
+    "type": "Design & CMS Integration",
+    "role": "بعض الصفحات مبنية بـ Webflow",
+    "evidence": [
+      "سمات data-wf- في agent3.html"
+    ],
+    "how_it_works": [
+      "1. بعض الصفحات مصممة في Webflow",
+      "2. يتم export كـ HTML/CSS/JS",
+      "3. يتكامل مع Webflow CMS للمحتوى",
+      "4. يدعم interactions و animations",
+      "5. يوفر responsive design تلقائي"
+    ],
+    "integration": [
+      "• صفحات معينة تستخدم Webflow design",
+      "• يتكامل مع Next.js routing",
+      "• يستخدم Webflow CMS API",
+      "• يدعم custom code embeds"
+    ]
+  }
+}
