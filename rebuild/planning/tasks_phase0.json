@@ -1,0 +1,64 @@
+{
+  "phase": 0,
+  "name": "الإعداد والتحضير",
+  "duration": "1 يوم",
+  "priority": "critical",
+  "tasks": [
+    {
+      "id": "0.1",
+      "title": "استنساخ Boilerplate",
+      "description": "استنساخ NJS-Firebase-SaaS-Boilerplate",
+      "commands": [
+        "git clone https://github.com/WHEREISDAN/NJS-Firebase-SaaS-Boilerplate rebuild-project",
+        "cd rebuild-project",
+        "npm install"
+      ],
+      "acceptance": [
+        "المشروع مستنسخ بنجاح",
+        "npm install تم بدون أخطاء",
+        "npm run dev يعمل"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "0.2",
+      "title": "إعداد متغيرات البيئة",
+      "description": "استخراج وإعداد جميع ال 13 متغير بيئة",
+      "source_files": ["analysis/bundled_data.json"],
+      "env_vars": [
+        "NEXT_PUBLIC_FIREBASE_API_KEY",
+        "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN",
+        "NEXT_PUBLIC_FIREBASE_PROJECT_ID",
+        "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET",
+        "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID",
+        "NEXT_PUBLIC_FIREBASE_APP_ID",
+        "NEXT_PUBLIC_GRAPHQL_ENDPOINT",
+        "NEXT_PUBLIC_GTM_ID",
+        "NEXT_PUBLIC_GA_MEASUREMENT_ID",
+        "NEXT_PUBLIC_AMPLITUDE_API_KEY",
+        "NEXT_PUBLIC_SEGMENT_WRITE_KEY",
+        "NEXT_PUBLIC_DATADOG_CLIENT_TOKEN",
+        "NEXT_PUBLIC_DATADOG_APPLICATION_ID"
+      ],
+      "acceptance": [
+        "ملف .env.local موجود",
+        "جميع ال 13 متغير موثقة",
+        "المتغيرات مستخرجة من التحليل"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "0.3",
+      "title": "تحليل Next.js Data Instances",
+      "description": "استخراج جميع الصفحات من 109 Next.js data instance",
+      "source_files": ["analysis/bundled_data.json"],
+      "output_files": ["rebuild/planning/pages_structure.json"],
+      "acceptance": [
+        "قائمة بجميع الصفحات المطلوبة",
+        "buildId محدد",
+        "routing structure واضح"
+      ],
+      "status": "pending"
+    }
+  ]
+}
