@@ -116,6 +116,10 @@ def get_project(slug):
 @jwt_required()
 def create_project():
     user = get_current_user()
+    
+    if not user:
+        return jsonify({'error': 'المستخدم غير موجود'}), 401
+    
     data = request.get_json()
     
     title = data.get('title')
