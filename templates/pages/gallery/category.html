@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.name }} – Gallery – Replit{% endblock %}
+
+{% block content %}
+<section class="hero" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4rem 2rem;">
+    <div class="container">
+        <h1 style="font-size: 3rem; font-weight: 600; margin-bottom: 1rem;">
+            {{ category.icon or '📁' }} {{ category.name }}
+        </h1>
+        {% if category.description %}
+        <p style="font-size: 1.25rem; opacity: 0.9;">
+            {{ category.description }}
+        </p>
+        {% endif %}
+    </div>
+</section>
+
+<section style="padding: 4rem 2rem;">
+    <div class="container">
+        <a href="{{ url_for('main.gallery') }}" style="display: inline-block; margin-bottom: 2rem; color: #667eea; text-decoration: none;">
+            ← Back to Gallery
+        </a>
+        
+        {% if projects.items %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+            {% for project in projects.items %}
+            <div style="border: 1px solid #e5e7eb; border-radius: 0.75rem; overflow: hidden;">
+                {% if project.image_url %}
+                <img src="{{ project.image_url }}" alt="{{ project.title }}" style="width: 100%; height: 200px; object-fit: cover;">
+                {% else %}
+                <div style="width: 100%; height: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                {% endif %}
+                <div style="padding: 1.5rem;">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">
+                        {{ project.title }}
+                    </h3>
+                    <p style="color: #6b7280; margin-bottom: 1rem;">
+                        {{ project.description[:100] }}{% if project.description|length > 100 %}...{% endif %}
+                    </p>
+                    <a href="{{ url_for('main.project_detail', slug=project.slug) }}" style="color: #fd5402; text-decoration: none; font-weight: 500;">
+                        View Project →
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align: center; font-size: 1.25rem; color: #6b7280;">
+            No projects in this category yet.
+        </p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

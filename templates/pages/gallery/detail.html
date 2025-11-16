@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} – Replit{% endblock %}
+
+{% block content %}
+<section style="padding: 4rem 2rem;">
+    <div class="container" style="max-width: 900px;">
+        <a href="{{ url_for('main.gallery') }}" style="display: inline-block; margin-bottom: 2rem; color: #667eea; text-decoration: none;">
+            ← Back to Gallery
+        </a>
+        
+        {% if project.image_url %}
+        <img src="{{ project.image_url }}" alt="{{ project.title }}" style="width: 100%; border-radius: 0.75rem; margin-bottom: 2rem;">
+        {% endif %}
+        
+        <h1 style="font-size: 2.5rem; font-weight: 600; margin-bottom: 1rem;">
+            {{ project.title }}
+        </h1>
+        
+        <div style="display: flex; gap: 2rem; margin-bottom: 2rem; color: #6b7280;">
+            <span>By {{ project.author.username if project.author else 'Anonymous' }}</span>
+            <span>👁 {{ project.views_count }} views</span>
+            <span>❤️ {{ project.likes_count }} likes</span>
+        </div>
+        
+        <p style="font-size: 1.125rem; line-height: 1.75; color: #374151; margin-bottom: 2rem;">
+            {{ project.description }}
+        </p>
+        
+        <div style="display: flex; gap: 1rem;">
+            {% if project.demo_url %}
+            <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer" style="padding: 0.75rem 1.5rem; background: #fd5402; color: white; border-radius: 0.5rem; text-decoration: none; font-weight: 600;">
+                View Live Demo
+            </a>
+            {% endif %}
+            
+            {% if project.repl_url %}
+            <a href="{{ project.repl_url }}" target="_blank" rel="noopener noreferrer" style="padding: 0.75rem 1.5rem; background: #f3f4f6; border-radius: 0.5rem; text-decoration: none; color: inherit; font-weight: 600;">
+                View on Replit
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
