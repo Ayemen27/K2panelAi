@@ -4,15 +4,16 @@ from datetime import timedelta
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-CHANGE-ME-IN-PRODUCTION')
     
-    DATABASE_URL = os.environ.get('DATABASE_URL')
-    if DATABASE_URL:
-        if DATABASE_URL.startswith('postgres://'):
-            DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql://', 1)
-        SQLALCHEMY_DATABASE_URI = DATABASE_URL
-        print(f"✅ استخدام PostgreSQL: {DATABASE_URL.split('@')[1] if '@' in DATABASE_URL else 'database'}")
-    else:
-        SQLALCHEMY_DATABASE_URI = 'sqlite:///instance/replit_website.db'
-        print("⚠️ استخدام SQLite - DATABASE_URL غير موجود")
+    # بناء DATABASE_URL من المتغيرات
+    REMOTE_DB_HOST = os.environ.get('REMOTE_DB_HOST', '93.127.142.144')
+    REMOTE_DB_PORT = os.environ.get('REMOTE_DB_PORT', '5432')
+    REMOTE_DB_NAME = os.environ.get('REMOTE_DB_NAME', 'saasboiler_db')
+    REMOTE_DB_USER = os.environ.get('REMOTE_DB_USER', 'saasboiler_user')
+    REMOTE_DB_PASSWORD = os.environ.get('REMOTE_DB_PASSWORD', 'SaaSBoiler2024SecurePassword!')
+    
+    # استخدام قاعدة البيانات البعيدة
+    SQLALCHEMY_DATABASE_URI = f"postgresql://{REMOTE_DB_USER}:{REMOTE_DB_PASSWORD}@{REMOTE_DB_HOST}:{REMOTE_DB_PORT}/{REMOTE_DB_NAME}"
+    print(f"✅ الاتصال بقاعدة البيانات: {REMOTE_DB_HOST}/{REMOTE_DB_NAME}")
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
