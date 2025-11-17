@@ -2,12 +2,24 @@ import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
-  throw new Error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID environment variable');
+  const message = 'Missing NEXT_PUBLIC_SANITY_PROJECT_ID environment variable';
+  if (isDevelopment) {
+    console.warn(`⚠️  ${message}`);
+  } else {
+    throw new Error(message);
+  }
 }
 
 if (!process.env.NEXT_PUBLIC_SANITY_DATASET) {
-  throw new Error('Missing NEXT_PUBLIC_SANITY_DATASET environment variable');
+  const message = 'Missing NEXT_PUBLIC_SANITY_DATASET environment variable';
+  if (isDevelopment) {
+    console.warn(`⚠️  ${message}`);
+  } else {
+    throw new Error(message);
+  }
 }
 
 export const client = createClient({
