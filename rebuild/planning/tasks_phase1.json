@@ -199,11 +199,117 @@
         "إحصائيات دقيقة للإنجازات",
         "قائمة كاملة بالملفات المُنشأة والمُحدثة"
       ]
+    },
+    {
+      "id": "1.6",
+      "title": "إصلاح Analytics - Reliability & Readiness Gates",
+      "description": "إصلاح شامل لنظام Analytics لتحقيق معايير القبول",
+      "trigger": "Architect رفض Phase 1 بسبب Analytics غير موثوق",
+      "problems_fixed": [
+        "GTM pageview كان يُطلق قبل انتظار waitForGtm() promise",
+        "window.analyticsInitialized كان يُعين قبل async completion",
+        "لا retry mechanism عند فشل SDK initialization",
+        "Datadog كان قد يُنشئ duplicate sessions في React strict mode",
+        "GA4/Segment/Amplitude كانت تُستدعى بدون تأكيد SDK readiness",
+        "Promise.all كان يتوقف إلى الأبد عند missing credentials"
+      ],
+      "subtasks": [
+        {
+          "id": "1.6.1",
+          "title": "إنشاء analyticsRetry.ts utility",
+          "description": "Exponential backoff retry helper",
+          "status": "completed"
+        },
+        {
+          "id": "1.6.2",
+          "title": "تحديث lib/gtm.ts",
+          "description": "إضافة waitUntilReady و config check",
+          "status": "completed"
+        },
+        {
+          "id": "1.6.3",
+          "title": "تحديث lib/ga4.ts",
+          "description": "initialize + waitUntilReady مع retry و config check",
+          "status": "completed"
+        },
+        {
+          "id": "1.6.4",
+          "title": "تحديث lib/segment.ts",
+          "description": "idempotent initialize + waitUntilReady و config check",
+          "status": "completed"
+        },
+        {
+          "id": "1.6.5",
+          "title": "تحديث lib/amplitude.ts",
+          "description": "waitUntilReady + retry + strict-mode guard و config check",
+          "status": "completed"
+        },
+        {
+          "id": "1.6.6",
+          "title": "تحديث lib/datadog.ts",
+          "description": "strict-mode safe guards و config check",
+          "status": "completed"
+        },
+        {
+          "id": "1.6.7",
+          "title": "إعادة هيكلة AnalyticsProvider.tsx",
+          "description": "استخدام readiness gates و Promise.all",
+          "status": "completed"
+        }
+      ],
+      "files_created": [
+        "rebuild/source/src/lib/analyticsRetry.ts"
+      ],
+      "files_updated": [
+        "rebuild/source/src/lib/gtm.ts",
+        "rebuild/source/src/lib/ga4.ts",
+        "rebuild/source/src/lib/segment.ts",
+        "rebuild/source/src/lib/amplitude.ts",
+        "rebuild/source/src/lib/datadog.ts",
+        "rebuild/source/src/providers/AnalyticsProvider.tsx",
+        "rebuild/source/src/app/api/webhooks/route.ts (إصلاح deprecated config)"
+      ],
+      "acceptance": [
+        "جميع SDK modules لديها waitUntilReady() API ✅",
+        "Retry mechanism في كل SDK ✅",
+        "Strict-mode guards في Datadog و Amplitude ✅",
+        "AnalyticsProvider ينتظر readiness قبل إطلاق events ✅",
+        "Config checks تمنع hanging عند missing credentials ✅",
+        "لا أخطاء TypeScript/LSP ✅",
+        "Next.js build يعمل بنجاح ✅",
+        "Dev server يعمل بدون أخطاء ✅"
+      ],
+      "status": "completed",
+      "completion_date": "2025-11-17",
+      "architect_reviewed": "yes",
+      "architect_review_result": "Pass - readiness gating completes without hanging, GTM pageviews fire post-readiness",
+      "notes": [
+        "تم إنشاء analyticsRetry.ts مع exponential backoff",
+        "جميع 5 analytics libraries محدّثة بـ waitUntilReady()",
+        "Config checks تضمن resolve فوري عند missing credentials",
+        "AnalyticsProvider يستخدم Promise.all لانتظار جميع SDKs",
+        "Pageview events تُطلق فقط بعد isReady === true",
+        "Strict-mode guards تمنع duplicate initialization",
+        "لا أخطاء LSP أو TypeScript",
+        "Next.js compiles successfully",
+        "Dev server ready in 4.3s على port 5000",
+        "الصفحة الرئيسية تعرض بشكل صحيح"
+      ],
+      "deliverables": {
+        "new_files": 1,
+        "updated_files": 7,
+        "total_analytics_sdks": 5,
+        "retry_mechanism": "Exponential backoff",
+        "readiness_pattern": "Promise.all with waitUntilReady()"
+      }
     }
   ],
   "summary": {
     "all_tasks_completed": true,
     "critical_blockers": "لا توجد",
+    "known_issues": [
+      "Hydration mismatch warning في Footer component (minor - لا يؤثر على الوظائف)"
+    ],
     "next_steps": [
       "المرحلة 2: طبقة البيانات - Apollo GraphQL",
       "إنشاء GraphQL endpoint (/api/graphql)",
@@ -216,7 +322,11 @@
       "rebuild/planning/providers_architecture.md",
       "rebuild/source/src/lib/apollo-client.ts",
       "rebuild/source/src/lib/gtm.ts",
+      "rebuild/source/src/lib/ga4.ts",
+      "rebuild/source/src/lib/segment.ts",
+      "rebuild/source/src/lib/amplitude.ts",
       "rebuild/source/src/lib/datadog.ts",
+      "rebuild/source/src/lib/analyticsRetry.ts",
       "rebuild/source/src/providers/ApolloProvider.tsx",
       "rebuild/source/src/providers/AnalyticsProvider.tsx",
       "rebuild/source/src/app/providers.tsx",
@@ -232,6 +342,13 @@
     ],
     "files_updated": [
       "rebuild/source/src/app/layout.tsx",
+      "rebuild/source/src/lib/gtm.ts",
+      "rebuild/source/src/lib/ga4.ts",
+      "rebuild/source/src/lib/segment.ts",
+      "rebuild/source/src/lib/amplitude.ts",
+      "rebuild/source/src/lib/datadog.ts",
+      "rebuild/source/src/providers/AnalyticsProvider.tsx",
+      "rebuild/source/src/app/api/webhooks/route.ts",
       "rebuild/source/package.json",
       "rebuild/source/package-lock.json"
     ],
@@ -246,20 +363,24 @@
       "dependencies_installed": "نجح - 3 حزم جديدة",
       "lsp_errors": "لا توجد أخطاء",
       "code_quality": "ممتاز - يتبع المواصفات بدقة",
-      "existing_pages_preserved": "نجح - login, signup, dashboard محفوظة"
+      "existing_pages_preserved": "نجح - login, signup, dashboard محفوظة",
+      "analytics_reliability": "ممتاز - جميع المشاكل تم حلها",
+      "build_status": "نجح - Next.js compiles successfully",
+      "dev_server": "نجح - Ready in 4.3s على port 5000"
     }
   },
   "statistics": {
-    "total_tasks": 5,
-    "completed_tasks": 5,
+    "total_tasks": 6,
+    "completed_tasks": 6,
     "completion_rate": "100%",
-    "total_files_created": 16,
-    "total_files_updated": 3,
+    "total_files_created": 21,
+    "total_files_updated": 10,
     "total_assets_migrated": 598,
     "dependencies_added": 3,
     "providers_implemented": 3,
     "route_groups_created": 3,
-    "pages_created": 5
+    "pages_created": 5,
+    "analytics_sdks_fixed": 5
   },
   "architect_reviews": {
     "phase_0_review": {
@@ -275,7 +396,38 @@
         "Draft provider architecture",
         "Plan asset migration"
       ]
+    },
+    "phase_1_initial_review": {
+      "date": "2025-11-17",
+      "result": "Fail - Analytics غير موثوق",
+      "critical_findings": [
+        "GTM pageview dispatch before waitForGtm() promise",
+        "window.analyticsInitialized set before async completion",
+        "No retry mechanism",
+        "Datadog duplicate sessions in strict mode"
+      ]
+    },
+    "phase_1_analytics_fix_review_1": {
+      "date": "2025-11-17",
+      "result": "Fail - AnalyticsProvider blocks readiness with missing configs",
+      "critical_findings": [
+        "Datadog wait gate never resolves if credentials absent",
+        "GA4 wait gate awaited even without measurement ID",
+        "Promise.all hangs indefinitely"
+      ]
+    },
+    "phase_1_analytics_fix_review_2": {
+      "date": "2025-11-17",
+      "result": "Pass - Readiness gating completes without hanging",
+      "critical_findings": "None",
+      "notes": [
+        "GTM pageviews fire post-readiness",
+        "Config checks prevent hanging",
+        "All waitUntilReady implementations short-circuit correctly"
+      ]
     }
   },
-  "ready_for_phase_2": true
+  "ready_for_phase_2": true,
+  "phase_1_final_status": "completed_and_approved",
+  "completion_verified_by_architect": true
 }
