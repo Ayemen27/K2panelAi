@@ -7,7 +7,7 @@ channel = "stable-25_05"
 packages = ["cargo", "libiconv", "rustc"]
 
 [workflows]
-runButton = "Project"
+runButton = "Run Next.js"
 
 [[workflows.workflow]]
 name = "Project"
@@ -32,6 +32,15 @@ waitForPort = 5000
 
 [[workflows.workflow]]
 name = "Next.js Dev"
+author = 44785901
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd rebuild/source && npm run dev"
+
+[[workflows.workflow]]
+name = "Run Next.js"
 author = 44785901
 mode = "sequential"
 
