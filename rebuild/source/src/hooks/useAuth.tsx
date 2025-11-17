@@ -80,12 +80,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || 'Failed to create session. Please try again.');
       }
     } catch (error: any) {
-      console.error('Error creating session:', error);
-      throw new Error(error.message || 'Failed to create login session. Please try again.');
+      console.error('Error creating login session:', error);
+      if (error.message && !error.message.includes('fetch')) {
+        throw error;
+      }
+      throw new Error('Failed to create login session. Please try again.');
     }
 
     return userCredential;
@@ -121,12 +124,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || 'Account created but failed to create session. Please login manually.');
       }
     } catch (error: any) {
-      console.error('Error creating session:', error);
-      throw new Error(error.message || 'Account created but failed to create session. Please login manually.');
+      console.error('Error creating signup session:', error);
+      if (error.message && !error.message.includes('fetch')) {
+        throw error;
+      }
+      throw new Error('Account created but failed to create session. Please login manually.');
     }
 
     return userCredential;
@@ -186,12 +192,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || 'Failed to create session with Google. Please try again.');
       }
     } catch (error: any) {
-      console.error('Error creating session:', error);
-      throw new Error(error.message || 'Failed to create Google login session. Please try again.');
+      console.error('Error creating Google login session:', error);
+      if (error.message && !error.message.includes('fetch')) {
+        throw error;
+      }
+      throw new Error('Failed to create Google login session. Please try again.');
     }
 
     return userCredential;
