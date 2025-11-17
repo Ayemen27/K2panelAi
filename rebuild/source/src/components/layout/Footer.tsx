@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import { 
-  Twitter, 
+  X, 
   Github, 
   Linkedin, 
-  MessageCircle, 
+  MessageSquare, 
   Youtube,
   ArrowRight,
 } from 'lucide-react';
@@ -23,10 +23,10 @@ import {
 } from '@/config/footer';
 
 const socialIcons = {
-  twitter: Twitter,
+  twitter: X,
   github: Github,
   linkedin: Linkedin,
-  discord: MessageCircle,
+  discord: MessageSquare,
   youtube: Youtube,
 } as const;
 
