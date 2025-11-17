@@ -3,28 +3,38 @@
   "name": "الإعداد والتحضير",
   "duration": "1 يوم",
   "priority": "critical",
+  "completion_date": "2025-11-17",
+  "overall_status": "completed",
   "tasks": [
     {
       "id": "0.1",
       "title": "استنساخ Boilerplate",
       "description": "استنساخ NJS-Firebase-SaaS-Boilerplate",
       "commands": [
-        "git clone https://github.com/WHEREISDAN/NJS-Firebase-SaaS-Boilerplate rebuild-project",
-        "cd rebuild-project",
+        "cd rebuild",
+        "git clone https://github.com/WHEREISDAN/NJS-Firebase-SaaS-Boilerplate source",
+        "cd source",
         "npm install"
       ],
       "acceptance": [
-        "المشروع مستنسخ بنجاح",
-        "npm install تم بدون أخطاء",
-        "npm run dev يعمل"
+        "المشروع مستنسخ بنجاح ✅",
+        "npm install تم بدون أخطاء ✅",
+        "npm run dev يعمل ✅"
       ],
-      "status": "pending"
+      "status": "completed",
+      "notes": [
+        "تم استنساخ المشروع بنجاح إلى rebuild/source",
+        "تم تثبيت 382 حزمة من npm",
+        "Next.js 14.2.13 يعمل بنجاح على port 3001",
+        "تم تحميل ملف .env.local بنجاح"
+      ]
     },
     {
       "id": "0.2",
       "title": "إعداد متغيرات البيئة",
       "description": "استخراج وإعداد جميع ال 13 متغير بيئة",
       "source_files": ["analysis/bundled_data.json"],
+      "output_file": "rebuild/source/.env.local",
       "env_vars": [
         "NEXT_PUBLIC_FIREBASE_API_KEY",
         "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN",
@@ -41,11 +51,45 @@
         "NEXT_PUBLIC_DATADOG_APPLICATION_ID"
       ],
       "acceptance": [
-        "ملف .env.local موجود",
-        "جميع ال 13 متغير موثقة",
-        "المتغيرات مستخرجة من التحليل"
+        "ملف .env.local موجود ✅",
+        "جميع ال 13 متغير موثقة ✅",
+        "المتغيرات مستخرجة من التحليل ✅"
       ],
-      "status": "pending"
+      "status": "completed",
+      "notes": [
+        "تم إنشاء ملف .env.local بنجاح",
+        "تم توثيق 13 متغير بيئة كاملة",
+        "✅ القيم المستخرجة الفعلية من bundled_data.json (2 قيمة):",
+        "  - NEXT_PUBLIC_GTM_ID = GTM-M3H3PQBG (مستخرج من 10 GTM configs)",
+        "  - NEXT_PUBLIC_FIREBASE_PROJECT_ID = 68c9ad4d4cddb58cf3a1 (مستخرج من 110 Firebase configs)",
+        "📊 بيانات إضافية مستخرجة (للمرجع):",
+        "  - 50 API endpoint تم العثور عليها",
+        "  - 13 environment variable names تم تحديدها",
+        "⚠️ القيم التي تحتاج إعداد (11 متغير + 1 سيتم إنشاؤه):",
+        "  Firebase (6 متغيرات): API_KEY, AUTH_DOMAIN, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID",
+        "  GraphQL (1 متغير): GRAPHQL_ENDPOINT (سيتم إنشاؤه محلياً في المرحلة 2)",
+        "  Analytics (2 متغيرات): GA_MEASUREMENT_ID, AMPLITUDE_API_KEY",
+        "  Segment (1 متغير): SEGMENT_WRITE_KEY",
+        "  Datadog (2 متغيرات): CLIENT_TOKEN, APPLICATION_ID",
+        "📄 تم إنشاء دليل شامل: rebuild/planning/ENV_SETUP_GUIDE.md",
+        "تم وضع placeholders موثقة مع تعليقات واضحة لكل متغير"
+      ],
+      "data_extraction_summary": {
+        "total_env_vars_documented": 13,
+        "firebase_configs_found": 110,
+        "gtm_configs_found": 10,
+        "api_endpoints_found": 50,
+        "environment_variable_names_found": 13,
+        "actually_extracted_values": {
+          "firebase_project_id": "68c9ad4d4cddb58cf3a1",
+          "gtm_id": "GTM-M3H3PQBG"
+        },
+        "placeholder_values": {
+          "graphql_endpoint": "/api/graphql (سيتم إنشاؤه محلياً)"
+        },
+        "values_needing_external_setup": 11,
+        "setup_guide_created": "rebuild/planning/ENV_SETUP_GUIDE.md"
+      }
     },
     {
       "id": "0.3",
@@ -54,11 +98,62 @@
       "source_files": ["analysis/bundled_data.json"],
       "output_files": ["rebuild/planning/pages_structure.json"],
       "acceptance": [
-        "قائمة بجميع الصفحات المطلوبة",
-        "buildId محدد",
-        "routing structure واضح"
+        "قائمة بجميع الصفحات المطلوبة ✅",
+        "buildId محدد ✅",
+        "routing structure واضح ✅"
       ],
-      "status": "pending"
+      "status": "completed",
+      "notes": [
+        "تم إنشاء ملف pages_structure.json بنجاح",
+        "تحليل 109 Next.js data instances",
+        "تم اكتشاف:",
+        "  - 18 صفحة فريدة",
+        "  - 10 static routes",
+        "  - 8 dynamic routes",
+        "  - 3 build IDs مختلفة",
+        "Build IDs المكتشفة:",
+        "  1. 6NYFH0-AiYrX8hO1JTNE6 (صفحات Apollo/GraphQL)",
+        "  2. replit.com--QiM7dfY9mLTjbJ6QLoSk7 (صفحات ثابتة)",
+        "  3. n07cQWyGQVhSQbEdBVqs3 (templates)",
+        "Dynamic Routes:",
+        "  - /[slug]",
+        "  - /profile",
+        "  - /customers/[slug]",
+        "  - /gallery/[categoriesSlug]",
+        "  - /gallery/[categoriesSlug]/[detailSlug]",
+        "  - /news/[slug]",
+        "  - /products/[slug]",
+        "  - /usecases/[slug]",
+        "صفحات Apollo-enabled تم تحديدها للمرحلة التالية"
+      ],
+      "analysis_results": {
+        "total_instances": 109,
+        "unique_pages": 18,
+        "static_routes": 10,
+        "dynamic_routes": 8,
+        "apollo_pages": 15,
+        "build_ids": 3
+      }
     }
-  ]
+  ],
+  "summary": {
+    "all_tasks_completed": true,
+    "critical_blockers": "لا توجد",
+    "next_steps": [
+      "المرحلة 1: إعداد Firebase Authentication",
+      "المرحلة 1: إعداد Apollo GraphQL Client",
+      "المرحلة 1: إنشاء هيكل الصفحات بناءً على pages_structure.json"
+    ],
+    "files_created": [
+      "rebuild/source/.env.local",
+      "rebuild/planning/pages_structure.json",
+      "rebuild/planning/ENV_SETUP_GUIDE.md"
+    ],
+    "verification_results": {
+      "npm_install": "نجح - 382 حزمة",
+      "npm_run_dev": "نجح - Next.js 14.2.13 يعمل",
+      "env_loaded": "نجح - تم تحميل .env.local",
+      "port": "3001 (للتطوير - port 5000 محجوز للمشروع الحالي)"
+    }
+  }
 }

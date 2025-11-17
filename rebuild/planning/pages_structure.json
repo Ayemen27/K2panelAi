@@ -1,0 +1,269 @@
+{
+  "summary": {
+    "total_instances": 109,
+    "unique_pages": 18,
+    "static_routes": 10,
+    "dynamic_routes": 8,
+    "apollo_enabled_pages": 8,
+    "build_ids": [
+      "6NYFH0-AiYrX8hO1JTNE6",
+      "n07cQWyGQVhSQbEdBVqs3",
+      "replit.com--QiM7dfY9mLTjbJ6QLoSk7"
+    ]
+  },
+  "static_routes": [
+    {
+      "route": "/profile",
+      "file": "@Prodia.html",
+      "has_apollo": true
+    },
+    {
+      "route": "/brandkit",
+      "file": "brandkit.html",
+      "has_apollo": true
+    },
+    {
+      "route": "/gallery",
+      "file": "gallery.html",
+      "has_apollo": false
+    },
+    {
+      "route": "/auth",
+      "file": "github.html",
+      "has_apollo": true
+    },
+    {
+      "route": "/help",
+      "file": "help.html",
+      "has_apollo": true
+    },
+    {
+      "route": "/",
+      "file": "index.html",
+      "has_apollo": false
+    },
+    {
+      "route": "/mobile",
+      "file": "mobile.html",
+      "has_apollo": true
+    },
+    {
+      "route": "/pricing",
+      "file": "pricing.html",
+      "has_apollo": true
+    },
+    {
+      "route": "/templates/templates",
+      "file": "templates.html",
+      "has_apollo": true
+    },
+    {
+      "route": "/replView",
+      "file": "LunchVote.html",
+      "has_apollo": true
+    }
+  ],
+  "dynamic_routes": [
+    {
+      "route": "/[slug]",
+      "example_file": "about.html",
+      "has_apollo": false
+    },
+    {
+      "route": "/customers/[slug]",
+      "example_file": "allfly.html",
+      "has_apollo": false
+    },
+    {
+      "route": "/gallery/[usecasesSlug]",
+      "example_file": "life.html",
+      "has_apollo": false
+    },
+    {
+      "route": "/gallery/[usecasesSlug]/[categoriesSlug]",
+      "example_file": "community.html",
+      "has_apollo": false
+    },
+    {
+      "route": "/gallery/[usecasesSlug]/[categoriesSlug]/[detailSlug]",
+      "example_file": "mathgauss.html",
+      "has_apollo": false
+    },
+    {
+      "route": "/news/[slug]",
+      "example_file": "funding-announcement.html",
+      "has_apollo": false
+    },
+    {
+      "route": "/products/[slug]",
+      "example_file": "agent.html",
+      "has_apollo": false
+    },
+    {
+      "route": "/usecases/[slug]",
+      "example_file": "business-apps.html",
+      "has_apollo": false
+    }
+  ],
+  "pages_by_route": {
+    "/": [
+      "index.html"
+    ],
+    "/[slug]": [
+      "about.html",
+      "additional-resources.html",
+      "careers.html",
+      "commercial-agreement.html",
+      "customers.html",
+      "dpa.html",
+      "enterprise.html",
+      "news.html",
+      "privacy-policy.html",
+      "subprocessors.html",
+      "teams.html",
+      "terms-of-service.html"
+    ],
+    "/auth": [
+      "github.html",
+      "login.html",
+      "signup.html",
+      "signup?goto=agentVerify?prompt=KINwpgTgngBA7mMBrGBDALjAHKgtjAewDsYBZYgE1SgBoYBnMIimXMNBgV111WkIBmaIrCJg49NACMCnTJwAOAYwK4AlkQDmMAIIBJGGHBF0kjTADKAMRid6G7QikMwfJQAsgA&stack=Agents%20%26%20Automations&platformType=timeBased&skipOnboarding.html",
+      "signup?goto=agentVerify?prompt=MIJwpghgLmAEEDtYEECSsDOAbCBjA1gEYD2UsUAFtLLojeNHFMQLQAmxgmAQawBmxIWAFs4ASyQA5UqOJIAUEA&stack=Agents%20%26%20Automations&platformType=slack&skipOnboarding=true.html"
+    ],
+    "/brandkit": [
+      "brandkit.html"
+    ],
+    "/customers/[slug]": [
+      "allfly.html",
+      "batchdata.html",
+      "ecommerce-software.html",
+      "firecrown-media.html",
+      "genaipi.html",
+      "greenleaf.html",
+      "hg.html",
+      "national-retailer.html",
+      "northern-health.html",
+      "plaid.html",
+      "rokt.html",
+      "saastr.html",
+      "spellbook.html",
+      "zinus.html"
+    ],
+    "/gallery": [
+      "gallery.html"
+    ],
+    "/gallery/[usecasesSlug]": [
+      "life.html",
+      "work.html"
+    ],
+    "/gallery/[usecasesSlug]/[categoriesSlug]": [
+      "community.html",
+      "developer-tools.html",
+      "education.html",
+      "entertainment.html",
+      "finance.html",
+      "health-and-fitness.html",
+      "personal-landing-page.html",
+      "productivity.html",
+      "sports.html",
+      "travel.html",
+      "utility.html",
+      "businesses.html",
+      "customer-support.html",
+      "human-resources.html",
+      "marketing-and-sales.html",
+      "operations.html",
+      "platform.html",
+      "product-and-design.html",
+      "product.html",
+      "sales.html",
+      "work-landing-page.html"
+    ],
+    "/gallery/[usecasesSlug]/[categoriesSlug]/[detailSlug]": [
+      "mathgauss.html",
+      "solar-system-visualizer.html",
+      "great-venues-guide.html",
+      "joyloop.html",
+      "your-watchlists.html",
+      "nutriplan.html",
+      "flostate.html",
+      "invites-page.html",
+      "lunchvote-ai.html",
+      "the-fontcrafter.html",
+      "staysaavy.html",
+      "crm.html",
+      "pubmeld.html",
+      "revcrew-ai.html",
+      "course-platform.html",
+      "customer-support-portal.html",
+      "legal-assistant.html",
+      "vendor-management-portal.html",
+      "journey-mapper.html",
+      "product-manager-crm.html",
+      "customer-sentiment-dashboard.html",
+      "prospecting-workbench.html",
+      "smart-lead-qualifier.html",
+      "wayfinder-calculator.html"
+    ],
+    "/help": [
+      "help.html"
+    ],
+    "/mobile": [
+      "mobile.html"
+    ],
+    "/news/[slug]": [
+      "funding-announcement.html",
+      "jordan-government.html",
+      "microsoft-partnership.html"
+    ],
+    "/pricing": [
+      "pricing.html"
+    ],
+    "/products/[slug]": [
+      "agent.html",
+      "database.html",
+      "deployments.html",
+      "design.html",
+      "integrations.html",
+      "mobile.html",
+      "security.html"
+    ],
+    "/profile": [
+      "@Prodia.html",
+      "@TheDrone7.html",
+      "@deno.html"
+    ],
+    "/replView": [
+      "LunchVote.html",
+      "Google-Cloud-Vertex-AI-Test-Code-Chat-Prompts?v=1.html",
+      "Google-Cloud-Vertex-AI-Test-Code-Generation-Prompts?v=1.html"
+    ],
+    "/templates/templates": [
+      "templates.html"
+    ],
+    "/usecases/[slug]": [
+      "business-apps.html",
+      "designers.html",
+      "founders.html",
+      "operations.html",
+      "product-managers.html",
+      "rapid-prototyping.html",
+      "smb.html",
+      "software-engineers.html"
+    ]
+  },
+  "data_sources": {
+    "apollo_graphql": true,
+    "apollo_pages": [
+      "/profile",
+      "/pricing",
+      "/brandkit",
+      "/templates/templates",
+      "/replView",
+      "/auth",
+      "/help",
+      "/mobile"
+    ],
+    "static_generation": true
+  }
+}
