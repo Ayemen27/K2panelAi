@@ -1,0 +1,40 @@
+# User & Authentication Domain
+
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  firstName: String
+  lastName: String
+  profileImageUrl: String
+  isActive: Boolean!
+  createdAt: String!
+}
+
+type AuthPayload {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+input SignupInput {
+  username: String!
+  email: String!
+  password: String!
+  firstName: String
+  lastName: String
+}
+
+input LoginInput {
+  emailOrUsername: String!
+  password: String!
+}
+
+extend type Query {
+  me: User
+}
+
+extend type Mutation {
+  signup(input: SignupInput!): AuthPayload!
+  login(input: LoginInput!): AuthPayload!
+}

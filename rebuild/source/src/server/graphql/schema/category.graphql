@@ -1,0 +1,14 @@
+# Category Domain
+
+type Category {
+  id: ID!
+  name: String!
+  slug: String!
+  description: String
+  icon: String
+}
+
+extend type Query {
+  categories: [Category!]!
+  category(slug: String!): Category
+}

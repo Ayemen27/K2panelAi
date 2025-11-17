@@ -1,0 +1,15 @@
+# Common Types - Shared across all domains
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+  page: Int!
+  perPage: Int!
+  totalPages: Int!
+}
+
+# Root Query and Mutation types (extended by domain files)
+type Query
+type Mutation

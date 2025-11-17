@@ -1,0 +1,30 @@
+# Forms Domain
+
+scalar JSON
+
+type FormSubmission {
+  id: ID!
+  formType: String!
+  name: String
+  email: String!
+  company: String
+  message: String
+  phone: String
+  status: String
+  extraData: JSON
+  createdAt: String!
+}
+
+input FormSubmissionInput {
+  formType: String!
+  name: String!
+  email: String!
+  company: String
+  message: String
+  phone: String
+  extraData: JSON
+}
+
+extend type Mutation {
+  submitForm(input: FormSubmissionInput!): FormSubmission!
+}
