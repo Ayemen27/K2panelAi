@@ -80,10 +80,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (!response.ok) {
-        console.error('Failed to create session cookie');
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || 'Failed to create session. Please try again.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating session:', error);
+      throw new Error(error.message || 'Failed to create login session. Please try again.');
     }
 
     return userCredential;
@@ -105,7 +107,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error('Firebase Auth is not initialized');
     }
 
-    return await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    
+    try {
+      const idToken = await userCredential.user.getIdToken();
+      
+      const response = await fetch('/api/auth/session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || 'Account created but failed to create session. Please login manually.');
+      }
+    } catch (error: any) {
+      console.error('Error creating session:', error);
+      throw new Error(error.message || 'Account created but failed to create session. Please login manually.');
+    }
+
+    return userCredential;
   };
 
   /**
@@ -162,10 +186,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (!response.ok) {
-        console.error('Failed to create session cookie');
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || 'Failed to create session with Google. Please try again.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating session:', error);
+      throw new Error(error.message || 'Failed to create Google login session. Please try again.');
     }
 
     return userCredential;
