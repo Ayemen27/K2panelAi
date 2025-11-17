@@ -1,6 +1,5 @@
 'use client';
 import { useAuth } from '../../hooks/useAuth';
-import { auth } from '@/firebase/config';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
@@ -13,7 +12,7 @@ import Navigation from '@/components/Navigation'
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string);
 
 export default function Dashboard() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -21,7 +20,7 @@ export default function Dashboard() {
   const getFirebaseToken = async () => {
     try {
       if (user) {
-        const token = await auth.currentUser?.getIdToken();
+        const token = await user.getIdToken();
         return token;
       }
     } catch (error) {
@@ -104,7 +103,10 @@ export default function Dashboard() {
             <p className="text-center">{user?.email}</p>
             <div className="flex flex-col space-y-4">
               <Button
-                onClick={() => auth.signOut()}
+                onClick={async () => {
+                  await logout();
+                  router.push('/login');
+                }}
                 className="bg-[#FF6F61] text-white hover:bg-[#FFB3B0]"
               >
                 Sign Out

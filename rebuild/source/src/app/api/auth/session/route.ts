@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { adminAuth } from '@/firebase/admin';
-import { cookies } from 'next/headers';
 
 export const runtime = 'nodejs';
 
@@ -33,9 +32,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const cookieStore = await cookies();
+    const response = NextResponse.json(
+      { success: true, message: 'Session created successfully' },
+      { status: 200 }
+    );
     
-    cookieStore.set(SESSION_COOKIE_NAME, sessionCookie, {
+    response.cookies.set(SESSION_COOKIE_NAME, sessionCookie, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -43,10 +45,7 @@ export async function POST(request: NextRequest) {
       path: '/',
     });
 
-    return NextResponse.json(
-      { success: true, message: 'Session created successfully' },
-      { status: 200 }
-    );
+    return response;
   } catch (error) {
     console.error('Error in POST /api/auth/session:', error);
     return NextResponse.json(
@@ -58,9 +57,12 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE() {
   try {
-    const cookieStore = await cookies();
+    const response = NextResponse.json(
+      { success: true, message: 'Session deleted successfully' },
+      { status: 200 }
+    );
     
-    cookieStore.set(SESSION_COOKIE_NAME, '', {
+    response.cookies.set(SESSION_COOKIE_NAME, '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -68,10 +70,7 @@ export async function DELETE() {
       path: '/',
     });
 
-    return NextResponse.json(
-      { success: true, message: 'Session deleted successfully' },
-      { status: 200 }
-    );
+    return response;
   } catch (error) {
     console.error('Error in DELETE /api/auth/session:', error);
     return NextResponse.json(
