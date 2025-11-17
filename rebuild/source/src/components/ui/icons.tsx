@@ -1,17 +1,17 @@
 import {  
-    ServerIcon, 
-    FlameIcon, 
-    CreditCardIcon, 
-    LockIcon, 
-    SmartphoneIcon, 
-    PaintbrushIcon 
+    Server, 
+    Flame, 
+    CreditCard, 
+    Lock, 
+    Smartphone, 
+    Paintbrush 
   } from 'lucide-react'
   
   export const Icons = {
-    nextjs: ServerIcon,
-    firebase: FlameIcon,
-    stripe: CreditCardIcon,
-    lock: LockIcon,
-    smartphone: SmartphoneIcon,
-    paintbrush: PaintbrushIcon,
+    nextjs: Server,
+    firebase: Flame,
+    stripe: CreditCard,
+    lock: Lock,
+    smartphone: Smartphone,
+    paintbrush: Paintbrush,
   }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ProjectDetailContent } from "./ProjectDetailContent";
 
 export const metadata: Metadata = {
   title: "Gallery - Project Details - Replit",
@@ -15,14 +16,10 @@ interface PageProps {
 
 export default function ProjectDetailPage({ params }: PageProps) {
   return (
-    <div className="min-h-screen p-8">
-      <h1 className="text-4xl font-bold mb-4">
-        Gallery - {params.usecasesSlug} / {params.categoriesSlug} /{" "}
-        {params.detailSlug}
-      </h1>
-      <p className="text-gray-600">
-        TODO: Implement project detail page (24 projects)
-      </p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <ProjectDetailContent slug={params.detailSlug} />
+      </div>
     </div>
   );
 }
