@@ -1,89 +1,98 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 import * as gtm from '@/lib/gtm';
 import * as ga4 from '@/lib/ga4';
 import * as amplitude from '@/lib/amplitude';
 import * as segment from '@/lib/segment';
-import { initializeDatadog } from '@/lib/datadog';
+import * as datadog from '@/lib/datadog';
 
-declare global {
-  interface Window {
-    analyticsInitialized?: boolean;
-  }
+interface AnalyticsState {
+  initialized: boolean;
+  ready: boolean;
 }
+
+let analyticsState: AnalyticsState = {
+  initialized: false,
+  ready: false,
+};
 
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (analyticsState.initialized) return;
     
     const initializeAnalytics = async () => {
-      const results = {
-        datadog: false,
-        amplitude: false,
-        segment: false,
-        ga4: false,
-      };
+      analyticsState.initialized = true;
+
+      const initPromises: Promise<void>[] = [];
 
       try {
-        initializeDatadog();
-        results.datadog = true;
+        datadog.initializeDatadog();
       } catch (error) {
         console.error('Datadog initialization failed:', error);
       }
 
       if (amplitude.AMPLITUDE_API_KEY) {
-        try {
-          results.amplitude = await amplitude.initialize(amplitude.AMPLITUDE_API_KEY);
-        } catch (error) {
-          console.error('Amplitude initialization failed:', error);
-        }
+        initPromises.push(
+          amplitude.initialize(amplitude.AMPLITUDE_API_KEY).then(() => {}).catch((error) => {
+            console.error('Amplitude initialization failed:', error);
+          })
+        );
       }
 
       if (segment.SEGMENT_WRITE_KEY) {
-        try {
-          segment.initialize(segment.SEGMENT_WRITE_KEY);
-          results.segment = true;
-        } catch (error) {
-          console.error('Segment initialization failed:', error);
-        }
+        initPromises.push(
+          segment.initialize(segment.SEGMENT_WRITE_KEY).catch((error) => {
+            console.error('Segment initialization failed:', error);
+          })
+        );
       }
 
       if (ga4.GA_MEASUREMENT_ID) {
-        try {
-          ga4.initialize(ga4.GA_MEASUREMENT_ID);
-          results.ga4 = true;
-        } catch (error) {
-          console.error('GA4 initialization failed:', error);
-        }
+        initPromises.push(
+          ga4.initialize(ga4.GA_MEASUREMENT_ID).catch((error) => {
+            console.error('GA4 initialization failed:', error);
+          })
+        );
       }
 
-      console.log('Analytics initialization results:', results);
+      await Promise.allSettled(initPromises);
+
+      await Promise.all([
+        gtm.waitUntilReady().catch(() => {}),
+        ga4.waitUntilReady().catch(() => {}),
+        segment.waitUntilReady().catch(() => {}),
+        amplitude.waitUntilReady().catch(() => {}),
+        datadog.waitUntilReady().catch(() => {}),
+      ]);
+
+      analyticsState.ready = true;
+      setIsReady(true);
+      console.log('Analytics fully initialized and ready');
     };
 
-    if (!window.analyticsInitialized) {
-      window.analyticsInitialized = true;
-      initializeAnalytics().catch((error) => {
-        console.error('Analytics initialization error:', error);
-        window.analyticsInitialized = false;
-      });
-    }
+    initializeAnalytics().catch((error) => {
+      console.error('Analytics initialization error:', error);
+      analyticsState.initialized = false;
+    });
   }, []);
 
   useEffect(() => {
-    if (pathname) {
-      const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
-      
-      gtm.pageview(url);
-      ga4.pageview(url);
-      segment.page(url).catch((err) => console.error('Segment page tracking failed:', err));
-      amplitude.trackEvent('Page View', { path: url });
-    }
-  }, [pathname, searchParams]);
+    if (!isReady || !pathname) return;
+
+    const url = pathname + (searchParams?.toString() ? `?${searchParams.toString()}` : '');
+    
+    gtm.pageview(url).catch((err) => console.error('GTM pageview failed:', err));
+    ga4.pageview(url);
+    segment.page(url).catch((err) => console.error('Segment page tracking failed:', err));
+    amplitude.trackEvent('Page View', { path: url });
+  }, [pathname, searchParams, isReady]);
 
   return <>{children}</>;
 }

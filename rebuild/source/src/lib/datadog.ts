@@ -1,5 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 
+let isDatadogInitialized = false;
+
 export function initializeDatadog() {
   if (typeof window === 'undefined') return;
 
@@ -9,6 +11,22 @@ export function initializeDatadog() {
   if (!clientToken || !applicationId) {
     console.warn('Datadog credentials not found');
     return;
+  }
+
+  if (isDatadogInitialized) {
+    console.warn('Datadog already initialized, skipping duplicate initialization');
+    return;
+  }
+
+  try {
+    const internalContext = datadogRum.getInternalContext();
+    if (internalContext?.session_id) {
+      console.warn('Datadog session already exists, skipping initialization');
+      isDatadogInitialized = true;
+      return;
+    }
+  } catch (e) {
+    // No existing session, proceed with initialization
   }
 
   datadogRum.init({
@@ -27,4 +45,29 @@ export function initializeDatadog() {
   });
 
   datadogRum.startSessionReplayRecording();
+  isDatadogInitialized = true;
+}
+
+export async function waitUntilReady(): Promise<void> {
+  if (typeof window === 'undefined') {
+    return Promise.resolve();
+  }
+
+  const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN;
+  const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID;
+
+  if (!clientToken || !applicationId) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    const checkDatadog = () => {
+      if (isDatadogInitialized) {
+        resolve();
+      } else {
+        setTimeout(checkDatadog, 50);
+      }
+    };
+    checkDatadog();
+  });
 }

@@ -12,6 +12,10 @@ export function waitForGtm(): Promise<void> {
     return Promise.resolve();
   }
 
+  if (!GTM_ID) {
+    return Promise.resolve();
+  }
+
   if (gtmReadyPromise) {
     return gtmReadyPromise;
   }
@@ -28,6 +32,10 @@ export function waitForGtm(): Promise<void> {
   });
 
   return gtmReadyPromise;
+}
+
+export function waitUntilReady(): Promise<void> {
+  return waitForGtm();
 }
 
 export async function pageview(url: string) {

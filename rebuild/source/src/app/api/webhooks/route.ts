@@ -18,12 +18,6 @@ if (!getApps().length) {
 
 const adminDb = getFirestore();
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 async function buffer(readable: Readable) {
   const chunks = [];
   for await (const chunk of readable) {

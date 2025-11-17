@@ -1,4 +1,5 @@
 import * as amplitude from '@amplitude/analytics-browser';
+import { retryWithBackoff } from './analyticsRetry';
 
 export const AMPLITUDE_API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY || '';
 
@@ -18,26 +19,56 @@ export async function initialize(apiKey: string): Promise<boolean> {
     return amplitudeInitialized;
   }
 
-  amplitudeInitPromise = (async () => {
+  amplitudeInitPromise = retryWithBackoff(async () => {
     try {
-      amplitude.init(apiKey, undefined, {
-        defaultTracking: {
-          sessions: true,
-          pageViews: true,
-          formInteractions: true,
-          fileDownloads: true,
-        },
-      });
-      amplitudeInitialized = true;
-    } catch (error) {
-      console.error('Failed to initialize Amplitude:', error);
-      amplitudeInitPromise = null;
-      throw error;
+      const existingInstance = amplitude.getSessionId();
+      if (existingInstance !== undefined) {
+        amplitudeInitialized = true;
+        return;
+      }
+    } catch (e) {
+      // No existing instance, proceed with initialization
     }
-  })();
+
+    amplitude.init(apiKey, undefined, {
+      defaultTracking: {
+        sessions: true,
+        pageViews: true,
+        formInteractions: true,
+        fileDownloads: true,
+      },
+    });
+    amplitudeInitialized = true;
+  }).catch((error) => {
+    console.error('Failed to initialize Amplitude:', error);
+    amplitudeInitPromise = null;
+    throw error;
+  });
 
   await amplitudeInitPromise;
   return amplitudeInitialized;
+}
+
+export async function waitUntilReady(): Promise<void> {
+  if (typeof window === 'undefined') {
+    return Promise.resolve();
+  }
+
+  if (!AMPLITUDE_API_KEY) {
+    return Promise.resolve();
+  }
+
+  if (amplitudeInitialized) {
+    return Promise.resolve();
+  }
+
+  if (amplitudeInitPromise) {
+    try {
+      await amplitudeInitPromise;
+    } catch (error) {
+      console.error('Failed to wait for Amplitude readiness:', error);
+    }
+  }
 }
 
 export function trackEvent(eventName: string, eventProperties?: Record<string, any>) {

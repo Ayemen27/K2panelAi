@@ -1,11 +1,12 @@
 import { AnalyticsBrowser, Analytics } from '@segment/analytics-next';
+import { retryWithBackoff } from './analyticsRetry';
 
 export const SEGMENT_WRITE_KEY = process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY || '';
 
 let analytics: Analytics | null = null;
 let analyticsPromise: Promise<Analytics> | null = null;
 
-export function initialize(writeKey: string) {
+export async function initialize(writeKey: string): Promise<void> {
   if (typeof window === 'undefined') return;
   if (!writeKey) {
     console.warn('Segment Write Key not found');
@@ -14,12 +15,37 @@ export function initialize(writeKey: string) {
   if (analytics || analyticsPromise) return;
 
   try {
-    analyticsPromise = AnalyticsBrowser.load({ writeKey }).then((result) => {
+    analyticsPromise = retryWithBackoff(async () => {
+      const result = await AnalyticsBrowser.load({ writeKey });
       analytics = result[0];
       return analytics;
     });
+    await analyticsPromise;
   } catch (error) {
     console.error('Failed to initialize Segment:', error);
+    analyticsPromise = null;
+  }
+}
+
+export async function waitUntilReady(): Promise<void> {
+  if (typeof window === 'undefined') {
+    return Promise.resolve();
+  }
+
+  if (!SEGMENT_WRITE_KEY) {
+    return Promise.resolve();
+  }
+
+  if (analytics) {
+    return Promise.resolve();
+  }
+
+  if (analyticsPromise) {
+    try {
+      await analyticsPromise;
+    } catch (error) {
+      console.error('Failed to wait for Segment readiness:', error);
+    }
   }
 }
 
