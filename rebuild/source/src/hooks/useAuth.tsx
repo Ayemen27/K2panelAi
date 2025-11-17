@@ -66,7 +66,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error('Firebase Auth is not initialized');
     }
 
-    return await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    
+    try {
+      const idToken = await userCredential.user.getIdToken();
+      
+      const response = await fetch('/api/auth/session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken }),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to create session cookie');
+      }
+    } catch (error) {
+      console.error('Error creating session:', error);
+    }
+
+    return userCredential;
   };
 
   /**
@@ -102,6 +122,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error('Firebase Auth is not initialized');
     }
 
+    try {
+      await fetch('/api/auth/session', {
+        method: 'DELETE',
+      });
+    } catch (error) {
+      console.error('Error deleting session:', error);
+    }
+
     return await signOut(auth);
   };
 
@@ -120,7 +148,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     const provider = new GoogleAuthProvider();
-    return await signInWithPopup(auth, provider);
+    const userCredential = await signInWithPopup(auth, provider);
+    
+    try {
+      const idToken = await userCredential.user.getIdToken();
+      
+      const response = await fetch('/api/auth/session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idToken }),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to create session cookie');
+      }
+    } catch (error) {
+      console.error('Error creating session:', error);
+    }
+
+    return userCredential;
   };
 
   return (
