@@ -3,12 +3,11 @@
  * 
  * Tests that the GraphQL context correctly extracts and verifies
  * session cookies/auth headers and propagates authenticated user state.
+ * 
+ * This tests the ACTUAL context creation logic used in production
  */
 
-import { GraphQLContext } from '@/server/auth/context';
 import {
-  adminAuth,
-  isAdminInitialized,
   mockVerifySessionCookie,
   resetFirebaseAdminMocks,
 } from '../../../../../__mocks__/firebase-admin';
@@ -18,25 +17,28 @@ jest.mock('@/firebase/admin', () => require('../../../../../__mocks__/firebase-a
 
 // Mock next/headers cookies
 const mockGet = jest.fn();
-const mockCookies = jest.fn(() => ({
-  get: mockGet,
-}));
 
 jest.mock('next/headers', () => ({
-  cookies: mockCookies,
+  cookies: jest.fn(() => ({
+    get: mockGet,
+  })),
 }));
 
-// Import the context creation logic (we'll need to extract it or test through route handler)
-import { verifyFirebaseSession } from '@/server/auth/verifyFirebaseSession';
+// Mock datasources
+jest.mock('@/server/graphql/datasources', () => ({
+  createDataSources: jest.fn(() => ({ projects: {}, categories: {} })),
+}));
 
-describe('GraphQL Context - Firebase Auth Integration', () => {
+// Import the REAL context creation function
+import { createContext } from '@/server/auth/context';
+
+describe('GraphQL Context - Real Integration Tests', () => {
   beforeEach(() => {
     resetFirebaseAdminMocks();
     mockGet.mockReset();
-    mockCookies.mockClear();
   });
 
-  describe('✅ Authenticated User Scenarios', () => {
+  describe('✅ Authenticated User - Cookie Flow', () => {
     test('should create context with currentUser from valid session cookie', async () => {
       const mockSessionCookie = 'valid-session-cookie-123';
       const mockDecodedClaims = {
@@ -50,18 +52,23 @@ describe('GraphQL Context - Firebase Auth Integration', () => {
       // Mock Admin SDK verification
       mockVerifySessionCookie.mockResolvedValue(mockDecodedClaims);
 
-      // Simulate context creation
-      const result = await verifyFirebaseSession(mockSessionCookie);
+      // Create context (simulates what happens in GraphQL handler)
+      const mockRequest = {
+        headers: { get: jest.fn(() => null) },
+      };
+      const context = await createContext(mockRequest);
 
-      // Verify authenticated user is extracted
-      expect(result).toEqual({
-        success: true,
+      // Critical: Verify currentUser is populated
+      expect(context.currentUser).toEqual({
         uid: 'user-abc-123',
         email: 'authenticated@example.com',
       });
+      expect(context.dataSources).toBeDefined();
     });
+  });
 
-    test('should extract session token from Authorization header when no cookie', async () => {
+  describe('✅ Authenticated User - Header Flow', () => {
+    test('should create context with currentUser from Authorization header', async () => {
       const mockAuthToken = 'bearer-token-xyz';
       const mockDecodedClaims = {
         uid: 'user-xyz-789',
@@ -71,13 +78,19 @@ describe('GraphQL Context - Firebase Auth Integration', () => {
       // No session cookie
       mockGet.mockReturnValue(undefined);
       
-      // Mock Admin SDK verification for header token
+      // Mock Admin SDK verification
       mockVerifySessionCookie.mockResolvedValue(mockDecodedClaims);
 
-      const result = await verifyFirebaseSession(mockAuthToken);
+      // Mock request with Authorization header
+      const mockRequest = {
+        headers: { get: jest.fn((name: string) => 
+          name === 'authorization' ? `Bearer ${mockAuthToken}` : null
+        )},
+      };
+      const context = await createContext(mockRequest);
 
-      expect(result).toEqual({
-        success: true,
+      // Verify currentUser is populated from header
+      expect(context.currentUser).toEqual({
         uid: 'user-xyz-789',
         email: 'header@example.com',
       });
@@ -85,19 +98,21 @@ describe('GraphQL Context - Firebase Auth Integration', () => {
   });
 
   describe('🚫 Unauthenticated/Anonymous Scenarios', () => {
-    test('should create context without currentUser when no token provided', async () => {
+    test('should create context with null currentUser when no token provided', async () => {
       // No cookie and no auth header
       mockGet.mockReturnValue(undefined);
 
-      const result = await verifyFirebaseSession('');
+      const mockRequest = {
+        headers: { get: jest.fn(() => null) },
+      };
+      const context = await createContext(mockRequest);
 
-      expect(result).toEqual({
-        success: false,
-        error: 'No token provided',
-      });
+      // Critical: currentUser should be null for anonymous
+      expect(context.currentUser).toBeNull();
+      expect(context.dataSources).toBeDefined();
     });
 
-    test('should reject invalid session cookie', async () => {
+    test('should create context with null currentUser for invalid cookie', async () => {
       const mockInvalidCookie = 'invalid-cookie';
       const invalidError = new Error('Invalid token');
       (invalidError as any).code = 'auth/argument-error';
@@ -105,17 +120,18 @@ describe('GraphQL Context - Firebase Auth Integration', () => {
       mockGet.mockReturnValue({ value: mockInvalidCookie });
       mockVerifySessionCookie.mockRejectedValue(invalidError);
 
-      const result = await verifyFirebaseSession(mockInvalidCookie);
+      const mockRequest = {
+        headers: { get: jest.fn(() => null) },
+      };
+      const context = await createContext(mockRequest);
 
-      expect(result).toEqual({
-        success: false,
-        error: 'Invalid token',
-      });
+      // Invalid token should result in null currentUser
+      expect(context.currentUser).toBeNull();
     });
   });
 
   describe('🔒 Revoked Token Scenarios (Critical Security)', () => {
-    test('should reject revoked session cookie in GraphQL context', async () => {
+    test('should create context with null currentUser for revoked cookie', async () => {
       const mockRevokedCookie = 'revoked-session-cookie';
       const revokedError = new Error('Token has been revoked');
       (revokedError as any).code = 'auth/session-cookie-revoked';
@@ -123,30 +139,38 @@ describe('GraphQL Context - Firebase Auth Integration', () => {
       mockGet.mockReturnValue({ value: mockRevokedCookie });
       mockVerifySessionCookie.mockRejectedValue(revokedError);
 
-      const result = await verifyFirebaseSession(mockRevokedCookie);
+      const mockRequest = {
+        headers: { get: jest.fn(() => null) },
+      };
+      const context = await createContext(mockRequest);
 
-      // Critical: Revoked tokens MUST be rejected
-      expect(result.success).toBe(false);
-      expect(result.error).toBe('Token has been revoked');
+      // CRITICAL SECURITY: Revoked tokens MUST NOT populate currentUser
+      expect(context.currentUser).toBeNull();
+      expect(mockVerifySessionCookie).toHaveBeenCalledWith(mockRevokedCookie, true);
     });
 
-    test('should prevent GraphQL access after logout/revocation', async () => {
-      const mockRevokedToken = 'just-revoked-token';
+    test('should block GraphQL access after logout/revocation via header', async () => {
+      const mockRevokedToken = 'just-revoked-header-token';
       const revokedError = new Error('Token revoked');
       (revokedError as any).code = 'auth/session-cookie-revoked';
 
+      mockGet.mockReturnValue(undefined);
       mockVerifySessionCookie.mockRejectedValue(revokedError);
 
-      const result = await verifyFirebaseSession(mockRevokedToken);
+      const mockRequest = {
+        headers: { get: jest.fn((name: string) => 
+          name === 'authorization' ? `Bearer ${mockRevokedToken}` : null
+        )},
+      };
+      const context = await createContext(mockRequest);
 
-      expect(result.success).toBe(false);
-      // This ensures GraphQL context will have currentUser = null
-      expect(result.uid).toBeUndefined();
+      // CRITICAL: Revoked token via header should also result in null user
+      expect(context.currentUser).toBeNull();
     });
   });
 
   describe('⏰ Expired Token Scenarios', () => {
-    test('should reject expired session cookie', async () => {
+    test('should create context with null currentUser for expired cookie', async () => {
       const mockExpiredCookie = 'expired-session-cookie';
       const expiredError = new Error('Token expired');
       (expiredError as any).code = 'auth/session-cookie-expired';
@@ -154,40 +178,59 @@ describe('GraphQL Context - Firebase Auth Integration', () => {
       mockGet.mockReturnValue({ value: mockExpiredCookie });
       mockVerifySessionCookie.mockRejectedValue(expiredError);
 
-      const result = await verifyFirebaseSession(mockExpiredCookie);
+      const mockRequest = {
+        headers: { get: jest.fn(() => null) },
+      };
+      const context = await createContext(mockRequest);
 
-      expect(result.success).toBe(false);
-      expect(result.error).toBe('Token expired');
+      // Expired token should not populate currentUser
+      expect(context.currentUser).toBeNull();
     });
   });
 
   describe('🔧 Edge Cases', () => {
-    test('should handle Admin SDK not initialized gracefully', async () => {
-      (isAdminInitialized as jest.Mock).mockReturnValue(false);
-
-      const result = await verifyFirebaseSession('some-token');
-
-      expect(result).toEqual({
-        success: false,
-        error: 'Firebase Admin SDK not initialized',
-      });
-    });
-
     test('should handle user without email in context', async () => {
       const mockDecodedClaims = {
         uid: 'user-no-email',
         // No email field
       };
 
+      mockGet.mockReturnValue({ value: 'token-no-email' });
       mockVerifySessionCookie.mockResolvedValue(mockDecodedClaims);
 
-      const result = await verifyFirebaseSession('token-no-email');
+      const mockRequest = {
+        headers: { get: jest.fn(() => null) },
+      };
+      const context = await createContext(mockRequest);
 
-      expect(result).toEqual({
-        success: true,
+      expect(context.currentUser).toEqual({
         uid: 'user-no-email',
         email: null,
       });
+    });
+
+    test('should prioritize cookie over Authorization header', async () => {
+      const mockCookieToken = 'cookie-token';
+      const mockHeaderToken = 'header-token';
+      const mockDecodedClaims = {
+        uid: 'user-from-cookie',
+        email: 'cookie@example.com',
+      };
+
+      // Both cookie and header present
+      mockGet.mockReturnValue({ value: mockCookieToken });
+      mockVerifySessionCookie.mockResolvedValue(mockDecodedClaims);
+
+      const mockRequest = {
+        headers: { get: jest.fn((name: string) => 
+          name === 'authorization' ? `Bearer ${mockHeaderToken}` : null
+        )},
+      };
+      const context = await createContext(mockRequest);
+
+      // Cookie should be used (not header)
+      expect(context.currentUser?.uid).toBe('user-from-cookie');
+      expect(mockVerifySessionCookie).toHaveBeenCalledWith(mockCookieToken, true);
     });
   });
 });

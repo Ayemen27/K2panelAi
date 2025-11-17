@@ -1,12 +1,9 @@
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { NextRequest } from 'next/server';
-import { cookies } from 'next/headers';
 import { typeDefs } from '@/server/graphql/schema';
 import { resolvers } from '@/server/graphql/resolvers';
-import { createDataSources } from '@/server/graphql/datasources';
-import { GraphQLContext } from '@/server/auth/context';
-import { verifyFirebaseSession } from '@/server/auth/verifyFirebaseSession';
+import { GraphQLContext, createContext } from '@/server/auth/context';
 
 const server = new ApolloServer<GraphQLContext>({
   typeDefs,
@@ -26,35 +23,7 @@ const server = new ApolloServer<GraphQLContext>({
 });
 
 const handler = startServerAndCreateNextHandler<NextRequest, GraphQLContext>(server, {
-  context: async (req) => {
-    let sessionToken: string | undefined;
-
-    const cookieStore = cookies();
-    const sessionCookie = cookieStore.get('__session');
-    if (sessionCookie) {
-      sessionToken = sessionCookie.value;
-    } else {
-      const authHeader = req.headers.get('authorization');
-      sessionToken = authHeader?.replace('Bearer ', '');
-    }
-
-    let currentUser = null;
-
-    if (sessionToken) {
-      const result = await verifyFirebaseSession(sessionToken);
-      if (result.success && result.uid) {
-        currentUser = {
-          uid: result.uid,
-          email: result.email,
-        };
-      }
-    }
-
-    return {
-      dataSources: createDataSources(),
-      currentUser,
-    };
-  },
+  context: createContext,
 });
 
 export async function GET(request: NextRequest) {
