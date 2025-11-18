@@ -32,9 +32,9 @@ pm2 startup  # للتشغيل التلقائي عند إعادة التشغيل
 
 ### 3. إنشاء هيكل المجلدات
 ```bash
-sudo mkdir -p /srv/rebuild/{app,current,shared/logs,shared/uploads}
-sudo chown -R $USER:$USER /srv/rebuild
-chmod -R 755 /srv/rebuild
+sudo mkdir -p /srv/{app,current,shared/logs,shared/uploads}
+sudo chown -R $USER:$USER /srv
+chmod -R 755 /srv
 ```
 
 ---
@@ -51,34 +51,34 @@ rsync -avz --delete \
   --exclude='.env*' \
   --exclude='node_modules' \
   --exclude='.next' \
-  /path/to/rebuild/source/ \
-  user@server:/srv/rebuild/app/
+  /path/to/./ \
+  user@server:/srv/app/
 ```
 
 #### الطريقة البديلة: scp
 ```bash
 # ضغط المشروع أولاً
-tar -czf rebuild-source.tar.gz \
+tar -czf app-source.tar.gz \
   --exclude='node_modules' \
   --exclude='.next' \
   --exclude='.env*' \
   --exclude='coverage' \
-  rebuild/source/
+  ./
 
 # رفع الأرشيف
-scp rebuild-source.tar.gz user@server:/srv/rebuild/
+scp app-source.tar.gz user@server:/srv/
 
 # على السيرفر، فك الضغط
 ssh user@server
-cd /srv/rebuild/app
-tar -xzf ../rebuild-source.tar.gz --strip-components=2
+cd /srv/app
+tar -xzf ../app-source.tar.gz --strip-components=2
 ```
 
 ### المرحلة 2: إعداد البيئة
 
 #### 1. إنشاء ملف البيئة
 ```bash
-cd /srv/rebuild/app
+cd /srv/app
 cp .env.example .env.production
 
 # تحرير الملف وإضافة القيم الحقيقية
@@ -133,7 +133,7 @@ nano .env.production
 
 #### 3. تثبيت المكتبات
 ```bash
-cd /srv/rebuild/app
+cd /srv/app
 
 # تنظيف أي بقايا
 rm -rf node_modules .next
@@ -167,10 +167,10 @@ ls -la .next/
 cat > ecosystem.config.js << 'EOF'
 module.exports = {
   apps: [{
-    name: 'rebuild-nextjs',
+    name: 'nextjs-app',
     script: 'npm',
     args: 'start',
-    cwd: '/srv/rebuild/app',
+    cwd: '/srv/app',
     instances: 2,
     exec_mode: 'cluster',
     env: {
@@ -178,8 +178,8 @@ module.exports = {
       PORT: 3000
     },
     env_file: '.env.production',
-    error_file: '/srv/rebuild/shared/logs/err.log',
-    out_file: '/srv/rebuild/shared/logs/out.log',
+    error_file: '/srv/shared/logs/err.log',
+    out_file: '/srv/shared/logs/out.log',
     log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
     merge_logs: true,
     autorestart: true,
@@ -199,7 +199,7 @@ pm2 save
 
 # التحقق من الحالة
 pm2 status
-pm2 logs rebuild-nextjs --lines 50
+pm2 logs nextjs-app --lines 50
 ```
 
 #### التشغيل المباشر (للاختبار)
@@ -223,7 +223,7 @@ sudo apt update
 sudo apt install nginx -y
 
 # إنشاء ملف التكوين
-sudo nano /etc/nginx/sites-available/rebuild
+sudo nano /etc/nginx/sites-available/app
 ```
 
 **محتوى ملف Nginx:**
@@ -280,7 +280,7 @@ server {
 **تفعيل التكوين:**
 ```bash
 # إنشاء رابط رمزي
-sudo ln -s /etc/nginx/sites-available/rebuild /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/app /etc/nginx/sites-enabled/
 
 # اختبار التكوين
 sudo nginx -t
@@ -319,7 +319,7 @@ curl https://your-domain.com
 ### 2. فحص السجلات
 ```bash
 # سجلات PM2
-pm2 logs rebuild-nextjs --lines 100
+pm2 logs nextjs-app --lines 100
 
 # سجلات Nginx
 sudo tail -f /var/log/nginx/access.log
@@ -362,16 +362,16 @@ sudo tail -f /var/log/nginx/error.log
 ### أوامر PM2 المفيدة
 ```bash
 # إعادة تشغيل التطبيق
-pm2 restart rebuild-nextjs
+pm2 restart nextjs-app
 
 # إيقاف التطبيق
-pm2 stop rebuild-nextjs
+pm2 stop nextjs-app
 
 # حذف التطبيق
-pm2 delete rebuild-nextjs
+pm2 delete nextjs-app
 
 # عرض معلومات مفصلة
-pm2 show rebuild-nextjs
+pm2 show nextjs-app
 
 # مراقبة الموارد
 pm2 monit
@@ -380,7 +380,7 @@ pm2 monit
 ### النسخ الاحتياطي
 ```bash
 # نسخ احتياطي للملفات
-tar -czf /backup/rebuild-$(date +%Y%m%d).tar.gz /srv/rebuild/app
+tar -czf /backup/app-backup-$(date +%Y%m%d).tar.gz /srv/app
 
 # نسخ احتياطي لقاعدة البيانات (إذا كانت محلية)
 # pg_dump database_name > /backup/db-$(date +%Y%m%d).sql
@@ -388,7 +388,7 @@ tar -czf /backup/rebuild-$(date +%Y%m%d).tar.gz /srv/rebuild/app
 
 ### التحديثات
 ```bash
-cd /srv/rebuild/app
+cd /srv/app
 
 # سحب التحديثات
 git pull  # إذا كنت تستخدم git
@@ -401,7 +401,7 @@ npm install
 npm run build
 
 # إعادة تشغيل PM2
-pm2 restart rebuild-nextjs
+pm2 restart nextjs-app
 ```
 
 ---
@@ -411,7 +411,7 @@ pm2 restart rebuild-nextjs
 ### التطبيق لا يعمل
 ```bash
 # فحص السجلات
-pm2 logs rebuild-nextjs
+pm2 logs nextjs-app
 
 # التحقق من البورت
 netstat -tulpn | grep 3000
@@ -440,9 +440,9 @@ npm run build
 ## 📞 الدعم
 
 للمساعدة والدعم، راجع:
-- **الخطة الرئيسية**: `/rebuild/planning/rebuild_master_plan.md`
-- **دليل البيئة**: `/rebuild/planning/ENV_SETUP_GUIDE.md`
-- **دليل Firebase**: `/rebuild/docs/FIREBASE_SETUP_GUIDE.md`
+- **الخطة الرئيسية**: التوثيق في `docs/`
+- **دليل البيئة**: `.env.example`
+- **دليل Firebase**: التوثيق في `docs/`
 
 ---
 

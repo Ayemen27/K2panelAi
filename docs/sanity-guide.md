@@ -19,7 +19,7 @@
 ssh administrator@93.127.142.144
 
 # 2. الانتقال لمجلد التطبيق
-cd /srv/rebuild/app
+cd /srv/app
 
 # 3. تشغيل Sanity Studio
 npm run sanity
@@ -206,9 +206,9 @@ Buttons:
 
 ```bash
 # على السيرفر
-cd /srv/rebuild/app
+cd /srv/app
 npm run build
-pm2 restart rebuild-nextjs
+pm2 restart nextjs-app
 
 # فتح المتصفح
 curl http://localhost:3000
@@ -258,7 +258,7 @@ curl http://localhost:3000
 
 ### المشكلة: البيانات لا تظهر
 **الحل**: 
-1. تحقق من السجلات: `pm2 logs rebuild-nextjs`
+1. تحقق من السجلات: `pm2 logs nextjs-app`
 2. تأكد من متغيرات البيئة:
    ```bash
    echo $NEXT_PUBLIC_SANITY_PROJECT_ID
@@ -272,9 +272,9 @@ curl http://localhost:3000
 
 ## 📞 الدعم
 
-- **Sanity Schemas**: `rebuild/source/sanity/schemas/`
-- **Home Page Code**: `rebuild/source/src/app/(marketing)/page.tsx`
-- **Sanity Client**: `rebuild/source/src/lib/sanity.ts`
+- **Sanity Schemas**: `./sanity/schemas/`
+- **Home Page Code**: `./src/app/(marketing)/page.tsx`
+- **Sanity Client**: `./src/lib/sanity.ts`
 
 ---
 
