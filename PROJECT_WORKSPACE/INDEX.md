@@ -10,10 +10,10 @@
 
 ## 🚀 البداية السريعة
 
-### ⚡ للبدء الفوري (الخطة الجديدة - 3 أسابيع):
-1. **📋 الخطة المعتمدة**: [`RAPID_MVP_PLAN.md`](RAPID_MVP_PLAN.md) - **ابدأ هنا!** ⭐
-2. **🔄 فهم التغيير**: [`STRATEGY_UPDATE.md`](STRATEGY_UPDATE.md) - لماذا غيرنا الخطة؟
-3. **🎯 الرؤية**: [`00_MISSION/PROJECT_VISION.md`](00_MISSION/PROJECT_VISION.md)
+### ⚡ للبدء الفوري:
+1. **📋 الخطة التنفيذية**: [`05_OPERATIONS/PROJECT_EXECUTION_PLAN.md`](05_OPERATIONS/PROJECT_EXECUTION_PLAN.md) - **ابدأ هنا!** ⭐
+2. **🎯 الرؤية**: [`00_MISSION/PROJECT_VISION.md`](00_MISSION/PROJECT_VISION.md)
+3. **📊 التحليل الشامل**: [`PLATFORM_SYSTEMS_ANALYSIS.md`](PLATFORM_SYSTEMS_ANALYSIS.md)
 
 ### للمطور الجديد (فهم عميق):
 1. **اقرأ أولاً**: [`README.md`](README.md) - نظرة عامة
@@ -21,9 +21,9 @@
 3. **راجع البنية**: [`01_ARCHITECTURE/SYSTEM_OVERVIEW.md`](01_ARCHITECTURE/SYSTEM_OVERVIEW.md)
 
 ### للمطور المستمر:
-1. **الخطة الحالية**: [`RAPID_MVP_PLAN.md`](RAPID_MVP_PLAN.md) ⭐
-2. **راجع التقدم**: [`STATUS.md`](STATUS.md)
-3. **المرجع التاريخي**: [`PLATFORM_SYSTEMS_ANALYSIS.md`](PLATFORM_SYSTEMS_ANALYSIS.md) (للاطلاع فقط)
+1. **راجع التقدم**: [`STATUS.md`](STATUS.md)
+2. **تتبع المهام**: [`10_MONITORING/PROGRESS_TRACKER.md`](10_MONITORING/PROGRESS_TRACKER.md)
+3. **قائمة الجاهزية**: [`READINESS_CHECKLIST.md`](READINESS_CHECKLIST.md)
 
 ---
 
