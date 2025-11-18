@@ -16,53 +16,19 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "rebuild-dev"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "flask-backend"
+args = "dev"
 
 [[workflows.workflow]]
-name = "Next.js Dev"
-author = 44785901
-mode = "sequential"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd rebuild/source && npm run dev"
-
-[[workflows.workflow]]
-name = "Run Next.js"
-author = 44785901
-mode = "sequential"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd rebuild/source && npm run dev"
-
-[[workflows.workflow]]
-name = "rebuild-dev"
+name = "dev"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd rebuild/source && npm run dev"
+args = "npm run dev"
 waitForPort = 5000
 
 [workflows.workflow.metadata]
 outputType = "webview"
-
-[[workflows.workflow]]
-name = "flask-backend"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python main.py"
-waitForPort = 8000
-
-[workflows.workflow.metadata]
-outputType = "console"
 
 [[ports]]
 localPort = 3001
@@ -71,10 +37,6 @@ externalPort = 3001
 [[ports]]
 localPort = 5000
 externalPort = 80
-
-[[ports]]
-localPort = 8000
-externalPort = 8000
 
 [[ports]]
 localPort = 33165
