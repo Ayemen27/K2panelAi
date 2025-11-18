@@ -232,5 +232,6 @@ npm start
 ### الوثائق
 جميع الوثائق موجودة في:
 - [PROJECT_WORKSPACE/](./PROJECT_WORKSPACE/) - التخطيط والمهام
+  - [INDEX.md](./PROJECT_WORKSPACE/INDEX.md) - خريطة الطريق
+  - [EXECUTION_PLAN.md](./PROJECT_WORKSPACE/EXECUTION_PLAN.md) - خطة التنفيذ الرئيسية
 - [ServerAutomationAI/](./ServerAutomationAI/) - وثائق الوكلاء
-- [EXECUTION_PLAN.md](./EXECUTION_PLAN.md) - خطة التنفيذ الرئيسية

@@ -9,6 +9,7 @@
 **إذا كنت**:
 - 👋 **مطور جديد**: ابدأ من **الخطوة 1** ← [`00_MISSION/TERMINOLOGY.md`](00_MISSION/TERMINOLOGY.md)
 - 📖 **تريد فهم الرؤية**: اذهب إلى [`00_MISSION/PROJECT_VISION.md`](00_MISSION/PROJECT_VISION.md)
+- 🚀 **جاهز للتنفيذ**: راجع [`EXECUTION_PLAN.md`](EXECUTION_PLAN.md) - خطة التنفيذ الرئيسية
 - 🔧 **جاهز للعمل**: راجع [`04_AGENT_TASKS/DEVELOPER_01.md`](04_AGENT_TASKS/DEVELOPER_01.md)
 - 🆘 **عالق/محتار**: راجع هذا الدليل من البداية
 
