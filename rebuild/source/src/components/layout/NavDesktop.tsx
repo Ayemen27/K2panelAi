@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useId } from 'react';
 import Link from 'next/link';
-import { ChevronDown } from 'lucide-react';
+import { Icons } from '@/components/ui/icons';
 import { Button } from '@/components/ui/button';
 import { PRIMARY_NAV, SECONDARY_NAV, type NavItem } from '@/config/navigation';
 import { cn } from '@/lib/utils';
@@ -92,7 +92,7 @@ function DropdownMenu({ item }: DropdownMenuProps) {
         aria-controls={dropdownId}
       >
         {item.label}
-        <ChevronDown
+        <Icons.chevronDown
           className={cn(
             'h-4 w-4 transition-transform duration-200',
             isOpen && 'rotate-180'

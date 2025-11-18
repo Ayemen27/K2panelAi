@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ExternalLink, Heart, Eye } from 'lucide-react';
+import { Icons } from '@/components/ui/icons';
 import type { Project } from '@/graphql/queries/projects';
 
 interface ProjectCardProps {
@@ -63,11 +63,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <div className="flex items-center justify-between text-sm text-gray-500">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
-              <Eye className="w-4 h-4" />
+              <Icons.eye className="w-4 h-4" />
               {project.viewsCount.toLocaleString()}
             </span>
             <span className="flex items-center gap-1">
-              <Heart className="w-4 h-4" />
+              <Icons.heart className="w-4 h-4" />
               {project.likesCount.toLocaleString()}
             </span>
           </div>
@@ -80,7 +80,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               className="flex items-center gap-1 text-blue-600 hover:text-blue-800 transition-colors"
               onClick={(e) => e.stopPropagation()}
             >
-              <ExternalLink className="w-4 h-4" />
+              <Icons.externalLink className="w-4 h-4" />
               Demo
             </a>
           )}

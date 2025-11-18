@@ -3,7 +3,7 @@ import { sanityFetch, urlFor } from "@/lib/sanity";
 import { useCaseBySlugQuery } from "@/lib/queries/useCases";
 import type { UseCase } from "@/types/sanity";
 import { notFound } from "next/navigation";
-import { CheckCircle2 } from "lucide-react";
+import { Icons } from "@/components/ui/icons";
 
 interface PageProps {
   params: {
@@ -84,7 +84,7 @@ export default async function UseCasePage({ params }: PageProps) {
                   key={index}
                   className="flex gap-4 p-6 bg-gray-50 rounded-lg"
                 >
-                  <CheckCircle2 className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <Icons.checkCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
                       {feature.title}

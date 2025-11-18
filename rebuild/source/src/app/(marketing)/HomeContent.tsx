@@ -2,7 +2,7 @@
 
 import { useQuery } from '@apollo/client/react';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { Icons } from '@/components/ui/icons';
 import {
   GET_FEATURED_PROJECTS,
   type GetFeaturedProjectsData,
@@ -63,7 +63,7 @@ export function HomeContent() {
             className="flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold transition-colors"
           >
             View all projects
-            <ArrowRight className="w-5 h-5" />
+            <Icons.arrowRight className="w-5 h-5" />
           </Link>
         </div>
 

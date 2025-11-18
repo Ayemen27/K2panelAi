@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Icons } from '@/components/ui/icons';
 import { Button } from '@/components/ui/button';
 import { MOBILE_NAV } from '@/config/navigation';
 import { cn } from '@/lib/utils';
@@ -37,7 +37,7 @@ export function NavMobile({ className }: NavMobileProps) {
         aria-label="Open menu"
         aria-expanded={isOpen}
       >
-        <Menu className="h-6 w-6" aria-hidden="true" />
+        <Icons.menu className="h-6 w-6" aria-hidden="true" />
       </Button>
 
       {isOpen && (
@@ -65,7 +65,7 @@ export function NavMobile({ className }: NavMobileProps) {
                   onClick={() => setIsOpen(false)}
                   aria-label="Close menu"
                 >
-                  <X className="h-6 w-6" aria-hidden="true" />
+                  <Icons.close className="h-6 w-6" aria-hidden="true" />
                 </Button>
               </div>
 

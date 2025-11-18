@@ -3,7 +3,7 @@
 import { useQuery } from '@apollo/client/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, Heart, Eye, Calendar, User } from 'lucide-react';
+import { Icons } from '@/components/ui/icons';
 import {
   GET_PROJECT,
   type GetProjectData,
@@ -56,7 +56,7 @@ export function ProjectDetailContent({ slug }: ProjectDetailContentProps) {
           href="/gallery"
           className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <Icons.arrowLeft className="w-4 h-4" />
           Back to Gallery
         </Link>
       </div>
@@ -76,7 +76,7 @@ export function ProjectDetailContent({ slug }: ProjectDetailContentProps) {
         href="/gallery"
         className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6 transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" />
+        <Icons.arrowLeft className="w-4 h-4" />
         Back to Gallery
       </Link>
 
@@ -116,15 +116,15 @@ export function ProjectDetailContent({ slug }: ProjectDetailContentProps) {
 
           <div className="flex flex-wrap items-center gap-6 mb-6 text-gray-600">
             <div className="flex items-center gap-2">
-              <Eye className="w-5 h-5" />
+              <Icons.eye className="w-5 h-5" />
               <span>{project.viewsCount.toLocaleString()} views</span>
             </div>
             <div className="flex items-center gap-2">
-              <Heart className="w-5 h-5" />
+              <Icons.heart className="w-5 h-5" />
               <span>{project.likesCount.toLocaleString()} likes</span>
             </div>
             <div className="flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
+              <Icons.calendar className="w-5 h-5" />
               <span>{formattedDate}</span>
             </div>
           </div>
@@ -146,7 +146,7 @@ export function ProjectDetailContent({ slug }: ProjectDetailContentProps) {
               )}
               <div>
                 <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <User className="w-4 h-4" />
+                  <Icons.user className="w-4 h-4" />
                   Created by
                 </div>
                 <div className="font-semibold text-gray-900">
@@ -175,7 +175,7 @@ export function ProjectDetailContent({ slug }: ProjectDetailContentProps) {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
-                <ExternalLink className="w-5 h-5" />
+                <Icons.externalLink className="w-5 h-5" />
                 View Live Demo
               </a>
             )}

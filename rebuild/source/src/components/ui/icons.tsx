@@ -11,7 +11,15 @@ import {
   X,
   ChevronDown,
   ArrowRight,
+  ArrowLeft,
   Search,
+  ExternalLink,
+  Heart,
+  Eye,
+  Calendar,
+  User,
+  Flame,
+  CheckCircle2,
 } from 'lucide-react';
 
 const ServerIcon = () => (
@@ -75,7 +83,15 @@ export const Icons = {
   close: X,
   chevronDown: ChevronDown,
   arrowRight: ArrowRight,
+  arrowLeft: ArrowLeft,
   search: Search,
+  externalLink: ExternalLink,
+  heart: Heart,
+  eye: Eye,
+  calendar: Calendar,
+  user: User,
+  flame: Flame,
+  checkCircle: CheckCircle2,
 }
 
 export type IconName = keyof typeof Icons;
