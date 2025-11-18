@@ -414,6 +414,128 @@ Dashboard → يعرض النتيجة للمستخدم
 
 ---
 
+## 🤖 نظام الذكاء الاصطناعي وإدارة المفاتيح
+
+> **📚 للمزيد**: راجع [`AI_KEY_MANAGEMENT.md`](AI_KEY_MANAGEMENT.md) للتفاصيل الكاملة
+
+### المشكلة والحل
+
+**المشكلة**: كيف نوفر ذكاء اصطناعي قوي بدون موارد ضخمة؟
+
+**الحل المعماري**:
+```
+❌ التقليدي: تشغيل LLM محلياً (GPU + RAM كبيرة)
+✅ حلنا: استخدام API خارجية (Groq, Gemini, Mistral)
+```
+
+### مبدأ العمل في Control Plane
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  Control Plane (المنصة)                                 │
+│  ┌────────────────────────────────────────────────────┐ │
+│  │  ModelRouter (توجيه الطلبات)                      │ │
+│  │   ├─ Multi-Provider Support                        │ │
+│  │   ├─ Automatic Failover                            │ │
+│  │   ├─ Health Scoring                                │ │
+│  │   └─ Response Caching                              │ │
+│  └────────────────────────────────────────────────────┘ │
+│                                                          │
+│  ┌────────────────────────────────────────────────────┐ │
+│  │  SecretsManager (إدارة المفاتيح)                  │ │
+│  │   ├─ Fernet Encryption                             │ │
+│  │   ├─ Multi-Key Support (مخطط)                     │ │
+│  │   └─ Provider Configuration                        │ │
+│  └────────────────────────────────────────────────────┘ │
+└──────────────────────┬───────────────────────────────────┘
+                       │
+                       ↓ HTTPS API Call
+        ┌──────────────┴──────────────┐
+        │                             │
+        ↓                             ↓
+┌───────────────┐           ┌──────────────────┐
+│  Groq API     │           │  Gemini API      │
+│  (External)   │           │  (External)      │
+└───────────────┘           └──────────────────┘
+```
+
+**النقاط الأساسية**:
+- ✅ المنصة **لا تستضيف** نماذج AI محلياً
+- ✅ المنصة تستخدم **API خارجية** فقط (Groq, Gemini, Mistral)
+- ✅ **خفيفة جداً** - لا تحتاج GPU أو RAM كبيرة
+- ✅ **ذكاء قوي** - GPT-4 مستوى من خلال APIs
+- ✅ **تكلفة منخفضة** - المستخدم يتحمل تكلفة API (أو مجاني!)
+
+### Providers المدعومة
+
+| Provider | Model | السرعة | الحد المجاني اليومي |
+|----------|-------|--------|---------------------|
+| **Groq** | llama-3.3-70b-versatile | ⚡ Fastest | 14,400 tokens/day |
+| **Gemini** | gemini-1.5-flash | ⚡⚡ Very Fast | 1,500 requests/day |
+| **Mistral** | mistral-large-latest | ⚡⚡⚡ Fast | متغير |
+
+### تدفق الطلب الكامل
+
+```
+1. المستخدم يطلب في Dashboard
+   "حلل هذا الخطأ في الكود"
+        ↓
+2. Platform Agent (على VPS المستخدم)
+   → يجهز السياق (logs, code, error)
+        ↓
+3. ModelRouter.chat()
+   → يختار أفضل Provider (بناءً على Health Score)
+   → يرسل HTTPS request لـ Groq API
+        ↓
+4. Groq API (خارجي - في السحابة)
+   → يعالج بـ Llama 3.3 70B
+   → يرجع التحليل
+        ↓
+5. ModelRouter
+   → يسجل الاستخدام (234 tokens, 1.2s)
+   → يحفظ في Cache
+   → يرجع النتيجة
+        ↓
+6. Platform Agent
+   → ينفذ الحل على VPS المستخدم
+   → يرسل النتيجة للـ Dashboard
+```
+
+### Failover الذكي
+
+```
+Request → Groq (Health: 95%)
+   ├─ نجح ✅ → يرجع النتيجة
+   ├─ Rate Limit → ينتقل لـ Gemini
+   ├─ Auth Error → Quarantine 5 دقائق → ينتقل
+   └─ Timeout → Retry with backoff → ينتقل
+
+إذا فشلت جميع Providers:
+   → Graceful Degradation (heuristic guidance أو cached response)
+```
+
+### التحسينات المخططة
+
+| الميزة | الحالة | الأولوية |
+|--------|--------|----------|
+| **Multi-Key Rotation** | 🟡 مخطط | 🔴 عالية جداً |
+| **Daily Quota Tracking** | 🟡 مخطط | 🔴 عالية جداً |
+| **Notification System** | 🟡 مخطط | 🟡 متوسطة |
+| **Monitoring Dashboard** | 🟡 مخطط | 🟢 منخفضة |
+
+### التكلفة
+
+**على المنصة (Control Plane)**:
+- ✅ لا تكلفة إضافية - فقط API calls خفيفة
+- ✅ لا موارد GPU/RAM مطلوبة
+- ✅ تكلفة ثابتة: $5-10/mo (حتى مع آلاف المستخدمين!)
+
+**على المستخدم**:
+- 🟢 **مجاني**: إذا استخدم مفاتيح API مجانية (Groq, Gemini)
+- 🟡 **$2-10/mo**: إذا استخدم OpenAI (حسب الاستخدام)
+
+---
+
 ## 🔒 الأمان
 
 ### Security Risks & Mitigations
