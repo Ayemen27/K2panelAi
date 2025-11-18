@@ -1,7 +1,11 @@
-# SaaS Boilerplate - Next.js Project
+# K2Panel Ai - Integrated SaaS Platform
 
 ## Overview
-Modern SaaS boilerplate built with Next.js 14, Firebase Authentication, Apollo GraphQL, Sanity CMS, and Stripe payments. This is a production-ready foundation for building and launching SaaS applications quickly.
+**K2Panel Ai** is an integrated platform that merges:
+- **SaaS Boilerplate** (Next.js 14) for the frontend dashboard
+- **ServerAutomationAI** (Python AI Agents) for remote server management
+
+The goal is to build a Replit-like workspace platform with AI-powered server automation, web terminal, file manager, code editor, and multi-tenant support.
 
 ## User Preferences
 - أفضل لغة بسيطة
