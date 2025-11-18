@@ -1,10 +1,21 @@
-import * as amplitude from '@amplitude/analytics-browser';
 import { retryWithBackoff } from './analyticsRetry';
 
 export const AMPLITUDE_API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY || '';
 
 let amplitudeInitialized = false;
 let amplitudeInitPromise: Promise<void> | null = null;
+let amplitudeModule: any = null;
+
+async function loadAmplitude() {
+  if (amplitudeModule) return amplitudeModule;
+  try {
+    amplitudeModule = await import('@amplitude/analytics-browser');
+    return amplitudeModule;
+  } catch (error) {
+    console.warn('Amplitude SDK not available - analytics disabled');
+    return null;
+  }
+}
 
 export async function initialize(apiKey: string): Promise<boolean> {
   if (typeof window === 'undefined') return false;
@@ -20,6 +31,12 @@ export async function initialize(apiKey: string): Promise<boolean> {
   }
 
   amplitudeInitPromise = retryWithBackoff(async () => {
+    const amplitude = await loadAmplitude();
+    if (!amplitude) {
+      amplitudeInitialized = false;
+      return;
+    }
+
     try {
       const existingInstance = amplitude.getSessionId();
       if (existingInstance !== undefined) {
@@ -71,8 +88,11 @@ export async function waitUntilReady(): Promise<void> {
   }
 }
 
-export function trackEvent(eventName: string, eventProperties?: Record<string, any>) {
+export async function trackEvent(eventName: string, eventProperties?: Record<string, any>) {
   if (typeof window === 'undefined' || !amplitudeInitialized) return;
+
+  const amplitude = await loadAmplitude();
+  if (!amplitude) return;
 
   try {
     amplitude.track(eventName, eventProperties);
@@ -81,8 +101,11 @@ export function trackEvent(eventName: string, eventProperties?: Record<string, a
   }
 }
 
-export function setUserId(userId: string) {
+export async function setUserId(userId: string) {
   if (typeof window === 'undefined') return;
+
+  const amplitude = await loadAmplitude();
+  if (!amplitude) return;
 
   try {
     amplitude.setUserId(userId);
@@ -91,8 +114,11 @@ export function setUserId(userId: string) {
   }
 }
 
-export function setUserProperties(properties: Record<string, any>) {
+export async function setUserProperties(properties: Record<string, any>) {
   if (typeof window === 'undefined') return;
+
+  const amplitude = await loadAmplitude();
+  if (!amplitude) return;
 
   try {
     const identifyEvent = new amplitude.Identify();

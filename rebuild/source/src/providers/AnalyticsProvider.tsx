@@ -91,7 +91,7 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     gtm.pageview(url).catch((err) => console.error('GTM pageview failed:', err));
     ga4.pageview(url);
     segment.page(url).catch((err) => console.error('Segment page tracking failed:', err));
-    amplitude.trackEvent('Page View', { path: url });
+    amplitude.trackEvent('Page View', { path: url }).catch((err) => console.error('Amplitude tracking failed:', err));
   }, [pathname, searchParams, isReady]);
 
   return <>{children}</>;

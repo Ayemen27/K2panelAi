@@ -1,10 +1,21 @@
-import { AnalyticsBrowser, Analytics } from '@segment/analytics-next';
 import { retryWithBackoff } from './analyticsRetry';
 
 export const SEGMENT_WRITE_KEY = process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY || '';
 
-let analytics: Analytics | null = null;
-let analyticsPromise: Promise<Analytics> | null = null;
+let analytics: any = null;
+let analyticsPromise: Promise<any> | null = null;
+let segmentModule: any = null;
+
+async function loadSegment() {
+  if (segmentModule) return segmentModule;
+  try {
+    segmentModule = await import('@segment/analytics-next');
+    return segmentModule;
+  } catch (error) {
+    console.warn('Segment SDK not available - analytics disabled');
+    return null;
+  }
+}
 
 export async function initialize(writeKey: string): Promise<void> {
   if (typeof window === 'undefined') return;
@@ -14,9 +25,12 @@ export async function initialize(writeKey: string): Promise<void> {
   }
   if (analytics || analyticsPromise) return;
 
+  const segment = await loadSegment();
+  if (!segment) return;
+
   try {
     analyticsPromise = retryWithBackoff(async () => {
-      const result = await AnalyticsBrowser.load({ writeKey });
+      const result = await segment.AnalyticsBrowser.load({ writeKey });
       analytics = result[0];
       return analytics;
     });
@@ -49,7 +63,7 @@ export async function waitUntilReady(): Promise<void> {
   }
 }
 
-async function getAnalytics(): Promise<Analytics | null> {
+async function getAnalytics(): Promise<any | null> {
   if (analytics) return analytics;
   if (analyticsPromise) {
     try {
