@@ -3,16 +3,25 @@ import { adminAuth, firestore } from '../../../../firebase/admin';
 
 export async function GET(req: Request) {
   try {
-    // Assuming the user is sending a valid Firebase ID token via headers
+    // التحقق من وجود adminAuth
+    if (!adminAuth) {
+      return NextResponse.json(
+        { error: 'Admin Auth is not initialized' },
+        { status: 500 }
+      );
+    }
+
+    // الحصول على ID token من الهيدر
     const idToken = req.headers.get('Authorization')?.split('Bearer ')[1];
     if (!idToken) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // التحقق من صلاحية التوكن
     const decodedToken = await adminAuth.verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    // Get the user's role from Firestore
+    // الحصول على دور المستخدم من Firestore
     const userDoc = await firestore.collection('users').doc(uid).get();
     if (!userDoc.exists) {
       return NextResponse.json({ role: 'user' }, { status: 200 });
