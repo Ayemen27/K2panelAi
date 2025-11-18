@@ -10,10 +10,21 @@
 
 ## 🚀 البداية السريعة
 
-### ⚡ للبدء الفوري (الخطة الجديدة - 3 أسابيع):
+### ⚡ للبدء الفوري - استخدام الحلول الجاهزة (لا بناء من الصفر!):
 1. **📋 الخطة المعتمدة**: [`RAPID_MVP_PLAN.md`](RAPID_MVP_PLAN.md) - **ابدأ هنا!** ⭐
+   - ✅ **نستخدم**: code-server (Terminal + Editor + File Manager جاهز)
+   - ✅ **نبني فقط**: AI Chat + Workspace orchestration
+   - ⏱️ **المدة**: 3 أسابيع (بدلاً من 13 أسبوع)
 2. **🔄 فهم التغيير**: [`STRATEGY_UPDATE.md`](STRATEGY_UPDATE.md) - لماذا غيرنا الخطة؟
 3. **🎯 الرؤية**: [`00_MISSION/PROJECT_VISION.md`](00_MISSION/PROJECT_VISION.md)
+
+### ⚠️ تنبيه - الملفات التاريخية (للمرجع فقط):
+- ❌ [`05_OPERATIONS/PROJECT_EXECUTION_PLAN.md`](05_OPERATIONS/PROJECT_EXECUTION_PLAN.md) - الخطة القديمة (13 أسبوع)
+- ❌ [`PLATFORM_SYSTEMS_ANALYSIS.md`](PLATFORM_SYSTEMS_ANALYSIS.md) - التحليل الأصلي
+- ❌ [`10_MONITORING/PROGRESS_TRACKER.md`](10_MONITORING/PROGRESS_TRACKER.md) - متتبع قديم
+- ❌ [`05_OPERATIONS/AGENT_TASKS/DEVELOPER_05-08.md`](05_OPERATIONS/AGENT_TASKS/) - مهام البناء من الصفر
+
+**لا تتبع الملفات أعلاه! اتبع RAPID_MVP_PLAN.md فقط!**
 
 ### للمطور الجديد (فهم عميق):
 1. **اقرأ أولاً**: [`README.md`](README.md) - نظرة عامة
