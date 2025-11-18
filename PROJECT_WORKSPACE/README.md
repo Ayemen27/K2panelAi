@@ -13,8 +13,8 @@
 - ✅ File Manager/Editor
 - ✅ Multi-tenant workspaces
 - ✅ Server monitoring
-- ✅ Authentication (مجاني)
-- ✅ 100% مجاني - صفر تكلفة
+- ✅ Authentication
+- ✅ **تكلفة منخفضة جداً**: $5-10/mo (مالك المنصة) + $5/mo (كل مستخدم لـ VPS خاص)
 
 ---
 
