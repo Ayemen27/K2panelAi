@@ -1,14 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { 
-  X, 
-  Github, 
-  Linkedin, 
-  MessageSquare, 
-  Youtube,
-  ArrowRight,
-} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getTypographyClass } from '@/lib/design-system/typography';
 import {
@@ -23,11 +15,11 @@ import {
 } from '@/config/footer';
 
 const socialIcons = {
-  twitter: X,
-  github: Github,
-  linkedin: Linkedin,
-  discord: MessageSquare,
-  youtube: Youtube,
+  twitter: '𝕏',
+  github: '⚙',
+  linkedin: 'in',
+  discord: '💬',
+  youtube: '▶',
 } as const;
 
 interface FooterCTAProps {
@@ -52,8 +44,7 @@ function FooterCTA({ className }: FooterCTAProps) {
               href={FOOTER_CTA.primaryButton.href}
               className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
             >
-              {FOOTER_CTA.primaryButton.label}
-              <ArrowRight className="w-4 h-4" />
+              {FOOTER_CTA.primaryButton.label} →
             </Link>
             <Link
               href={FOOTER_CTA.secondaryButton.href}
