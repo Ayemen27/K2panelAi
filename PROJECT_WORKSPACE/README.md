@@ -126,12 +126,18 @@ Replit (المطور N+1 - حساب جديد)
 
 ## 📝 كيفية الاستخدام
 
-### للمطور التالي (Next Developer):
-1. اقرأ `/PROJECT_WORKSPACE/04_AGENT_TASKS/DEVELOPER_XX.md`
-2. راجع `/PROJECT_WORKSPACE/05_TEMPLATES/HANDOFF_TEMPLATE.md`
-3. اتبع الخطة
-4. سجل التقدم في `PROGRESS.md`
-5. أنشئ `HANDOFF.md` للمطور التالي
+### 🚀 **ابدأ من هنا**:
+
+**→ [`INDEX.md`](INDEX.md) ← خريطة الطريق الكاملة**
+
+هذا الدليل يقودك خطوة بخطوة من البداية للنهاية.
+
+### للمطور التالي (Quick Start):
+1. **اقرأ**: [`INDEX.md`](INDEX.md) - خريطة الطريق
+2. **افهم دورك**: [`00_MISSION/TERMINOLOGY.md`](00_MISSION/TERMINOLOGY.md)
+3. **مهامك**: [`04_AGENT_TASKS/DEVELOPER_XX.md`](04_AGENT_TASKS/)
+4. **القوالب**: [`05_TEMPLATES/HANDOFF_TEMPLATE.md`](05_TEMPLATES/HANDOFF_TEMPLATE.md)
+5. **أدوات**: [`02_INTEGRATION_PLAN/BRIDGE_TOOL_USAGE.md`](02_INTEGRATION_PLAN/BRIDGE_TOOL_USAGE.md)
 
 ### للمراقبة:
 - راجع `/PROJECT_WORKSPACE/10_MONITORING/PROGRESS_TRACKER.md`
