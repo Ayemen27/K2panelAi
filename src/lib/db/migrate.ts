@@ -2,33 +2,112 @@ import fs from 'fs';
 import path from 'path';
 import pool from './postgres';
 
+export interface MigrationResult {
+  success: boolean;
+  message: string;
+  migrations: string[];
+  errors?: string[];
+}
+
 /**
- * تطبيق Schema على قاعدة البيانات
- * ملاحظة: إذا واجهت مشكلة "multiple statements"، يمكن تطبيق schema.sql مباشرة عبر psql:
- * psql $DATABASE_URL -f src/lib/db/schema.sql
+ * تطبيق جميع Migrations على قاعدة البيانات
  */
-export async function migrate() {
+export async function migrate(): Promise<MigrationResult> {
+  const results = {
+    success: true,
+    message: '',
+    migrations: [] as string[],
+    errors: [] as string[],
+  };
+
   const client = await pool.connect();
+
   try {
     console.log('🔄 Starting database migration...');
-    
-    // قراءة ملف Schema
+
+    console.log('📝 Step 1: Executing base schema.sql...');
     const schemaPath = path.join(process.cwd(), 'src/lib/db/schema.sql');
     const schema = fs.readFileSync(schemaPath, 'utf-8');
-    
-    console.log('📝 Executing schema.sql (without transaction to allow CREATE EXTENSION)...');
-    // Note: CREATE EXTENSION cannot run inside a transaction block
     await client.query(schema);
+    results.migrations.push('schema.sql (idempotent)');
+    console.log('✅ Base schema created successfully');
+
+    console.log('📝 Step 2: Checking for applied migrations...');
+    const appliedMigrations = await getAppliedMigrations(client);
+    console.log(`📊 Already applied: ${appliedMigrations.size} migrations`);
+
+    console.log('📝 Step 3: Running new migration files...');
+    const migrationsDir = path.join(process.cwd(), 'database', 'migrations');
     
+    if (fs.existsSync(migrationsDir)) {
+      const files = fs.readdirSync(migrationsDir);
+      const migrationFiles = files
+        .filter(file => file.endsWith('.sql'))
+        .sort();
+
+      console.log(`📋 Found ${migrationFiles.length} migration files`);
+
+      for (const file of migrationFiles) {
+        if (appliedMigrations.has(file)) {
+          console.log(`⏭️ Skipping ${file} (already applied)`);
+          continue;
+        }
+
+        try {
+          console.log(`🔄 Running migration: ${file}`);
+          const filePath = path.join(migrationsDir, file);
+          const sql = fs.readFileSync(filePath, 'utf-8');
+          
+          await client.query(sql);
+          await recordMigration(client, file);
+          results.migrations.push(file);
+          console.log(`✅ Migration ${file} completed`);
+        } catch (error: any) {
+          const errorMsg = `❌ Error in ${file}: ${error.message}`;
+          console.error(errorMsg);
+          results.errors?.push(errorMsg);
+          results.success = false;
+        }
+      }
+    } else {
+      console.log('⚠️ No migrations directory found, skipping...');
+    }
+
+    const newMigrations = results.migrations.filter(m => !m.includes('idempotent'));
+    results.message = results.success 
+      ? `✅ Successfully ran ${newMigrations.length} new migrations (${appliedMigrations.size} already applied)`
+      : `⚠️ Completed with errors: ${results.errors?.length || 0} failed`;
+    
+    console.log(results.message);
     console.log('✅ Database migration completed successfully!');
-    return true;
+    return results;
   } catch (error: any) {
+    results.success = false;
+    results.message = `❌ Migration failed: ${error.message}`;
+    results.errors?.push(error.message);
     console.error('❌ Database migration failed:', error.message);
     console.error('💡 Alternative: Run manually with: psql $DATABASE_URL -f src/lib/db/schema.sql');
     throw error;
   } finally {
     client.release();
   }
+}
+
+async function getAppliedMigrations(client: any): Promise<Set<string>> {
+  try {
+    const result = await client.query('SELECT name FROM pg_migrations');
+    return new Set(result.rows.map((row: any) => row.name));
+  } catch (error) {
+    console.log('⚠️ Migrations table not found, will be created by 000_init_migrations_table.sql');
+    return new Set();
+  }
+}
+
+async function recordMigration(client: any, name: string): Promise<void> {
+  await client.query(
+    'INSERT INTO pg_migrations (name) VALUES ($1) ON CONFLICT (name) DO NOTHING',
+    [name]
+  );
 }
 
 /**

@@ -2,19 +2,21 @@ import { NextResponse } from 'next/server';
 import { migrate, checkDatabase } from '@/lib/db/migrate';
 
 /**
- * API endpoint لتطبيق Database Schema
+ * API endpoint لتطبيق Database Schema + Migrations
  * POST /api/db/migrate
  */
 export async function POST() {
   try {
-    await migrate();
+    const result = await migrate();
     const tables = await checkDatabase();
     
     return NextResponse.json({
-      status: 'success',
-      message: '✅ تم تطبيق Schema بنجاح!',
+      status: result.success ? 'success' : 'partial',
+      message: result.message,
+      migrations: result.migrations,
+      errors: result.errors,
       tables: tables.map((t: any) => t.table_name)
-    });
+    }, { status: result.success ? 200 : 500 });
   } catch (error: any) {
     return NextResponse.json({
       status: 'error',
