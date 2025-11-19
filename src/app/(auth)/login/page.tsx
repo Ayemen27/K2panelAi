@@ -47,12 +47,21 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex relative overflow-hidden">
+      {/* خلفية متحركة احترافية */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+      </div>
+
       {/* القسم الأيسر - النموذج */}
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-        <div className="w-full max-w-md space-y-8">
-          {/* الشعار والعنوان */}
-          <div className="text-center space-y-2">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 relative z-10">
+        <div className="w-full max-w-md">
+          {/* بطاقة طائرة مع ظلال */}
+          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 sm:p-10 space-y-8 border border-white/20 transform transition-all duration-300 hover:shadow-3xl hover:-translate-y-1">
+            {/* الشعار والعنوان */}
+            <div className="text-center space-y-2">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 text-white text-2xl font-bold mb-4 shadow-lg">
               R
             </div>
@@ -193,6 +202,7 @@ export default function LoginPage() {
             <Link href="/signup" className="text-blue-600 hover:text-blue-700 font-semibold transition-colors">
               سجل الآن
             </Link>
+          </div>
           </div>
         </div>
       </div>
