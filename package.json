@@ -2,6 +2,7 @@
   "name": "k2panel-ai",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://k2panel.online",
   "engines": {
     "node": ">=18.18.0",
     "npm": ">=9.0.0"

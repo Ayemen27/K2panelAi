@@ -1,6 +1,8 @@
-# SaaS Boilerplate - Next.js, Firebase, GraphQL & Stripe
+# K2Panel Ai SaaS Boilerplate
 
-A powerful, production-ready SaaS boilerplate built with modern technologies to help you launch your product faster.
+A modern, production-ready SaaS boilerplate built with Next.js 14, TypeScript, and Tailwind CSS.
+
+**Official Website**: https://k2panel.online
 
 ## 🚀 Tech Stack
 

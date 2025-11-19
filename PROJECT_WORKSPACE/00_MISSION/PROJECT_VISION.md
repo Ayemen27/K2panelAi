@@ -4,7 +4,7 @@
 
 ## الهدف النهائي
 
-بناء منصة **K2Panel Ai** - منصة SaaS Workspace ذكية ومتكاملة مشابهة لـ **Replit** مع ميزات:
+بناء منصة **K2Panel Ai** (https://k2panel.online) - منصة SaaS Workspace ذكية ومتكاملة مشابهة لـ **Replit** مع ميزات:
 
 ### الميزات الأساسية:
 1. ✅ **Web Terminal** - طرفية تفاعلية في المتصفح

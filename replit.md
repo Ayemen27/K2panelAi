@@ -1,7 +1,7 @@
 # K2Panel Ai - Integrated SaaS Platform
 
 ## Overview
-**K2Panel Ai** is an integrated platform that merges:
+**K2Panel Ai** (https://k2panel.online) is an integrated platform that merges:
 - **SaaS Boilerplate** (Next.js 14) for the frontend dashboard
 - **ServerAutomationAI** (Python AI Agents) for remote server management
 

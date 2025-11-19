@@ -214,14 +214,14 @@ export const MOBILE_NAV = [
     label: 'Log in',
     href: '/login',
   },
-  
+
   // Main navigation
   { label: 'Products', href: '/products' },
   { label: 'Templates', href: '/templates' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'Customers', href: '/customers' },
   { label: 'Pricing', href: '/pricing' },
-  
+
   // Resources
   { label: 'Help Center', href: '/help' },
   { label: 'Documentation', href: 'https://docs.replit.com', external: true },
@@ -246,11 +246,11 @@ export const BREADCRUMB_LABELS: Record<string, string> = {
   careers: 'Careers',
   brandkit: 'Brand Kit',
   usecases: 'Use Cases',
-  
+
   // Auth
   login: 'Log in',
   signup: 'Sign up',
-  
+
   // App
   dashboard: 'Dashboard',
   profile: 'Profile',
