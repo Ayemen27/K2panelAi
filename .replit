@@ -30,6 +30,15 @@ waitForPort = 5000
 [workflows.workflow.metadata]
 outputType = "webview"
 
+[[workflows.workflow]]
+name = "npm run build"
+mode = "sequential"
+author = 45067223
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run build"
+
 [[ports]]
 localPort = 3001
 externalPort = 3001
