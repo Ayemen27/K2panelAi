@@ -8,8 +8,11 @@
     "npm": ">=9.0.0"
   },
   "scripts": {
+    "predev": "node scripts/update-nextauth-url.js",
     "dev": "next dev -H 0.0.0.0 -p 5000",
+    "prebuild": "node scripts/update-nextauth-url.js",
     "build": "next build",
+    "prestart": "node scripts/update-nextauth-url.js",
     "start": "next start -H 0.0.0.0 -p 5000",
     "lint": "next lint",
     "test": "jest",
