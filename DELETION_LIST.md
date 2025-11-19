@@ -1,69 +1,63 @@
 # 🗑️ قائمة الحذف - Developer 2
 
-**التاريخ**: 2025-11-18
-**المسؤول**: Developer 2
+**التاريخ**: 2025-11-19 (محدث)
+**المطور**: Developer 2
+**الحالة**: ⏳ قيد التنفيذ
 
 ---
 
-## 📊 Audit Results
+## 📊 الوضع الفعلي (بعد الفحص)
 
-### Firebase (42 references)
-**Files:**
-- src/app/api/auth/register/route.ts
-- src/app/api/auth/session/route.ts
-- src/app/api/user/role/route.ts
-- src/app/api/user/subscription/route.ts
-- src/app/api/webhooks/route.ts
-- src/app/api/test-admin/route.ts
-- src/components/ProfileContent.tsx
-- __mocks__/firebase-admin.ts
+### ✅ ما تم حذفه مسبقاً:
+- ✅ Firebase files (جميع الملفات المذكورة سابقاً)
+- ✅ Stripe files (جميع الملفات)
+- ✅ Analytics library files (datadog.ts, gtm.ts, ga4.ts, segment.ts, amplitude.ts)
+- ✅ package.json نظيف من جميع dependencies المدفوعة
 
-**Dependencies:**
-- firebase: ^10.13.2
-- firebase-admin: ^12.5.0
+### ⚠️ ما تبقى (يجب الحذف الآن):
 
-**Action**: ✅ حذف كامل
+#### 1. Analytics Provider
+**ملف:**
+- `src/providers/AnalyticsProvider.tsx`
 
----
+**المشكلة:**
+- يستورد مكتبات غير موجودة:
+  - `@/lib/gtm` ❌
+  - `@/lib/ga4` ❌
+  - `@/lib/amplitude` ❌
+  - `@/lib/segment` ❌
+  - `@/lib/datadog` ❌
 
-### Stripe (22 references)
-**Files:**
-- src/app/api/checkout/route.ts
-- src/app/api/user/subscription/route.ts
-- src/stripe/
+**الأثر:**
+- لا يستخدم في أي ملف آخر
+- يسبب 14 خطأ LSP
 
-**Dependencies:**
-- @stripe/stripe-js: ^4.5.0
-- stripe: ^16.12.0
-- @types/stripe: ^8.0.417
-
-**Action**: ✅ حذف كامل
+**القرار:** 🗑️ حذف كامل
 
 ---
 
-### Analytics (60+ references)
-**Services:**
-- Datadog RUM
-- Google Tag Manager (GTM)
-- Google Analytics 4 (GA4)
-- Segment
-- Amplitude
+#### 2. Firebase Auth Context
+**ملف:**
+- `src/server/auth/context.ts`
 
-**Files:**
-- src/lib/datadog.ts
-- src/lib/gtm.ts
-- src/lib/ga4.ts
-- src/app/layout.tsx (GTM init)
+**المشكلة:**
+- يستورد `verifyFirebaseSession` (غير موجود) ❌
+- يستخدم في:
+  - `src/server/graphql/resolvers/projects.ts`
+  - `src/server/graphql/resolvers/users.ts`
 
-**Dependencies:**
-- @datadog/browser-rum: ^6.24.0
+**الأثر:**
+- يسبب 3 أخطاء LSP
+- مطلوب من GraphQL resolvers
 
-**Action**: ✅ حذف كامل
+**القرار:** 🔧 تعديل (إزالة Firebase + auth مؤقت)
 
 ---
 
-## التوفير المتوقع
-- Dependencies: ~60-80MB
-- Code files: ~5MB
-- **Total**: ~70-85MB
+## 📝 التوفير الفعلي
+- ❌ Dependencies: 0MB (محذوفة مسبقاً)
+- ✅ Code files: ~6KB (الملفات المتبقية)
+- **Total**: ~6KB
+
+**ملاحظة:** معظم الحذف تم مسبقاً، فقط نظف المراجع
 
