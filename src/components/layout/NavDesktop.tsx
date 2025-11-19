@@ -4,12 +4,15 @@ import { useState, useRef, useEffect, useId } from 'react';
 import Link from 'next/link';
 import { Icons } from '@/components/ui/icons';
 import { Button } from '@/components/ui/button';
-import { PRIMARY_NAV, SECONDARY_NAV, type NavItem } from '@/config/navigation';
+import { type NavItem } from '@/config/navigation';
 import { cn } from '@/lib/utils';
 import { getTypographyClass } from '@/lib/design-system/typography';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface NavDesktopProps {
   className?: string;
+  primaryNav: NavItem[];
+  secondaryNav: Array<{ label: string; href: string; variant: 'ghost' | 'default' }>;
 }
 
 interface DropdownMenuProps {
@@ -183,11 +186,11 @@ function DropdownMenu({ item }: DropdownMenuProps) {
   );
 }
 
-export function NavDesktop({ className }: NavDesktopProps) {
+export function NavDesktop({ className, primaryNav, secondaryNav }: NavDesktopProps) {
   return (
     <nav className={cn('hidden md:flex items-center gap-8', className)} aria-label="Main navigation">
       <ul className="flex items-center gap-8">
-        {PRIMARY_NAV.map((item, idx) => (
+        {primaryNav.map((item, idx) => (
           <li key={idx}>
             <DropdownMenu item={item} />
           </li>
@@ -195,7 +198,8 @@ export function NavDesktop({ className }: NavDesktopProps) {
       </ul>
 
       <div className="flex items-center gap-3 ml-auto">
-        {SECONDARY_NAV.map((item, idx) => (
+        <LanguageSwitcher variant="dropdown" />
+        {secondaryNav.map((item, idx) => (
           <Button
             key={idx}
             variant={item.variant}

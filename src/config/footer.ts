@@ -1,11 +1,11 @@
 /**
  * Footer Configuration
  * 
- * Defines footer structure, links, and content.
+ * Defines footer structure, links, and content with i18n support.
  * Includes columns, social links, and newsletter signup.
  */
 
-import { SOCIAL_LINKS, CONTACT_INFO, COMPANY_INFO } from './site';
+import { SOCIAL_LINKS, COMPANY_INFO } from './site';
 
 /**
  * Footer link interface
@@ -25,107 +25,84 @@ export interface FooterSection {
   links: FooterLink[];
 }
 
-/**
- * Product column
- * Core product offerings and features
- */
-export const FOOTER_PRODUCT: FooterSection = {
-  title: 'Product',
-  links: [
-    { label: 'Replit Agent', href: '/products/agent', badge: 'New' },
-    { label: 'Deployments', href: '/products/deployments' },
-    { label: 'Database', href: '/products/database' },
-    { label: 'Mobile', href: '/mobile' },
-    { label: 'Security', href: '/products/security' },
-    { label: 'Integrations', href: '/products/integrations' },
-    { label: 'Pricing', href: '/pricing' },
-    { label: 'Templates', href: '/templates' },
-  ],
-} as const;
+type TranslateFn = (key: string) => string;
 
 /**
- * Resources column
- * Learning resources, documentation, and community
+ * Get footer columns with translations
  */
-export const FOOTER_RESOURCES: FooterSection = {
-  title: 'Resources',
-  links: [
-    { label: 'Help Center', href: '/help' },
-    { label: 'Documentation', href: 'https://docs.k2panel.online', external: true },
-    { label: 'Tutorials', href: '/tutorials' },
-    { label: 'Blog', href: '/news' },
-    { label: 'Community', href: 'https://k2panel.online/discord', external: true },
-    { label: 'Gallery', href: '/gallery' },
-    { label: 'Use Cases', href: '/usecases' },
-    { label: 'Customers', href: '/customers' },
-  ],
-} as const;
+export function getFooterColumns(t: TranslateFn): FooterSection[] {
+  return [
+    {
+      title: t('footer.product.title'),
+      links: [
+        { label: t('footer.product.agent'), href: '/products/agent' },
+        { label: t('footer.product.deployments'), href: '/products/deployments' },
+        { label: t('footer.product.database'), href: '/products/database' },
+        { label: t('footer.product.mobile'), href: '/mobile' },
+        { label: t('footer.product.security'), href: '/products/security' },
+        { label: t('footer.product.integrations'), href: '/products/integrations' },
+        { label: t('footer.product.pricing'), href: '/pricing' },
+        { label: t('footer.product.templates'), href: '/templates' },
+      ],
+    },
+    {
+      title: t('footer.resources.title'),
+      links: [
+        { label: t('footer.resources.helpCenter'), href: '/help' },
+        { label: t('footer.resources.documentation'), href: 'https://docs.k2panel.online', external: true },
+        { label: t('footer.resources.tutorials'), href: '/tutorials' },
+        { label: t('footer.resources.blog'), href: '/news' },
+        { label: t('footer.resources.community'), href: 'https://k2panel.online/discord', external: true },
+        { label: t('footer.resources.gallery'), href: '/gallery' },
+        { label: t('footer.resources.usecases'), href: '/usecases' },
+        { label: t('footer.resources.customers'), href: '/customers' },
+      ],
+    },
+    {
+      title: t('footer.company.title'),
+      links: [
+        { label: t('footer.company.about'), href: '/about' },
+        { label: t('footer.company.careers'), href: '/careers' },
+        { label: t('footer.company.brandKit'), href: '/brandkit' },
+        { label: t('footer.company.press'), href: '/press' },
+        { label: t('footer.company.contact'), href: '/contact' },
+        { label: t('footer.company.status'), href: 'https://status.k2panel.online', external: true },
+      ],
+    },
+    {
+      title: t('footer.legal.title'),
+      links: [
+        { label: t('footer.legal.terms'), href: '/terms' },
+        { label: t('footer.legal.privacy'), href: '/privacy-policy' },
+        { label: t('footer.legal.dpa'), href: '/dpa' },
+        { label: t('footer.legal.commercial'), href: '/commercial-agreement' },
+        { label: t('footer.legal.cookies'), href: '/cookies' },
+        { label: t('footer.legal.security'), href: '/security' },
+      ],
+    },
+  ];
+}
 
 /**
- * Company column
- * About the company, team, and careers
+ * Get newsletter configuration with translations
  */
-export const FOOTER_COMPANY: FooterSection = {
-  title: 'Company',
-  links: [
-    { label: 'About', href: '/about' },
-    { label: 'Careers', href: '/careers' },
-    { label: 'Brand Kit', href: '/brandkit' },
-    { label: 'Press', href: '/press' },
-    { label: 'Contact', href: '/contact' },
-    { label: 'Status', href: 'https://status.k2panel.online', external: true },
-  ],
-} as const;
+export function getNewsletterConfig(t: TranslateFn) {
+  return {
+    title: t('footer.newsletter.title'),
+    description: t('footer.newsletter.description'),
+    placeholder: t('footer.newsletter.placeholder'),
+    buttonText: t('footer.newsletter.button'),
+    successMessage: t('footer.newsletter.success'),
+    errorMessage: t('footer.newsletter.error'),
+    endpoint: '/api/newsletter/subscribe',
+    privacyNote: t('footer.newsletter.privacyNote'),
+    privacyLinkText: t('footer.newsletter.privacyLink'),
+    privacyLinkHref: '/privacy-policy',
+  };
+}
 
 /**
- * Legal column
- * Legal pages and policies
- */
-export const FOOTER_LEGAL: FooterSection = {
-  title: 'Legal',
-  links: [
-    { label: 'Terms of Service', href: '/terms' },
-    { label: 'Privacy Policy', href: '/privacy-policy' },
-    { label: 'Data Processing Agreement', href: '/dpa' },
-    { label: 'Commercial Agreement', href: '/commercial-agreement' },
-    { label: 'Cookie Policy', href: '/cookies' },
-    { label: 'Security', href: '/security' },
-  ],
-} as const;
-
-/**
- * All footer columns combined
- * Use this for rendering all footer sections
- */
-export const FOOTER_COLUMNS = [
-  FOOTER_PRODUCT,
-  FOOTER_RESOURCES,
-  FOOTER_COMPANY,
-  FOOTER_LEGAL,
-] as const;
-
-/**
- * Newsletter configuration
- * Settings for newsletter signup form
- */
-export const NEWSLETTER_CONFIG = {
-  title: 'Stay updated',
-  description: 'Get the latest updates, articles, and resources delivered to your inbox.',
-  placeholder: 'Enter your email',
-  buttonText: 'Subscribe',
-  successMessage: 'Thanks for subscribing!',
-  errorMessage: 'Something went wrong. Please try again.',
-  
-  // Newsletter provider settings (update with your provider)
-  endpoint: '/api/newsletter/subscribe',
-  privacyNote: 'We care about your data. Read our',
-  privacyLinkText: 'Privacy Policy',
-  privacyLinkHref: '/privacy-policy',
-} as const;
-
-/**
- * Footer social links
- * Derived from site config, filtered for footer display
+ * Footer social links (no translation needed - icons only)
  */
 export const FOOTER_SOCIAL = [
   {
@@ -156,40 +133,39 @@ export const FOOTER_SOCIAL = [
 ] as const;
 
 /**
- * Footer bottom section
- * Copyright and additional links
+ * Get footer bottom section with translations
  */
-export const FOOTER_BOTTOM = {
-  copyright: `© ${new Date().getFullYear()} ${COMPANY_INFO.legalName}. All rights reserved.`,
-  
-  // Additional bottom links (displayed next to copyright)
-  links: [
-    { label: 'Terms', href: '/terms' },
-    { label: 'Privacy', href: '/privacy-policy' },
-    { label: 'Security', href: '/security' },
-  ],
-} as const;
+export function getFooterBottom(t: TranslateFn) {
+  return {
+    copyright: t('footer.copyright'),
+    links: [
+      { label: t('footer.bottom.terms'), href: '/terms' },
+      { label: t('footer.bottom.privacy'), href: '/privacy-policy' },
+      { label: t('footer.bottom.security'), href: '/security' },
+    ],
+  };
+}
 
 /**
- * Footer CTA (Call to Action)
- * Optional promotional section in footer
+ * Get footer CTA with translations
  */
-export const FOOTER_CTA = {
-  enabled: true,
-  title: 'Ready to start building?',
-  description: 'Join millions of developers building on Replit',
-  primaryButton: {
-    label: 'Sign up for free',
-    href: '/signup',
-  },
-  secondaryButton: {
-    label: 'Talk to sales',
-    href: '/contact',
-  },
-} as const;
+export function getFooterCTA(t: TranslateFn) {
+  return {
+    enabled: true,
+    title: t('footer.cta.title'),
+    description: t('footer.cta.description'),
+    primaryButton: {
+      label: t('footer.cta.primaryButton'),
+      href: '/signup',
+    },
+    secondaryButton: {
+      label: t('footer.cta.secondaryButton'),
+      href: '/contact',
+    },
+  };
+}
 
 /**
  * Type exports for TypeScript inference
  */
-export type FooterColumn = typeof FOOTER_COLUMNS[number];
 export type FooterSocialLink = typeof FOOTER_SOCIAL[number];

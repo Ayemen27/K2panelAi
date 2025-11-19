@@ -9,8 +9,10 @@ import { Eye, EyeOff, Mail, Lock, Github, Chrome, Apple } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTranslate } from '@/lib/i18n/hooks';
 
 export default function LoginPage() {
+  const { t } = useTranslate('auth');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -31,13 +33,13 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        setError('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+        setError(t('login.error.invalidCredentials'));
         setLoading(false);
       } else {
         router.push('/dashboard');
       }
     } catch (err) {
-      setError('حدث خطأ، حاول مرة أخرى');
+      setError(t('login.error.generic'));
       setLoading(false);
     }
   };
@@ -66,10 +68,10 @@ export default function LoginPage() {
               R
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-              مرحباً بعودتك
+              {t('login.title')}
             </h1>
             <p className="text-gray-600 text-sm sm:text-base">
-              سجل دخولك للوصول إلى منصة التطوير الذكية
+              {t('login.subtitle')}
             </p>
           </div>
 
@@ -95,7 +97,7 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium text-gray-700 flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  البريد الإلكتروني
+                  {t('login.email.label')}
                 </Label>
                 <Input
                   id="email"
@@ -103,7 +105,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  placeholder="example@email.com"
+                  placeholder={t('login.email.placeholder')}
                   className="h-12 text-base transition-all focus:ring-2 focus:ring-blue-500"
                   dir="ltr"
                 />
@@ -112,7 +114,7 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-sm font-medium text-gray-700 flex items-center gap-2">
                   <Lock className="w-4 h-4" />
-                  كلمة المرور
+                  {t('login.password.label')}
                 </Label>
                 <div className="relative">
                   <Input
@@ -121,7 +123,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    placeholder="••••••••"
+                    placeholder={t('login.password.placeholder')}
                     className="h-12 text-base pr-12 transition-all focus:ring-2 focus:ring-blue-500"
                   />
                   <button
@@ -138,10 +140,10 @@ export default function LoginPage() {
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                <span className="text-gray-600">تذكرني</span>
+                <span className="text-gray-600">{t('login.rememberMe')}</span>
               </label>
               <Link href="/forgot-password" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
-                نسيت كلمة المرور؟
+                {t('login.forgotPassword')}
               </Link>
             </div>
 
@@ -153,10 +155,10 @@ export default function LoginPage() {
               {loading ? (
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  جاري تسجيل الدخول...
+                  {t('login.submitting')}
                 </div>
               ) : (
-                'تسجيل الدخول'
+                t('login.submit')
               )}
             </Button>
           </form>
@@ -167,7 +169,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">أو تابع مع</span>
+              <span className="px-4 bg-white text-gray-500">{t('login.orContinueWith')}</span>
             </div>
           </div>
 
@@ -198,9 +200,9 @@ export default function LoginPage() {
 
           {/* رابط التسجيل */}
           <div className="text-center text-sm">
-            <span className="text-gray-600">ليس لديك حساب؟ </span>
+            <span className="text-gray-600">{t('login.noAccount')} </span>
             <Link href="/signup" className="text-blue-600 hover:text-blue-700 font-semibold transition-colors">
-              سجل الآن
+              {t('login.signupLink')}
             </Link>
           </div>
           </div>
@@ -212,23 +214,23 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]" />
         <div className="relative z-10 text-white space-y-6 max-w-md">
           <h2 className="text-4xl font-bold">
-            منصة التطوير الذكية
+            {t('login.rightPanel.title')}
           </h2>
           <p className="text-xl text-blue-100">
-            طور، شارك، وانشر تطبيقاتك بسهولة مع أدوات ذكاء اصطناعي متقدمة
+            {t('login.rightPanel.subtitle')}
           </p>
           <div className="space-y-4 pt-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">✓</div>
-              <span>محرر أكواد متقدم مع دعم الذكاء الاصطناعي</span>
+              <span>{t('login.rightPanel.feature1')}</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">✓</div>
-              <span>نشر فوري على السحابة</span>
+              <span>{t('login.rightPanel.feature2')}</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">✓</div>
-              <span>تعاون مباشر مع فريقك</span>
+              <span>{t('login.rightPanel.feature3')}</span>
             </div>
           </div>
         </div>

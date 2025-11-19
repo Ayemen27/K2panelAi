@@ -2,7 +2,7 @@
  * Navigation Configuration
  * 
  * Defines navigation structure, links, and menu items for the application.
- * Supports nested dropdowns and grouped navigation items.
+ * Supports nested dropdowns and grouped navigation items with i18n support.
  */
 
 /**
@@ -36,199 +36,202 @@ export interface NavItem {
 }
 
 /**
- * Primary navigation items
- * Main navigation menu displayed in the header
+ * Translation function type
  */
-export const PRIMARY_NAV: NavItem[] = [
-  {
-    label: 'Products',
-    dropdown: [
-      {
-        label: 'Core Products',
-        items: [
-          {
-            label: 'Replit Agent',
-            href: '/products/agent',
-            description: 'Build software with AI',
-            icon: '/images/icons/agent.svg',
-            badge: 'New',
-          },
-          {
-            label: 'Deployments',
-            href: '/products/deployments',
-            description: 'Ship to production instantly',
-            icon: '/images/icons/deployments.svg',
-          },
-          {
-            label: 'Database',
-            href: '/products/database',
-            description: 'Managed PostgreSQL',
-            icon: '/images/icons/database.svg',
-          },
-        ],
+type TranslateFn = (key: string) => string;
+
+/**
+ * Get primary navigation items with translations
+ */
+export function getPrimaryNav(t: TranslateFn): NavItem[] {
+  return [
+    {
+      label: t('nav.products.label'),
+      dropdown: [
+        {
+          label: t('nav.products.coreProducts'),
+          items: [
+            {
+              label: t('nav.products.agent.label'),
+              href: '/products/agent',
+              description: t('nav.products.agent.desc'),
+              icon: '/images/icons/agent.svg',
+              badge: t('nav.products.agent.badge'),
+            },
+            {
+              label: t('nav.products.deployments.label'),
+              href: '/products/deployments',
+              description: t('nav.products.deployments.desc'),
+              icon: '/images/icons/deployments.svg',
+            },
+            {
+              label: t('nav.products.database.label'),
+              href: '/products/database',
+              description: t('nav.products.database.desc'),
+              icon: '/images/icons/database.svg',
+            },
+          ],
+        },
+        {
+          label: t('nav.products.solutions'),
+          items: [
+            {
+              label: t('nav.products.mobile.label'),
+              href: '/mobile',
+              description: t('nav.products.mobile.desc'),
+              icon: '/images/icons/mobile.svg',
+            },
+            {
+              label: t('nav.products.security.label'),
+              href: '/products/security',
+              description: t('nav.products.security.desc'),
+              icon: '/images/icons/security.svg',
+            },
+            {
+              label: t('nav.products.integrations.label'),
+              href: '/products/integrations',
+              description: t('nav.products.integrations.desc'),
+              icon: '/images/icons/integrations.svg',
+            },
+          ],
+        },
+      ],
+      featured: {
+        label: t('nav.products.seeAll'),
+        href: '/products',
+        description: t('nav.products.seeAllDesc'),
       },
-      {
-        label: 'Solutions',
-        items: [
-          {
-            label: 'Mobile',
-            href: '/mobile',
-            description: 'Code on the go',
-            icon: '/images/icons/mobile.svg',
-          },
-          {
-            label: 'Security',
-            href: '/products/security',
-            description: 'Enterprise-grade security',
-            icon: '/images/icons/security.svg',
-          },
-          {
-            label: 'Integrations',
-            href: '/products/integrations',
-            description: 'Connect your tools',
-            icon: '/images/icons/integrations.svg',
-          },
-        ],
-      },
-    ],
-    featured: {
-      label: 'See all products',
-      href: '/products',
-      description: 'Explore our complete product suite',
     },
-  },
-  {
-    label: 'Templates',
-    href: '/templates',
-  },
-  {
-    label: 'Gallery',
-    href: '/gallery',
-  },
-  {
-    label: 'Customers',
-    href: '/customers',
-  },
-  {
-    label: 'Pricing',
-    href: '/pricing',
-  },
-  {
-    label: 'Resources',
-    dropdown: [
-      {
-        label: 'Learn',
-        items: [
-          {
-            label: 'Help Center',
-            href: '/help',
-            description: 'Get support and answers',
-          },
-          {
-            label: 'Documentation',
-            href: 'https://docs.replit.com',
-            description: 'Technical guides and API docs',
-            external: true,
-          },
-          {
-            label: 'Tutorials',
-            href: '/tutorials',
-            description: 'Step-by-step learning',
-          },
-        ],
-      },
-      {
-        label: 'Community',
-        items: [
-          {
-            label: 'Blog',
-            href: '/news',
-            description: 'Latest news and updates',
-          },
-          {
-            label: 'Use Cases',
-            href: '/usecases',
-            description: 'See what others are building',
-          },
-          {
-            label: 'Community',
-            href: 'https://replit.com/discord',
-            description: 'Join our Discord',
-            external: true,
-          },
-        ],
-      },
-      {
-        label: 'Company',
-        items: [
-          {
-            label: 'About',
-            href: '/about',
-            description: 'Our mission and team',
-          },
-          {
-            label: 'Careers',
-            href: '/careers',
-            description: 'Join the team',
-          },
-          {
-            label: 'Brand Kit',
-            href: '/brandkit',
-            description: 'Logos and guidelines',
-          },
-        ],
-      },
-    ],
-  },
-] as const;
+    {
+      label: t('nav.templates'),
+      href: '/templates',
+    },
+    {
+      label: t('nav.gallery'),
+      href: '/gallery',
+    },
+    {
+      label: t('nav.customers'),
+      href: '/customers',
+    },
+    {
+      label: t('nav.pricing'),
+      href: '/pricing',
+    },
+    {
+      label: t('nav.resources.label'),
+      dropdown: [
+        {
+          label: t('nav.resources.learn'),
+          items: [
+            {
+              label: t('nav.resources.helpCenter.label'),
+              href: '/help',
+              description: t('nav.resources.helpCenter.desc'),
+            },
+            {
+              label: t('nav.resources.documentation.label'),
+              href: 'https://docs.replit.com',
+              description: t('nav.resources.documentation.desc'),
+              external: true,
+            },
+            {
+              label: t('nav.resources.tutorials.label'),
+              href: '/tutorials',
+              description: t('nav.resources.tutorials.desc'),
+            },
+          ],
+        },
+        {
+          label: t('nav.resources.community'),
+          items: [
+            {
+              label: t('nav.resources.blog.label'),
+              href: '/news',
+              description: t('nav.resources.blog.desc'),
+            },
+            {
+              label: t('nav.resources.usecases.label'),
+              href: '/usecases',
+              description: t('nav.resources.usecases.desc'),
+            },
+            {
+              label: t('nav.resources.communityLink.label'),
+              href: 'https://replit.com/discord',
+              description: t('nav.resources.communityLink.desc'),
+              external: true,
+            },
+          ],
+        },
+        {
+          label: t('nav.resources.company'),
+          items: [
+            {
+              label: t('nav.resources.about.label'),
+              href: '/about',
+              description: t('nav.resources.about.desc'),
+            },
+            {
+              label: t('nav.resources.careers.label'),
+              href: '/careers',
+              description: t('nav.resources.careers.desc'),
+            },
+            {
+              label: t('nav.resources.brandKit.label'),
+              href: '/brandkit',
+              description: t('nav.resources.brandKit.desc'),
+            },
+          ],
+        },
+      ],
+    },
+  ];
+}
 
 /**
- * Secondary navigation items (CTAs)
- * Typically displayed in the header alongside primary navigation
+ * Get secondary navigation items (CTAs) with translations
  */
-export const SECONDARY_NAV = [
-  {
-    label: 'Log in',
-    href: '/login',
-    variant: 'ghost' as const,
-  },
-  {
-    label: 'Sign up',
-    href: '/signup',
-    variant: 'default' as const,
-  },
-] as const;
+export function getSecondaryNav(t: TranslateFn) {
+  return [
+    {
+      label: t('nav.login'),
+      href: '/login',
+      variant: 'ghost' as const,
+    },
+    {
+      label: t('nav.signup'),
+      href: '/signup',
+      variant: 'default' as const,
+    },
+  ];
+}
 
 /**
- * Mobile-specific navigation
- * Flattened structure optimized for mobile navigation
+ * Get mobile navigation with translations
  */
-export const MOBILE_NAV = [
-  // Quick actions
-  {
-    label: 'Sign up',
-    href: '/signup',
-    highlight: true,
-  },
-  {
-    label: 'Log in',
-    href: '/login',
-  },
-
-  // Main navigation
-  { label: 'Products', href: '/products' },
-  { label: 'Templates', href: '/templates' },
-  { label: 'Gallery', href: '/gallery' },
-  { label: 'Customers', href: '/customers' },
-  { label: 'Pricing', href: '/pricing' },
-
-  // Resources
-  { label: 'Help Center', href: '/help' },
-  { label: 'Documentation', href: 'https://docs.replit.com', external: true },
-  { label: 'Blog', href: '/news' },
-  { label: 'About', href: '/about' },
-  { label: 'Careers', href: '/careers' },
-] as const;
+export function getMobileNav(t: TranslateFn) {
+  return [
+    {
+      label: t('nav.signup'),
+      href: '/signup',
+      highlight: true,
+    },
+    {
+      label: t('nav.login'),
+      href: '/login',
+    },
+    { label: t('nav.products.label'), href: '/products' },
+    { label: t('nav.templates'), href: '/templates' },
+    { label: t('nav.gallery'), href: '/gallery' },
+    { label: t('nav.customers'), href: '/customers' },
+    { label: t('nav.pricing'), href: '/pricing' },
+    { label: t('nav.resources.helpCenter.label'), href: '/help' },
+    { label: t('nav.resources.documentation.label'), href: 'https://docs.replit.com', external: true },
+    { label: t('nav.resources.blog.label'), href: '/news' },
+    { label: t('nav.resources.about.label'), href: '/about' },
+    { label: t('nav.resources.careers.label'), href: '/careers' },
+  ];
+}
 
 /**
  * Breadcrumb configuration
@@ -256,9 +259,3 @@ export const BREADCRUMB_LABELS: Record<string, string> = {
   profile: 'Profile',
 } as const;
 
-/**
- * Type exports for TypeScript inference
- */
-export type PrimaryNavItem = typeof PRIMARY_NAV[number];
-export type SecondaryNavItem = typeof SECONDARY_NAV[number];
-export type MobileNavItem = typeof MOBILE_NAV[number];

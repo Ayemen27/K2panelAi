@@ -4,15 +4,25 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Icons } from '@/components/ui/icons';
 import { Button } from '@/components/ui/button';
-import { MOBILE_NAV } from '@/config/navigation';
 import { cn } from '@/lib/utils';
 import { getTypographyClass } from '@/lib/design-system/typography';
+import { LanguageSwitcher } from './LanguageSwitcher';
+
+interface NavMobileItem {
+  label: string;
+  href: string;
+  highlight?: boolean;
+  external?: boolean;
+}
 
 interface NavMobileProps {
   className?: string;
+  navItems: NavMobileItem[];
+  menuLabel: string;
+  closeLabel: string;
 }
 
-export function NavMobile({ className }: NavMobileProps) {
+export function NavMobile({ className, navItems, menuLabel, closeLabel }: NavMobileProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -34,7 +44,7 @@ export function NavMobile({ className }: NavMobileProps) {
         size="icon"
         className={cn('md:hidden', className)}
         onClick={() => setIsOpen(true)}
-        aria-label="Open menu"
+        aria-label={menuLabel}
         aria-expanded={isOpen}
       >
         <Icons.menu className="h-6 w-6" aria-hidden="true" />
@@ -57,13 +67,13 @@ export function NavMobile({ className }: NavMobileProps) {
             <div className="flex flex-col h-full">
               <div className="flex items-center justify-between p-4 border-b border-border">
                 <span className={cn(getTypographyClass('headline-sm'))}>
-                  Menu
+                  {menuLabel}
                 </span>
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setIsOpen(false)}
-                  aria-label="Close menu"
+                  aria-label={closeLabel}
                 >
                   <Icons.close className="h-6 w-6" aria-hidden="true" />
                 </Button>
@@ -71,20 +81,20 @@ export function NavMobile({ className }: NavMobileProps) {
 
               <nav className="flex-1 overflow-y-auto p-4">
                 <ul className="space-y-1">
-                  {MOBILE_NAV.map((item, idx) => (
+                  {navItems.map((item, idx) => (
                     <li key={idx}>
                       <Link
                         href={item.href}
                         className={cn(
                           'block px-4 py-3 rounded-md transition-colors',
                           getTypographyClass('body-md'),
-                          'highlight' in item && item.highlight
+                          item.highlight
                             ? 'bg-primary text-primary-foreground font-semibold'
                             : 'text-foreground hover:bg-accent'
                         )}
                         onClick={() => setIsOpen(false)}
-                        target={'external' in item && item.external ? '_blank' : undefined}
-                        rel={'external' in item && item.external ? 'noopener noreferrer' : undefined}
+                        target={item.external ? '_blank' : undefined}
+                        rel={item.external ? 'noopener noreferrer' : undefined}
                       >
                         {item.label}
                       </Link>
@@ -93,12 +103,15 @@ export function NavMobile({ className }: NavMobileProps) {
                 </ul>
               </nav>
 
-              <div className="p-4 border-t border-border">
+              <div className="p-4 border-t border-border space-y-4">
+                <div className="flex justify-center">
+                  <LanguageSwitcher />
+                </div>
                 <p className={cn(
                   getTypographyClass('caption-sm'),
                   'text-foreground/60 text-center'
                 )}>
-                  © {new Date().getFullYear()} Replit. All rights reserved.
+                  © {new Date().getFullYear()} K2Panel AI. All rights reserved.
                 </p>
               </div>
             </div>

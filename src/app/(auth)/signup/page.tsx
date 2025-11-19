@@ -8,8 +8,10 @@ import { Eye, EyeOff, Mail, Lock, User, Github, Chrome, Apple, CheckCircle2 } fr
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTranslate } from '@/lib/i18n/hooks';
 
 export default function SignupPage() {
+  const { t } = useTranslate('auth');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,15 +23,14 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // التحقق من قوة كلمة المرور
   const getPasswordStrength = (pass: string) => {
     if (pass.length === 0) return { strength: 0, label: '', color: '' };
-    if (pass.length < 8) return { strength: 1, label: 'ضعيفة', color: 'bg-red-500' };
-    if (pass.length < 12) return { strength: 2, label: 'متوسطة', color: 'bg-yellow-500' };
+    if (pass.length < 8) return { strength: 1, label: t('signup.password.weak'), color: 'bg-red-500' };
+    if (pass.length < 12) return { strength: 2, label: t('signup.password.medium'), color: 'bg-yellow-500' };
     if (pass.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/)) {
-      return { strength: 3, label: 'قوية', color: 'bg-green-500' };
+      return { strength: 3, label: t('signup.password.strong'), color: 'bg-green-500' };
     }
-    return { strength: 2, label: 'متوسطة', color: 'bg-yellow-500' };
+    return { strength: 2, label: t('signup.password.medium'), color: 'bg-yellow-500' };
   };
 
   const passwordStrength = getPasswordStrength(password);
@@ -40,19 +41,19 @@ export default function SignupPage() {
     setError('');
 
     if (!acceptTerms) {
-      setError('يرجى الموافقة على الشروط والأحكام');
+      setError(t('validation.terms.required', {}, 'validation'));
       setLoading(false);
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('كلمات المرور غير متطابقة');
+      setError(t('validation.password.mismatch', {}, 'validation'));
       setLoading(false);
       return;
     }
 
     if (password.length < 8) {
-      setError('كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+      setError(t('validation.password.tooShort', {}, 'validation'));
       setLoading(false);
       return;
     }
@@ -97,10 +98,10 @@ export default function SignupPage() {
               R
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
-              ابدأ مجاناً
+              {t('signup.title')}
             </h1>
             <p className="text-gray-600 text-sm sm:text-base">
-              أنشئ حسابك وابدأ رحلتك في التطوير
+              {t('signup.subtitle')}
             </p>
           </div>
 
@@ -126,7 +127,7 @@ export default function SignupPage() {
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-sm font-medium text-gray-700 flex items-center gap-2">
                   <User className="w-4 h-4" />
-                  الاسم الكامل
+                  {t('signup.name.label')}
                 </Label>
                 <Input
                   id="name"
@@ -134,7 +135,7 @@ export default function SignupPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  placeholder="أحمد محمد"
+                  placeholder={t('signup.name.placeholder')}
                   className="h-12 text-base transition-all focus:ring-2 focus:ring-purple-500"
                 />
               </div>
@@ -142,7 +143,7 @@ export default function SignupPage() {
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium text-gray-700 flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  البريد الإلكتروني
+                  {t('signup.email.label')}
                 </Label>
                 <Input
                   id="email"
@@ -159,7 +160,7 @@ export default function SignupPage() {
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-sm font-medium text-gray-700 flex items-center gap-2">
                   <Lock className="w-4 h-4" />
-                  كلمة المرور
+                  {t('signup.password.label')}
                 </Label>
                 <div className="relative">
                   <Input
@@ -200,7 +201,7 @@ export default function SignupPage() {
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700 flex items-center gap-2">
                   <Lock className="w-4 h-4" />
-                  تأكيد كلمة المرور
+                  {t('signup.confirmPassword.label')}
                 </Label>
                 <div className="relative">
                   <Input
@@ -232,13 +233,13 @@ export default function SignupPage() {
                 className="w-4 h-4 mt-1 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
               />
               <label htmlFor="terms" className="text-sm text-gray-600">
-                أوافق على{' '}
+                {t('signup.terms.text')}{' '}
                 <Link href="/terms" className="text-purple-600 hover:text-purple-700 font-medium">
-                  الشروط والأحكام
+                  {t('signup.terms.terms')}
                 </Link>{' '}
-                و{' '}
+                {t('signup.terms.and')}{' '}
                 <Link href="/privacy" className="text-purple-600 hover:text-purple-700 font-medium">
-                  سياسة الخصوصية
+                  {t('signup.terms.privacy')}
                 </Link>
               </label>
             </div>
@@ -251,10 +252,10 @@ export default function SignupPage() {
               {loading ? (
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  جاري الإنشاء...
+                  {t('signup.submitting')}
                 </div>
               ) : (
-                'إنشاء حساب'
+                t('signup.submit')
               )}
             </Button>
           </form>
@@ -265,7 +266,7 @@ export default function SignupPage() {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">أو سجل مع</span>
+              <span className="px-4 bg-white text-gray-500">{t('signup.orSignupWith')}</span>
             </div>
           </div>
 
@@ -293,9 +294,9 @@ export default function SignupPage() {
 
           {/* رابط تسجيل الدخول */}
           <div className="text-center text-sm">
-            <span className="text-gray-600">لديك حساب بالفعل؟ </span>
+            <span className="text-gray-600">{t('signup.hasAccount')} </span>
             <Link href="/login" className="text-purple-600 hover:text-purple-700 font-semibold transition-colors">
-              سجل دخول
+              {t('signup.loginLink')}
             </Link>
           </div>
           </div>
@@ -307,27 +308,27 @@ export default function SignupPage() {
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]" />
         <div className="relative z-10 text-white space-y-6 max-w-md">
           <h2 className="text-4xl font-bold">
-            انضم إلى آلاف المطورين
+            {t('signup.rightPanel.title')}
           </h2>
           <p className="text-xl text-pink-100">
-            ابدأ رحلتك في التطوير مع أقوى منصة عربية
+            {t('signup.rightPanel.subtitle')}
           </p>
           <div className="space-y-4 pt-4">
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-6 h-6 text-white" />
-              <span>أدوات تطوير احترافية مجاناً</span>
+              <span>{t('signup.rightPanel.feature1')}</span>
             </div>
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-6 h-6 text-white" />
-              <span>دعم كامل للغة العربية</span>
+              <span>{t('signup.rightPanel.feature2')}</span>
             </div>
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-6 h-6 text-white" />
-              <span>مساعد ذكاء اصطناعي متقدم</span>
+              <span>{t('signup.rightPanel.feature3')}</span>
             </div>
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-6 h-6 text-white" />
-              <span>استضافة مجانية لمشاريعك</span>
+              <span>{t('signup.rightPanel.feature4')}</span>
             </div>
           </div>
         </div>
