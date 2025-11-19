@@ -12,7 +12,7 @@ const pricingPageQuery = `*[_type == "page" && slug.current == "pricing"][0]{
   "sections": sections[]{
     _type,
     _key,
-    ..._type == "heroSection" => {
+    _type == "heroSection" => {
       title,
       subtitle,
       description,
@@ -32,7 +32,7 @@ const pricingPageQuery = `*[_type == "page" && slug.current == "pricing"][0]{
       },
       alignment
     },
-    ..._type == "pricingTableSection" => {
+    _type == "pricingTableSection" => {
       heading,
       description,
       billingPeriod{
@@ -73,7 +73,7 @@ const pricingPageQuery = `*[_type == "page" && slug.current == "pricing"][0]{
         badge
       }
     },
-    ..._type == "ctaBandSection" => {
+    _type == "ctaBandSection" => {
       title,
       description,
       buttons[]{
@@ -94,7 +94,7 @@ const pricingPageQuery = `*[_type == "page" && slug.current == "pricing"][0]{
       backgroundColor,
       size
     },
-    ..._type == "faqSection" => {
+    _type == "faqSection" => {
       heading,
       description,
       faqs[]{
