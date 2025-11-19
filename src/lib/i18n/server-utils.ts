@@ -1,4 +1,5 @@
-import { createServerInstance } from '@tolgee/react/server';
+
+import { TolgeeBase, DevTools } from '@tolgee/web';
 import { FormatIcu } from '@tolgee/format-icu';
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES, type SupportedLocale } from './constants';
 
@@ -6,27 +7,30 @@ export async function getServerTranslations(
   locale: SupportedLocale = DEFAULT_LOCALE,
   namespaces: string[] = ['common']
 ) {
-  const tolgee = createServerInstance({
-    language: locale,
-    supportedLanguages: SUPPORTED_LOCALES,
-    apiUrl: process.env.NEXT_PUBLIC_TOLGEE_API_URL || '',
-    apiKey: process.env.TOLGEE_API_KEY || process.env.NEXT_PUBLIC_TOLGEE_API_KEY || '',
-    ns: namespaces,
-    staticData: {
-      ar: async () => {
-        const common = await import('../../../public/locales/ar/common.json');
-        return common.default;
+  const tolgee = TolgeeBase()
+    .use(FormatIcu())
+    .init({
+      language: locale,
+      apiUrl: process.env.NEXT_PUBLIC_TOLGEE_API_URL || '',
+      apiKey: process.env.TOLGEE_API_KEY || process.env.NEXT_PUBLIC_TOLGEE_API_KEY || '',
+      defaultNs: 'common',
+      ns: namespaces,
+      fallbackNs: 'common',
+      staticData: {
+        ar: async () => {
+          const common = await import('../../../public/locales/ar/common.json');
+          return common.default;
+        },
+        en: async () => {
+          const common = await import('../../../public/locales/en/common.json');
+          return common.default;
+        },
       },
-      en: async () => {
-        const common = await import('../../../public/locales/en/common.json');
-        return common.default;
-      },
-    },
-  });
+    });
 
-  tolgee.use(FormatIcu());
+  await tolgee.run();
 
-  const t = await tolgee.getTranslate();
+  const t = tolgee.t;
 
   return { t, tolgee };
 }
