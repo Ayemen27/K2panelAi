@@ -15,7 +15,14 @@ export function PostgresAdapter(): Adapter {
          RETURNING id, name, email, email_verified as "emailVerified", image`,
         [user.name || null, user.email, user.emailVerified || null, user.image || null]
       );
-      return result[0];
+      const row = result[0];
+      return {
+        id: row.id,
+        name: row.name,
+        email: row.email,
+        emailVerified: row.emailVerified ? new Date(row.emailVerified) : null,
+        image: row.image
+      };
     },
 
     // Get User
@@ -24,7 +31,15 @@ export function PostgresAdapter(): Adapter {
         'SELECT id, name, email, email_verified as "emailVerified", image FROM users WHERE id = $1',
         [id]
       );
-      return result[0] || null;
+      if (!result[0]) return null;
+      const row = result[0];
+      return {
+        id: row.id,
+        name: row.name,
+        email: row.email,
+        emailVerified: row.emailVerified ? new Date(row.emailVerified) : null,
+        image: row.image
+      };
     },
 
     // Get User by Email
@@ -33,7 +48,15 @@ export function PostgresAdapter(): Adapter {
         'SELECT id, name, email, email_verified as "emailVerified", image FROM users WHERE email = $1',
         [email]
       );
-      return result[0] || null;
+      if (!result[0]) return null;
+      const row = result[0];
+      return {
+        id: row.id,
+        name: row.name,
+        email: row.email,
+        emailVerified: row.emailVerified ? new Date(row.emailVerified) : null,
+        image: row.image
+      };
     },
 
     // Get User by Account
@@ -45,7 +68,15 @@ export function PostgresAdapter(): Adapter {
          WHERE a.provider = $1 AND a.provider_account_id = $2`,
         [provider, providerAccountId]
       );
-      return result[0] || null;
+      if (!result[0]) return null;
+      const row = result[0];
+      return {
+        id: row.id,
+        name: row.name,
+        email: row.email,
+        emailVerified: row.emailVerified ? new Date(row.emailVerified) : null,
+        image: row.image
+      };
     },
 
     // Update User
@@ -60,7 +91,17 @@ export function PostgresAdapter(): Adapter {
          RETURNING id, name, email, email_verified as "emailVerified", image`,
         [user.id, user.name, user.email, user.emailVerified, user.image]
       );
-      return result[0];
+      if (!result[0]) {
+        throw new Error(`User with id ${user.id} not found`);
+      }
+      const row = result[0];
+      return {
+        id: row.id,
+        name: row.name,
+        email: row.email,
+        emailVerified: row.emailVerified ? new Date(row.emailVerified) : null,
+        image: row.image
+      };
     },
 
     // Delete User
@@ -107,7 +148,12 @@ export function PostgresAdapter(): Adapter {
          RETURNING session_token as "sessionToken", user_id as "userId", expires`,
         [session.sessionToken, session.userId, session.expires]
       );
-      return result[0];
+      const row = result[0];
+      return {
+        sessionToken: row.sessionToken,
+        userId: row.userId,
+        expires: new Date(row.expires)
+      };
     },
 
     // Get Session and User
@@ -129,13 +175,13 @@ export function PostgresAdapter(): Adapter {
         session: {
           sessionToken: row.sessionToken,
           userId: row.userId,
-          expires: row.expires,
+          expires: new Date(row.expires),
         },
         user: {
           id: row.id,
           name: row.name,
           email: row.email,
-          emailVerified: row.emailVerified,
+          emailVerified: row.emailVerified ? new Date(row.emailVerified) : null,
           image: row.image,
         },
       };
@@ -150,7 +196,13 @@ export function PostgresAdapter(): Adapter {
          RETURNING session_token as "sessionToken", user_id as "userId", expires`,
         [session.sessionToken, session.expires]
       );
-      return result[0] || null;
+      if (!result[0]) return null;
+      const row = result[0];
+      return {
+        sessionToken: row.sessionToken,
+        userId: row.userId,
+        expires: new Date(row.expires)
+      };
     },
 
     // Delete Session
@@ -160,24 +212,35 @@ export function PostgresAdapter(): Adapter {
 
     // Create Verification Token
     async createVerificationToken(token: VerificationToken): Promise<VerificationToken | null | undefined> {
-      const result = await query<VerificationToken>(
+      const result = await query<any>(
         `INSERT INTO verification_tokens (identifier, token, expires)
          VALUES ($1, $2, $3)
          RETURNING identifier, token, expires`,
         [token.identifier, token.token, token.expires]
       );
-      return result[0];
+      const row = result[0];
+      return {
+        identifier: row.identifier,
+        token: row.token,
+        expires: new Date(row.expires)
+      };
     },
 
     // Use Verification Token
     async useVerificationToken({ identifier, token }: { identifier: string; token: string }): Promise<VerificationToken | null> {
-      const result = await query<VerificationToken>(
+      const result = await query<any>(
         `DELETE FROM verification_tokens
          WHERE identifier = $1 AND token = $2
          RETURNING identifier, token, expires`,
         [identifier, token]
       );
-      return result[0] || null;
+      if (!result[0]) return null;
+      const row = result[0];
+      return {
+        identifier: row.identifier,
+        token: row.token,
+        expires: new Date(row.expires)
+      };
     },
   };
 }

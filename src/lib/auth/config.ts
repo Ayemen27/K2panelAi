@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { PostgresAdapter } from './postgres-adapter';
 import { query } from '../db/postgres';
 import bcrypt from 'bcrypt';
+import { env } from '../env';
 
 export const authOptions: NextAuthOptions = {
   adapter: PostgresAdapter(),
@@ -20,7 +21,7 @@ export const authOptions: NextAuthOptions = {
         }
         
         const users = await query<any>(
-          'SELECT * FROM users WHERE email = $1',
+          'SELECT id, email, name, image, password, email_verified as "emailVerified" FROM users WHERE email = $1',
           [credentials.email]
         );
         
@@ -40,7 +41,8 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.name,
-          image: user.image
+          image: user.image,
+          emailVerified: user.emailVerified
         };
       }
     })
@@ -72,5 +74,5 @@ export const authOptions: NextAuthOptions = {
     }
   },
   
-  secret: process.env.NEXTAUTH_SECRET || 'development-secret-change-in-production',
+  secret: env.NEXTAUTH_SECRET,
 };
