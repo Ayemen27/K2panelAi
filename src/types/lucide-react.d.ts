@@ -25,6 +25,7 @@ declare module 'lucide-react' {
   export const User: LucideIcon;
   export const Chrome: LucideIcon;
   export const Apple: LucideIcon;
+  export const Github: LucideIcon;
   export const CheckCircle2: LucideIcon;
   export const Twitter: LucideIcon;
   export const ChevronLeft: LucideIcon;

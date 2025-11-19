@@ -7,7 +7,7 @@ export async function getServerTranslations(
   namespaces: string[] = ['common']
 ) {
   const tolgee = createServerInstance({
-    language: locale,
+    defaultLanguage: locale,
     supportedLanguages: SUPPORTED_LOCALES,
     apiUrl: process.env.NEXT_PUBLIC_TOLGEE_API_URL || '',
     apiKey: process.env.TOLGEE_API_KEY || process.env.NEXT_PUBLIC_TOLGEE_API_KEY || '',
