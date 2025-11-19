@@ -1,18 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { withAuth } from 'next-auth/middleware';
 
-const SESSION_COOKIE_NAME = '__session';
-const LOGIN_PATH = '/login';
-
-export async function middleware(request: NextRequest) {
-  const sessionCookie = request.cookies.get(SESSION_COOKIE_NAME)?.value;
-
-  if (!sessionCookie) {
-    return NextResponse.redirect(new URL(LOGIN_PATH, request.url));
-  }
-
-  return NextResponse.next();
-}
+export default withAuth({
+  pages: {
+    signIn: '/login',
+  },
+});
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/profile/:path*', '/replView/:path*'],
+  matcher: ['/dashboard/:path*', '/profile/:path*', '/replView/:path*', '/workspace/:path*'],
 };
