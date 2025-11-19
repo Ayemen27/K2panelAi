@@ -35,6 +35,16 @@ export abstract class BaseRepository<T> {
     }
   }
 
+  protected async execute(text: string, params?: any[]): Promise<number> {
+    const client = await pool.connect();
+    try {
+      const result = await client.query(text, params);
+      return result.rowCount || 0;
+    } finally {
+      client.release();
+    }
+  }
+
   protected async queryOne<R = any>(text: string, params?: any[]): Promise<R | null> {
     const rows = await this.query<R>(text, params);
     return rows.length > 0 ? rows[0] : null;
@@ -104,8 +114,8 @@ export abstract class BaseRepository<T> {
   }
 
   async delete(id: string): Promise<boolean> {
-    const query = `DELETE FROM ${this.tableName} WHERE id = $1 RETURNING *`;
-    const result = await this.query(query, [id]);
-    return result.length > 0;
+    const query = `DELETE FROM ${this.tableName} WHERE id = $1`;
+    const rowCount = await this.execute(query, [id]);
+    return rowCount > 0;
   }
 }

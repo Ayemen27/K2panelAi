@@ -25,18 +25,33 @@ export async function migrate(): Promise<MigrationResult> {
   try {
     console.log('🔄 Starting database migration...');
 
-    console.log('📝 Step 1: Executing base schema.sql...');
-    const schemaPath = path.join(process.cwd(), 'src/lib/db/schema.sql');
-    const schema = fs.readFileSync(schemaPath, 'utf-8');
-    await client.query(schema);
-    results.migrations.push('schema.sql (idempotent)');
-    console.log('✅ Base schema created successfully');
+    console.log('📝 Step 1: Ensuring migrations tracking table exists...');
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS pg_migrations (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) UNIQUE NOT NULL,
+        executed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    console.log('✅ Migrations tracking table ready');
 
     console.log('📝 Step 2: Checking for applied migrations...');
     const appliedMigrations = await getAppliedMigrations(client);
     console.log(`📊 Already applied: ${appliedMigrations.size} migrations`);
 
-    console.log('📝 Step 3: Running new migration files...');
+    console.log('📝 Step 3: Running base schema.sql if not already applied...');
+    if (!appliedMigrations.has('000_base_schema.sql')) {
+      const schemaPath = path.join(process.cwd(), 'src/lib/db/schema.sql');
+      const schema = fs.readFileSync(schemaPath, 'utf-8');
+      await client.query(schema);
+      await recordMigration(client, '000_base_schema.sql');
+      results.migrations.push('000_base_schema.sql');
+      console.log('✅ Base schema created successfully');
+    } else {
+      console.log('⏭️ Base schema already applied, skipping...');
+    }
+
+    console.log('📝 Step 4: Running new migration files...');
     const migrationsDir = path.join(process.cwd(), 'database', 'migrations');
     
     if (fs.existsSync(migrationsDir)) {

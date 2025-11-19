@@ -5,10 +5,15 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(255),
+  username VARCHAR(255) UNIQUE,
+  first_name VARCHAR(255),
+  last_name VARCHAR(255),
   email VARCHAR(255) UNIQUE NOT NULL,
   email_verified TIMESTAMP,
   image TEXT,
+  avatar_url TEXT,
   password VARCHAR(255),
+  is_active BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
@@ -51,6 +56,7 @@ CREATE TABLE IF NOT EXISTS verification_tokens (
 
 -- إنشاء فهارس لتحسين الأداء
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
 CREATE INDEX IF NOT EXISTS idx_accounts_user_id ON accounts(user_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_session_token ON sessions(session_token);
