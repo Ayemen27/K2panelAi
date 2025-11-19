@@ -11,8 +11,6 @@ function i18nMiddleware(request: NextRequest) {
 
   if (
     pathname.startsWith('/_next') ||
-    pathname.startsWith('/_document') ||
-    pathname.startsWith('/_error') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/static') ||
     pathname.includes('.') ||
