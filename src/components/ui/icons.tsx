@@ -66,8 +66,6 @@ const PaintbrushIcon = () => (
 
 export const Icons = {
   nextjs: ServerIcon,
-  firebase: FlameIcon,
-  stripe: CreditCardIcon,
   lock: LockIcon,
   smartphone: SmartphoneIcon,
   paintbrush: PaintbrushIcon,
