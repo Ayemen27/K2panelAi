@@ -1,43 +1,31 @@
 import { DataSources, createDataSources } from '../graphql/datasources';
 import { GraphQLError } from 'graphql';
-import { verifyFirebaseSession } from './verifyFirebaseSession';
 import { cookies } from 'next/headers';
 
-export interface FirebaseUser {
+// TODO: Developer 3 will replace this with NextAuth
+export interface User {
   uid: string;
   email?: string | null;
 }
 
 export interface GraphQLContext {
   dataSources: DataSources;
-  currentUser?: FirebaseUser | null;
+  currentUser?: User | null;
 }
 
 export async function createContext(req: {
   headers: { get: (name: string) => string | null };
 }): Promise<GraphQLContext> {
-  let sessionToken: string | undefined;
+  // TODO: Developer 3 will implement NextAuth session verification here
+  // For now, returning null user (unauthenticated)
+  let currentUser: User | null = null;
 
-  const cookieStore = cookies();
-  const sessionCookie = cookieStore.get('__session');
-  if (sessionCookie) {
-    sessionToken = sessionCookie.value;
-  } else {
-    const authHeader = req.headers.get('authorization');
-    sessionToken = authHeader?.replace('Bearer ', '') || undefined;
-  }
-
-  let currentUser = null;
-
-  if (sessionToken) {
-    const result = await verifyFirebaseSession(sessionToken);
-    if (result.success && result.uid) {
-      currentUser = {
-        uid: result.uid,
-        email: result.email,
-      };
-    }
-  }
+  // Placeholder for future NextAuth implementation
+  // const cookieStore = cookies();
+  // const sessionCookie = cookieStore.get('next-auth.session-token');
+  // if (sessionCookie) {
+  //   currentUser = await verifyNextAuthSession(sessionCookie.value);
+  // }
 
   return {
     dataSources: createDataSources(),
@@ -45,7 +33,7 @@ export async function createContext(req: {
   };
 }
 
-export function requireAuth(context: GraphQLContext): FirebaseUser {
+export function requireAuth(context: GraphQLContext): User {
   if (!context.currentUser) {
     throw new GraphQLError('Authentication required', {
       extensions: {
@@ -58,6 +46,6 @@ export function requireAuth(context: GraphQLContext): FirebaseUser {
   return context.currentUser;
 }
 
-export function optionalAuth(context: GraphQLContext): FirebaseUser | null {
+export function optionalAuth(context: GraphQLContext): User | null {
   return context.currentUser || null;
 }
