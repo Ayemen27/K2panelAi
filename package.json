@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@apollo/client": "^4.0.9",
-    "@apollo/server": "^5.1.0",
-    "@as-integrations/next": "^4.1.0",
+    "@apollo/server": "^4.11.2",
+    "@as-integrations/next": "^3.1.0",
     "@graphql-tools/schema": "^10.0.29",
     "@graphql-tools/utils": "^10.10.3",
     "@radix-ui/react-checkbox": "^1.1.1",
