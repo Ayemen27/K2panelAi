@@ -1,0 +1,5 @@
+{
+  "404": "Page not found",
+  "500": "Server error",
+  "network": "Network error"
+}

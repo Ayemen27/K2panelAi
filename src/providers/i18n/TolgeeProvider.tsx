@@ -4,12 +4,11 @@ import { TolgeeProvider as TolgeeReactProvider, Tolgee, DevTools } from '@tolgee
 import { FormatIcu } from '@tolgee/format-icu';
 import { ReactNode, useMemo } from 'react';
 import { SupportedLocale, DEFAULT_LOCALE, FALLBACK_LOCALE, SUPPORTED_LOCALES, NAMESPACES } from '@/lib/i18n/constants';
-import { loadAllNamespaces } from '@/lib/i18n/namespace-loader';
 
 export interface TolgeeProviderProps {
   children: ReactNode;
   locale: SupportedLocale;
-  staticData?: Record<string, any>;
+  staticData: Record<string, any>;
 }
 
 export function TolgeeProvider({ children, locale, staticData }: TolgeeProviderProps) {
@@ -18,6 +17,11 @@ export function TolgeeProvider({ children, locale, staticData }: TolgeeProviderP
   const isDevelopment = process.env.NODE_ENV === 'development';
 
   const tolgee = useMemo(() => {
+    const wrappedStaticData: Record<string, () => Promise<any>> = {};
+    Object.keys(staticData).forEach((loc) => {
+      wrappedStaticData[loc] = async () => staticData[loc];
+    });
+
     const instance = Tolgee()
       .use(FormatIcu());
 
@@ -34,24 +38,7 @@ export function TolgeeProvider({ children, locale, staticData }: TolgeeProviderP
       defaultNs: 'common',
       ns: [...NAMESPACES],
       fallbackNs: 'common',
-      staticData: staticData || {
-        ar: async () => {
-          try {
-            return await loadAllNamespaces('ar', NAMESPACES);
-          } catch (error) {
-            console.error('[TolgeeProvider] Failed to load namespaces for ar:', error);
-            return {};
-          }
-        },
-        en: async () => {
-          try {
-            return await loadAllNamespaces('en', NAMESPACES);
-          } catch (error) {
-            console.error('[TolgeeProvider] Failed to load namespaces for en:', error);
-            return {};
-          }
-        },
-      },
+      staticData: wrappedStaticData,
     });
   }, [locale, apiUrl, apiKey, isDevelopment, staticData]);
 

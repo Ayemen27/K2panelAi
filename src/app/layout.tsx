@@ -5,7 +5,7 @@ import { ApolloProvider } from "@/lib/apollo/ApolloProvider";
 import { TolgeeProvider } from "@/providers/i18n";
 import { DEFAULT_LOCALE, getLocaleDirection, type SupportedLocale } from "@/lib/i18n/constants";
 import { headers } from 'next/headers';
-import { resolveLocale } from "@/lib/i18n/server-utils";
+import { resolveLocale, loadStaticDataForProvider } from "@/lib/i18n/server-utils";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -81,6 +81,14 @@ export default async function RootLayout({
   }
 
   const direction = getLocaleDirection(locale);
+  
+  let staticData: Record<string, any> = {};
+  try {
+    staticData = await loadStaticDataForProvider(locale);
+  } catch (error) {
+    console.error('[RootLayout] Failed to load static data:', error);
+    staticData = { ar: {}, en: {} };
+  }
 
   return (
     <html lang={locale} dir={direction}>
@@ -92,7 +100,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ApolloProvider>
-          <TolgeeProvider locale={locale}>
+          <TolgeeProvider locale={locale} staticData={staticData}>
             {children}
           </TolgeeProvider>
         </ApolloProvider>

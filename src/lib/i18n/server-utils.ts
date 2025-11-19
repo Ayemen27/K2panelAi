@@ -1,13 +1,58 @@
 
 import { Tolgee, DevTools } from '@tolgee/web';
 import { FormatIcu } from '@tolgee/format-icu';
-import { DEFAULT_LOCALE, SUPPORTED_LOCALES, NAMESPACES, type SupportedLocale, type Namespace } from './constants';
+import { DEFAULT_LOCALE, FALLBACK_LOCALE, SUPPORTED_LOCALES, NAMESPACES, type SupportedLocale, type Namespace } from './constants';
 import { loadAllNamespaces } from './namespace-loader';
+
+export async function loadStaticDataForProvider(
+  locale: SupportedLocale = DEFAULT_LOCALE
+): Promise<Record<string, any>> {
+  const locales = [locale, FALLBACK_LOCALE];
+  const uniqueLocales = Array.from(new Set(locales));
+
+  const results = await Promise.allSettled(
+    uniqueLocales.map(async (loc) => {
+      try {
+        const data = await loadAllNamespaces(loc, NAMESPACES);
+        return { locale: loc, data };
+      } catch (error) {
+        console.error(`[loadStaticDataForProvider] Failed to load namespaces for ${loc}:`, error);
+        return { locale: loc, data: {} };
+      }
+    })
+  );
+
+  const staticData: Record<string, any> = {};
+
+  results.forEach((result) => {
+    if (result.status === 'fulfilled') {
+      const { locale: loc, data } = result.value;
+      staticData[loc] = data;
+    } else {
+      console.error('[loadStaticDataForProvider] Promise rejected:', result.reason);
+    }
+  });
+
+  uniqueLocales.forEach((loc) => {
+    if (!staticData[loc]) {
+      staticData[loc] = {};
+    }
+  });
+
+  return staticData;
+}
 
 export async function getServerTranslations(
   locale: SupportedLocale = DEFAULT_LOCALE,
   namespaces: string[] = ['common']
 ) {
+  const staticData = await loadStaticDataForProvider(locale);
+  
+  const wrappedStaticData: Record<string, () => Promise<any>> = {};
+  Object.keys(staticData).forEach((loc) => {
+    wrappedStaticData[loc] = async () => staticData[loc];
+  });
+
   const tolgee = Tolgee()
     .use(FormatIcu())
     .init({
@@ -18,24 +63,7 @@ export async function getServerTranslations(
       defaultNs: 'common',
       ns: namespaces,
       fallbackNs: 'common',
-      staticData: {
-        ar: async () => {
-          try {
-            return await loadAllNamespaces('ar', NAMESPACES);
-          } catch (error) {
-            console.error('[getServerTranslations] Failed to load namespaces for ar:', error);
-            return {};
-          }
-        },
-        en: async () => {
-          try {
-            return await loadAllNamespaces('en', NAMESPACES);
-          } catch (error) {
-            console.error('[getServerTranslations] Failed to load namespaces for en:', error);
-            return {};
-          }
-        },
-      },
+      staticData: wrappedStaticData,
     });
 
   await tolgee.run();
