@@ -31,7 +31,10 @@ function i18nMiddleware(request: NextRequest) {
 
   if (hasLocaleInPath) {
     locale = firstSegment as SupportedLocale;
-    pathWithoutLocale = '/' + pathSegments.slice(1).join('/') || '/';
+    pathWithoutLocale = '/' + pathSegments.slice(1).join('/');
+    if (!pathWithoutLocale || pathWithoutLocale === '/') {
+      pathWithoutLocale = '/';
+    }
   } else {
     const cookieLocale = request.cookies.get(LOCALE_COOKIE_NAME)?.value;
     const acceptLanguage = request.headers.get('accept-language');
@@ -44,19 +47,23 @@ function i18nMiddleware(request: NextRequest) {
     pathWithoutLocale = pathname;
   }
 
-  const url = request.nextUrl.clone();
-  url.pathname = hasLocaleInPath ? pathWithoutLocale : pathname;
-  
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set('x-locale', locale);
-  
-  const response = hasLocaleInPath 
-    ? NextResponse.rewrite(url, {
-        request: { headers: requestHeaders },
-      })
-    : NextResponse.next({
-        request: { headers: requestHeaders },
-      });
+
+  let response: NextResponse;
+
+  if (hasLocaleInPath) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathWithoutLocale;
+    
+    response = NextResponse.rewrite(url, {
+      request: { headers: requestHeaders },
+    });
+  } else {
+    response = NextResponse.next({
+      request: { headers: requestHeaders },
+    });
+  }
   
   response.cookies.set(LOCALE_COOKIE_NAME, locale, {
     path: '/',

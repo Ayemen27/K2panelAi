@@ -2,7 +2,7 @@
 
 import { TolgeeProvider as TolgeeReactProvider, Tolgee, DevTools } from '@tolgee/react';
 import { FormatIcu } from '@tolgee/format-icu';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { SupportedLocale, DEFAULT_LOCALE, FALLBACK_LOCALE, SUPPORTED_LOCALES, NAMESPACES } from '@/lib/i18n/constants';
 import { loadAllNamespaces } from '@/lib/i18n/namespace-loader';
 
@@ -17,10 +17,15 @@ export function TolgeeProvider({ children, locale, staticData }: TolgeeProviderP
   const apiKey = process.env.NEXT_PUBLIC_TOLGEE_API_KEY;
   const isDevelopment = process.env.NODE_ENV === 'development';
 
-  const tolgee = Tolgee()
-    .use(FormatIcu())
-    .use(DevTools())
-    .init({
+  const tolgee = useMemo(() => {
+    const instance = Tolgee()
+      .use(FormatIcu());
+
+    if (isDevelopment) {
+      instance.use(DevTools());
+    }
+
+    return instance.init({
       language: locale || DEFAULT_LOCALE,
       fallbackLanguage: FALLBACK_LOCALE,
       availableLanguages: [...SUPPORTED_LOCALES],
@@ -30,16 +35,25 @@ export function TolgeeProvider({ children, locale, staticData }: TolgeeProviderP
       ns: [...NAMESPACES],
       fallbackNs: 'common',
       staticData: staticData || {
-        [locale]: async () => {
+        ar: async () => {
           try {
-            return await loadAllNamespaces(locale, NAMESPACES);
+            return await loadAllNamespaces('ar', NAMESPACES);
           } catch (error) {
-            console.error(`[TolgeeProvider] Failed to load namespaces for ${locale}:`, error);
+            console.error('[TolgeeProvider] Failed to load namespaces for ar:', error);
+            return {};
+          }
+        },
+        en: async () => {
+          try {
+            return await loadAllNamespaces('en', NAMESPACES);
+          } catch (error) {
+            console.error('[TolgeeProvider] Failed to load namespaces for en:', error);
             return {};
           }
         },
       },
     });
+  }, [locale, apiUrl, apiKey, isDevelopment, staticData]);
 
   return (
     <TolgeeReactProvider tolgee={tolgee} fallback="Loading...">

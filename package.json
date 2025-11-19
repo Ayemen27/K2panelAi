@@ -58,7 +58,8 @@
     "sanity": "^3.88.2",
     "styled-components": "^6.1.13",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "tailwindcss-rtl": "^0.9.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
