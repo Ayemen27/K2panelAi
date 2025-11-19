@@ -31,36 +31,36 @@ export const DEFAULT_OG_IMAGE = '/images/og-default.png' as const;
  */
 export const SOCIAL_LINKS = {
   twitter: {
-    url: 'https://twitter.com/replit',
-    handle: '@replit',
+    url: 'https://twitter.com/k2panel',
+    handle: '@k2panel',
     label: 'Twitter',
   },
   github: {
-    url: 'https://github.com/replit',
+    url: 'https://github.com/k2panel',
     label: 'GitHub',
   },
   linkedin: {
-    url: 'https://www.linkedin.com/company/replit',
+    url: 'https://www.linkedin.com/company/k2panel',
     label: 'LinkedIn',
   },
   youtube: {
-    url: 'https://www.youtube.com/c/Replit',
+    url: 'https://www.youtube.com/c/K2Panel',
     label: 'YouTube',
   },
   discord: {
-    url: 'https://replit.com/discord',
+    url: 'https://k2panel.ai/discord',
     label: 'Discord',
   },
   facebook: {
-    url: 'https://www.facebook.com/replitHQ',
+    url: 'https://www.facebook.com/k2panel',
     label: 'Facebook',
   },
   instagram: {
-    url: 'https://www.instagram.com/replit',
+    url: 'https://www.instagram.com/k2panel',
     label: 'Instagram',
   },
   tiktok: {
-    url: 'https://www.tiktok.com/@replit',
+    url: 'https://www.tiktok.com/@k2panel',
     label: 'TikTok',
   },
 } as const;
@@ -69,10 +69,10 @@ export const SOCIAL_LINKS = {
  * Contact information
  */
 export const CONTACT_INFO = {
-  email: 'contact@replit.com',
-  support: 'support@replit.com',
-  press: 'press@replit.com',
-  careers: 'https://replit.com/careers',
+  email: 'contact@k2panel.ai',
+  support: 'support@k2panel.ai',
+  press: 'press@k2panel.ai',
+  careers: 'https://k2panel.ai/careers',
 } as const;
 
 /**
@@ -130,7 +130,7 @@ export const FEATURES = {
 export const ENDPOINTS = {
   api: process.env.NEXT_PUBLIC_API_URL || '/api',
   graphql: process.env.NEXT_PUBLIC_GRAPHQL_URL || '/api/graphql',
-  cdn: process.env.NEXT_PUBLIC_CDN_URL || 'https://cdn.replit.com',
+  cdn: process.env.NEXT_PUBLIC_CDN_URL || 'https://cdn.k2panel.ai',
 } as const;
 
 /**

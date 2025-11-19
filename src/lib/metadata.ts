@@ -135,7 +135,7 @@ export const jsonLdGenerators = {
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'Customer Support',
-        email: 'support@replit.com',
+        email: 'support@k2panel.ai',
       },
     }),
 

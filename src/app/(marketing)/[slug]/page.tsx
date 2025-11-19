@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Page - Replit",
-  description: "Replit page",
+  title: "Page - K2Panel Ai",
+  description: "K2Panel Ai page",
 };
 
 type PageProps = {

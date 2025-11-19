@@ -5,7 +5,7 @@
 - **SaaS Boilerplate** (Next.js 14) for the frontend dashboard
 - **ServerAutomationAI** (Python AI Agents) for remote server management
 
-The goal is to build a Replit-like workspace platform with AI-powered server automation, web terminal, file manager, code editor, and multi-tenant support.
+The goal is to build a K2Panel Ai workspace platform with AI-powered server automation, web terminal, file manager, code editor, and multi-tenant support.
 
 ## User Preferences
 - أفضل لغة بسيطة
