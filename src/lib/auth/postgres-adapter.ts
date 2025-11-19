@@ -9,10 +9,10 @@ export function PostgresAdapter(): Adapter {
   return {
     // Create User
     async createUser(user: Omit<AdapterUser, 'id'>): Promise<AdapterUser> {
-      const result = await query<AdapterUser>(
+      const result = await query<any>(
         `INSERT INTO users (name, email, email_verified, image)
          VALUES ($1, $2, $3, $4)
-         RETURNING id, name, email, email_verified, image`,
+         RETURNING id, name, email, email_verified as "emailVerified", image`,
         [user.name || null, user.email, user.emailVerified || null, user.image || null]
       );
       return result[0];
@@ -20,8 +20,8 @@ export function PostgresAdapter(): Adapter {
 
     // Get User
     async getUser(id: string): Promise<AdapterUser | null> {
-      const result = await query<AdapterUser>(
-        'SELECT id, name, email, email_verified, image FROM users WHERE id = $1',
+      const result = await query<any>(
+        'SELECT id, name, email, email_verified as "emailVerified", image FROM users WHERE id = $1',
         [id]
       );
       return result[0] || null;
@@ -29,8 +29,8 @@ export function PostgresAdapter(): Adapter {
 
     // Get User by Email
     async getUserByEmail(email: string): Promise<AdapterUser | null> {
-      const result = await query<AdapterUser>(
-        'SELECT id, name, email, email_verified, image FROM users WHERE email = $1',
+      const result = await query<any>(
+        'SELECT id, name, email, email_verified as "emailVerified", image FROM users WHERE email = $1',
         [email]
       );
       return result[0] || null;
@@ -38,8 +38,8 @@ export function PostgresAdapter(): Adapter {
 
     // Get User by Account
     async getUserByAccount({ provider, providerAccountId }: { provider: string; providerAccountId: string }): Promise<AdapterUser | null> {
-      const result = await query<AdapterUser>(
-        `SELECT u.id, u.name, u.email, u.email_verified, u.image
+      const result = await query<any>(
+        `SELECT u.id, u.name, u.email, u.email_verified as "emailVerified", u.image
          FROM users u
          JOIN accounts a ON u.id = a.user_id
          WHERE a.provider = $1 AND a.provider_account_id = $2`,
@@ -50,14 +50,14 @@ export function PostgresAdapter(): Adapter {
 
     // Update User
     async updateUser(user: Partial<AdapterUser> & { id: string }): Promise<AdapterUser> {
-      const result = await query<AdapterUser>(
+      const result = await query<any>(
         `UPDATE users
          SET name = COALESCE($2, name),
              email = COALESCE($3, email),
              email_verified = COALESCE($4, email_verified),
              image = COALESCE($5, image)
          WHERE id = $1
-         RETURNING id, name, email, email_verified, image`,
+         RETURNING id, name, email, email_verified as "emailVerified", image`,
         [user.id, user.name, user.email, user.emailVerified, user.image]
       );
       return result[0];
@@ -101,10 +101,10 @@ export function PostgresAdapter(): Adapter {
 
     // Create Session
     async createSession(session: { sessionToken: string; userId: string; expires: Date }): Promise<AdapterSession> {
-      const result = await query<AdapterSession>(
+      const result = await query<any>(
         `INSERT INTO sessions (session_token, user_id, expires)
          VALUES ($1, $2, $3)
-         RETURNING id, session_token, user_id, expires`,
+         RETURNING session_token as "sessionToken", user_id as "userId", expires`,
         [session.sessionToken, session.userId, session.expires]
       );
       return result[0];
@@ -112,10 +112,10 @@ export function PostgresAdapter(): Adapter {
 
     // Get Session and User
     async getSessionAndUser(sessionToken: string): Promise<{ session: AdapterSession; user: AdapterUser } | null> {
-      const result = await query<AdapterSession & AdapterUser>(
+      const result = await query<any>(
         `SELECT 
-           s.id as session_id, s.session_token, s.user_id, s.expires,
-           u.id, u.name, u.email, u.email_verified, u.image
+           s.session_token as "sessionToken", s.user_id as "userId", s.expires,
+           u.id, u.name, u.email, u.email_verified as "emailVerified", u.image
          FROM sessions s
          JOIN users u ON s.user_id = u.id
          WHERE s.session_token = $1 AND s.expires > NOW()`,
@@ -127,15 +127,15 @@ export function PostgresAdapter(): Adapter {
       const row = result[0];
       return {
         session: {
-          sessionToken: row.session_token,
-          userId: row.user_id,
+          sessionToken: row.sessionToken,
+          userId: row.userId,
           expires: row.expires,
         },
         user: {
           id: row.id,
           name: row.name,
           email: row.email,
-          emailVerified: row.email_verified,
+          emailVerified: row.emailVerified,
           image: row.image,
         },
       };
@@ -143,11 +143,11 @@ export function PostgresAdapter(): Adapter {
 
     // Update Session
     async updateSession(session: Partial<AdapterSession> & { sessionToken: string }): Promise<AdapterSession | null | undefined> {
-      const result = await query<AdapterSession>(
+      const result = await query<any>(
         `UPDATE sessions
          SET expires = COALESCE($2, expires)
          WHERE session_token = $1
-         RETURNING id, session_token, user_id, expires`,
+         RETURNING session_token as "sessionToken", user_id as "userId", expires`,
         [session.sessionToken, session.expires]
       );
       return result[0] || null;
