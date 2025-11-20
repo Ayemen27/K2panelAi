@@ -1,9 +1,10 @@
-
 import type { Metadata } from "next";
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
-  title: "تسجيل الدخول - Replit",
-  description: "سجل دخولك إلى منصة Replit للتطوير",
+  title: "تسجيل الدخول - K2Panel Ai",
+  description: "سجل دخولك إلى منصة K2Panel Ai للتطوير",
 };
 
 export default function AuthLayout({
@@ -12,8 +13,12 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="auth-layout min-h-screen bg-white">
-      {children}
+    <div className="auth-layout min-h-screen flex flex-col bg-white">
+      <Header />
+      <main className="flex-1">
+        {children}
+      </main>
+      <Footer />
     </div>
   );
 }

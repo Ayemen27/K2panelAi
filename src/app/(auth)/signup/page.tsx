@@ -80,28 +80,28 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex relative overflow-hidden">
+    <div className="flex relative overflow-hidden bg-gradient-to-br from-purple-50 via-pink-50 to-red-50">
       {/* خلفية متحركة احترافية */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-pink-50 to-red-50">
+      <div className="absolute inset-0">
         <div className="absolute top-0 -left-4 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
         <div className="absolute top-0 -right-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
 
       {/* القسم الأيسر - النموذج */}
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 relative z-10">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-8 py-12 lg:py-16 relative z-10">
         <div className="w-full max-w-md">
           {/* بطاقة طائرة مع ظلال */}
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 sm:p-10 space-y-6 border border-white/20 transform transition-all duration-300 hover:shadow-3xl hover:-translate-y-1">
             {/* الشعار والعنوان */}
             <div className="text-center space-y-2">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 text-white text-2xl font-bold mb-4 shadow-lg">
-              R
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-600 text-white text-xl font-bold mb-3 shadow-lg">
+              K2
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
               {t('signup.title')}
             </h1>
-            <p className="text-gray-600 text-sm sm:text-base">
+            <p className="text-gray-600 text-sm">
               {t('signup.subtitle')}
             </p>
           </div>
