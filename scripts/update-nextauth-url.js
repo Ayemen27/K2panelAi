@@ -21,6 +21,24 @@ const ENV_FILE = path.join(__dirname, '..', '.env.local');
 const SERVER_URL = 'https://k2panel.online';
 
 /**
+ * قراءة PORT من .env.local
+ */
+function readPortFromEnv() {
+  try {
+    if (fs.existsSync(ENV_FILE)) {
+      const envContent = fs.readFileSync(ENV_FILE, 'utf-8');
+      const portMatch = envContent.match(/^PORT=(.+)$/m);
+      if (portMatch) {
+        return portMatch[1].trim();
+      }
+    }
+  } catch (error) {
+    console.warn('⚠️ تحذير: لم يتم قراءة PORT من .env.local');
+  }
+  return '5000'; // القيمة الافتراضية
+}
+
+/**
  * التحقق من صحة URL
  */
 function validateUrl(url) {
@@ -88,7 +106,7 @@ function detectEnvironment() {
   console.warn('   - SERVER_ENV=production للسيرفر');
   console.warn('   - NEXTAUTH_URL_OVERRIDE=https://your-domain.com');
   
-  const port = process.env.PORT || '5000';
+  const port = readPortFromEnv();
   return {
     type: 'local',
     url: `http://localhost:${port}`
