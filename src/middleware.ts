@@ -2,7 +2,7 @@ import { withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { SUPPORTED_LOCALES, type SupportedLocale } from './lib/i18n/constants';
-import { resolveLocale } from './lib/i18n/server-utils';
+import { resolveLocale } from './lib/i18n/locale-utils';
 
 const LOCALE_COOKIE_NAME = 'NEXT_LOCALE';
 
