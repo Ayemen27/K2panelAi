@@ -48,7 +48,7 @@ export async function GET() {
     await archive.finalize();
     const buffer = await archivePromise;
 
-    return new NextResponse(buffer, {
+    return new NextResponse(buffer as unknown as BodyInit, {
       headers: {
         'Content-Type': 'application/zip',
         'Content-Disposition': `attachment; filename="translations-${Date.now()}.zip"`
