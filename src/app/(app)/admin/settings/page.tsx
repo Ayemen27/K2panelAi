@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import { useEffect } from 'react';
-import { Settings, Save } from 'lucide-react';
+import { Settings, CheckCircle2 } from 'lucide-react';
 import { AdminLayout } from '@/components/layout/AdminLayout';
 import { useTranslate } from '@/lib/i18n/hooks';
 
@@ -48,7 +48,7 @@ export default function AdminSettingsPage() {
               </div>
             </div>
             <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:shadow-lg transition-shadow">
-              <Save className="w-5 h-5" />
+              <CheckCircle2 className="w-5 h-5" />
               {t('settings.save')}
             </button>
           </div>
