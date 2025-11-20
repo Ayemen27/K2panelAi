@@ -143,7 +143,8 @@ export class DatabaseIntrospector {
   }
 
   private async getTableStats(tableName: string): Promise<{ rowCount: number; sizeBytes: number }> {
-    const countResult = await pool.query(`SELECT COUNT(*) as count FROM ${tableName}`);
+    const sanitizedTableName = this.sanitizeIdentifier(tableName);
+    const countResult = await pool.query(`SELECT COUNT(*) as count FROM "${sanitizedTableName}"`);
     const sizeResult = await pool.query(
       `SELECT pg_total_relation_size($1) as size`,
       [tableName]
@@ -153,6 +154,13 @@ export class DatabaseIntrospector {
       rowCount: parseInt(countResult.rows[0].count, 10),
       sizeBytes: parseInt(sizeResult.rows[0].size, 10),
     };
+  }
+
+  private sanitizeIdentifier(identifier: string): string {
+    if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(identifier)) {
+      throw new Error(`Invalid identifier: ${identifier}`);
+    }
+    return identifier.replace(/"/g, '""');
   }
 
   async getAllForeignKeys(): Promise<ForeignKeyInfo[]> {

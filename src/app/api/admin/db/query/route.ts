@@ -1,7 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { queryService } from '@/server/db-admin/QueryService';
+import { requireAdminAuth } from '@/lib/auth/api-auth';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const authError = await requireAdminAuth();
+  if (authError) return authError;
+
   try {
     const body = await request.json();
     const { query, timeout } = body;
@@ -27,7 +31,10 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authError = await requireAdminAuth();
+  if (authError) return authError;
+
   try {
     const history = queryService.getQueryHistory(50);
 

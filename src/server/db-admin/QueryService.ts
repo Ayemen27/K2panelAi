@@ -28,7 +28,11 @@ export class QueryService {
       const client = await pool.connect();
       
       try {
-        await client.query(`SET statement_timeout = ${timeout}`);
+        const sanitizedTimeout = parseInt(timeout.toString(), 10);
+        if (isNaN(sanitizedTimeout) || sanitizedTimeout < 0 || sanitizedTimeout > 300000) {
+          throw new Error('Invalid timeout value');
+        }
+        await client.query('SET statement_timeout = $1', [sanitizedTimeout]);
         
         const result = await client.query(query);
         const executionTime = Date.now() - startTime;

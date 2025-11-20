@@ -17,6 +17,13 @@ export interface PaginatedResult<T> {
 }
 
 export class DataService {
+  private sanitizeIdentifier(identifier: string): string {
+    if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(identifier)) {
+      throw new Error(`Invalid identifier: ${identifier}`);
+    }
+    return identifier.replace(/"/g, '""');
+  }
+
   async getTableData<T = any>(
     tableName: string,
     options: PaginationOptions = {}
@@ -24,22 +31,27 @@ export class DataService {
     const { page = 1, perPage = 25, sortBy = 'id', sortOrder = 'desc', filters = {} } = options;
     const offset = (page - 1) * perPage;
 
+    const sanitizedTableName = this.sanitizeIdentifier(tableName);
+    const sanitizedSortBy = this.sanitizeIdentifier(sortBy);
+    const sanitizedSortOrder = sortOrder === 'asc' ? 'ASC' : 'DESC';
+
     let whereClause = '';
     const whereParams: any[] = [];
     
     if (Object.keys(filters).length > 0) {
       const conditions = Object.entries(filters).map(([key, value], index) => {
+        const sanitizedKey = this.sanitizeIdentifier(key);
         whereParams.push(value);
-        return `${key} = $${index + 1}`;
+        return `"${sanitizedKey}" = $${index + 1}`;
       });
       whereClause = `WHERE ${conditions.join(' AND ')}`;
     }
 
-    const countQuery = `SELECT COUNT(*) as count FROM ${tableName} ${whereClause}`;
+    const countQuery = `SELECT COUNT(*) as count FROM "${sanitizedTableName}" ${whereClause}`;
     const dataQuery = `
-      SELECT * FROM ${tableName}
+      SELECT * FROM "${sanitizedTableName}"
       ${whereClause}
-      ORDER BY ${sortBy} ${sortOrder.toUpperCase()}
+      ORDER BY "${sanitizedSortBy}" ${sanitizedSortOrder}
       LIMIT $${whereParams.length + 1} OFFSET $${whereParams.length + 2}
     `;
 
@@ -61,13 +73,14 @@ export class DataService {
   }
 
   async createRow(tableName: string, data: Record<string, any>): Promise<any> {
+    const sanitizedTableName = this.sanitizeIdentifier(tableName);
     const keys = Object.keys(data);
     const values = Object.values(data);
     const placeholders = keys.map((_, i) => `$${i + 1}`).join(', ');
-    const columns = keys.join(', ');
+    const sanitizedColumns = keys.map(k => `"${this.sanitizeIdentifier(k)}"`).join(', ');
 
     const query = `
-      INSERT INTO ${tableName} (${columns})
+      INSERT INTO "${sanitizedTableName}" (${sanitizedColumns})
       VALUES (${placeholders})
       RETURNING *
     `;
@@ -77,12 +90,13 @@ export class DataService {
   }
 
   async updateRow(tableName: string, id: string, data: Record<string, any>): Promise<any> {
+    const sanitizedTableName = this.sanitizeIdentifier(tableName);
     const keys = Object.keys(data);
     const values = Object.values(data);
-    const setClause = keys.map((key, i) => `${key} = $${i + 2}`).join(', ');
+    const setClause = keys.map((key, i) => `"${this.sanitizeIdentifier(key)}" = $${i + 2}`).join(', ');
 
     const query = `
-      UPDATE ${tableName}
+      UPDATE "${sanitizedTableName}"
       SET ${setClause}
       WHERE id = $1
       RETURNING *
@@ -93,18 +107,21 @@ export class DataService {
   }
 
   async deleteRow(tableName: string, id: string): Promise<boolean> {
-    const query = `DELETE FROM ${tableName} WHERE id = $1`;
+    const sanitizedTableName = this.sanitizeIdentifier(tableName);
+    const query = `DELETE FROM "${sanitizedTableName}" WHERE id = $1`;
     const result = await pool.query(query, [id]);
     return (result.rowCount || 0) > 0;
   }
 
   async exportToJSON(tableName: string): Promise<any[]> {
-    const result = await pool.query(`SELECT * FROM ${tableName}`);
+    const sanitizedTableName = this.sanitizeIdentifier(tableName);
+    const result = await pool.query(`SELECT * FROM "${sanitizedTableName}"`);
     return result.rows;
   }
 
   async exportToCSV(tableName: string): Promise<string> {
-    const result = await pool.query(`SELECT * FROM ${tableName}`);
+    const sanitizedTableName = this.sanitizeIdentifier(tableName);
+    const result = await pool.query(`SELECT * FROM "${sanitizedTableName}"`);
     
     if (result.rows.length === 0) {
       return '';

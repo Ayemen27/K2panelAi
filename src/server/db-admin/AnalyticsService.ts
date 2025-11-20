@@ -44,7 +44,8 @@ export class AnalyticsService {
 
     let totalRows = 0;
     for (const table of tables.rows) {
-      const countResult = await pool.query(`SELECT COUNT(*) as count FROM ${table.table_name}`);
+      const tableName = this.sanitizeIdentifier(table.table_name);
+      const countResult = await pool.query(`SELECT COUNT(*) as count FROM "${tableName}"`);
       totalRows += parseInt(countResult.rows[0].count, 10);
     }
 
@@ -75,7 +76,8 @@ export class AnalyticsService {
     const stats: TableStats[] = [];
 
     for (const row of result.rows) {
-      const countResult = await pool.query(`SELECT COUNT(*) as count FROM ${row.tablename}`);
+      const tableName = this.sanitizeIdentifier(row.tablename);
+      const countResult = await pool.query(`SELECT COUNT(*) as count FROM "${tableName}"`);
       
       stats.push({
         tableName: row.tablename,
@@ -142,7 +144,8 @@ export class AnalyticsService {
 
     const history = [];
     for (const table of tables.rows) {
-      const countResult = await pool.query(`SELECT COUNT(*) as count FROM ${table.table_name}`);
+      const tableName = this.sanitizeIdentifier(table.table_name);
+      const countResult = await pool.query(`SELECT COUNT(*) as count FROM "${tableName}"`);
       history.push({
         tableName: table.table_name,
         rowCount: parseInt(countResult.rows[0].count, 10),
@@ -151,6 +154,13 @@ export class AnalyticsService {
     }
 
     return history;
+  }
+
+  private sanitizeIdentifier(identifier: string): string {
+    if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(identifier)) {
+      throw new Error(`Invalid identifier: ${identifier}`);
+    }
+    return identifier.replace(/"/g, '""');
   }
 }
 

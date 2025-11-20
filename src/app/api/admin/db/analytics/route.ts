@@ -1,7 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { analyticsService } from '@/server/db-admin/AnalyticsService';
+import { requireAdminAuth } from '@/lib/auth/api-auth';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authError = await requireAdminAuth();
+  if (authError) return authError;
+
   try {
     const [dbStats, tableStats, connections, growth] = await Promise.all([
       analyticsService.getDatabaseStats(),

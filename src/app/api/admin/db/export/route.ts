@@ -1,7 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { dataService } from '@/server/db-admin/DataService';
+import { requireAdminAuth } from '@/lib/auth/api-auth';
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  const authError = await requireAdminAuth();
+  if (authError) return authError;
+
   try {
     const { searchParams } = new URL(request.url);
     const table = searchParams.get('table');

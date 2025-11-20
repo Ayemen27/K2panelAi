@@ -1,7 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { dataService } from '@/server/db-admin/DataService';
+import { requireAdminAuth } from '@/lib/auth/api-auth';
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  const authError = await requireAdminAuth();
+  if (authError) return authError;
+
   try {
     const { searchParams } = new URL(request.url);
     const tableName = searchParams.get('table');
@@ -36,7 +40,10 @@ export async function GET(request: Request) {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const authError = await requireAdminAuth();
+  if (authError) return authError;
+
   try {
     const body = await request.json();
     const { table, data } = body;
@@ -62,7 +69,10 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
+  const authError = await requireAdminAuth();
+  if (authError) return authError;
+
   try {
     const body = await request.json();
     const { table, id, data } = body;
@@ -88,7 +98,10 @@ export async function PUT(request: Request) {
   }
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
+  const authError = await requireAdminAuth();
+  if (authError) return authError;
+
   try {
     const { searchParams } = new URL(request.url);
     const table = searchParams.get('table');
