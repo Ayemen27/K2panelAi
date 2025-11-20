@@ -38,15 +38,18 @@ export default function LoginPage() {
         return;
       }
 
+      // Small delay to ensure session is established
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
       // Get session to check user role
       const response = await fetch('/api/auth/session');
       const session = await response.json();
       
       // Redirect based on role
       if (session?.user?.role === 'admin') {
-        router.push('/admin/dashboard');
+        window.location.href = '/admin/dashboard';
       } else {
-        router.push('/dashboard');
+        window.location.href = '/dashboard';
       }
     } catch (err) {
       setError(t('login.error.generic'));
