@@ -7,11 +7,8 @@ import { loadAllNamespaces } from './namespace-loader';
 export async function loadStaticDataForProvider(
   locale: SupportedLocale = DEFAULT_LOCALE
 ): Promise<Record<string, any>> {
-  const locales = [locale, FALLBACK_LOCALE];
-  const uniqueLocales = Array.from(new Set(locales));
-
   const results = await Promise.allSettled(
-    uniqueLocales.map(async (loc) => {
+    SUPPORTED_LOCALES.map(async (loc) => {
       try {
         const data = await loadAllNamespaces(loc, NAMESPACES);
         return { locale: loc, data };
@@ -33,8 +30,9 @@ export async function loadStaticDataForProvider(
     }
   });
 
-  uniqueLocales.forEach((loc) => {
+  SUPPORTED_LOCALES.forEach((loc) => {
     if (!staticData[loc]) {
+      console.warn(`[loadStaticDataForProvider] Missing data for ${loc}, using empty fallback`);
       staticData[loc] = {};
     }
   });
