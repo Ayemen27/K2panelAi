@@ -13,8 +13,9 @@ export function getReplitUrl(): string {
     return `https://${domain}`;
   }
   
-  // في Development: استخدم localhost
-  return 'http://localhost:3000';
+  // في Development: استخدم localhost مع البورت من البيئة
+  const port = process.env.PORT || '5000';
+  return `http://localhost:${port}`;
 }
 
 /**

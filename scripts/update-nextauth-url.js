@@ -88,9 +88,10 @@ function detectEnvironment() {
   console.warn('   - SERVER_ENV=production للسيرفر');
   console.warn('   - NEXTAUTH_URL_OVERRIDE=https://your-domain.com');
   
+  const port = process.env.PORT || '5000';
   return {
     type: 'local',
-    url: 'http://localhost:5000'
+    url: `http://localhost:${port}`
   };
 }
 

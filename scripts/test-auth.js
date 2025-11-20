@@ -10,13 +10,14 @@
 
 const http = require('http');
 
-const BASE_URL = 'http://localhost:5000';
+const PORT = process.env.PORT || '5000';
+const BASE_URL = `http://localhost:${PORT}`;
 
 function makeRequest(method, path, data) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'localhost',
-      port: 5000,
+      port: parseInt(PORT, 10),
       path: path,
       method: method,
       headers: {

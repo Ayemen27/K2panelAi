@@ -45,8 +45,9 @@ function getGraphQLEndpoint() {
     return `${protocol}://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co/api/graphql`;
   }
   
-  // Development fallback
-  return 'http://localhost:5000/api/graphql';
+  // Development fallback - استخدم البورت من متغير البيئة
+  const port = process.env.PORT || '5000';
+  return `http://localhost:${port}/api/graphql`;
 }
 
 export function makeClient() {
