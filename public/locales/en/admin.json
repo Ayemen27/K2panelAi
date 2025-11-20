@@ -1,8 +1,7 @@
-
 {
   "navigation": {
     "dashboard": "Dashboard",
-    "dashboardDesc": "Overview",
+    "dashboardDesc": "System Overview",
     "database": "Database",
     "databaseDesc": "Database Management",
     "translations": "Translations",
@@ -74,5 +73,6 @@
     "users": "User Management",
     "settings": "Settings"
   },
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "logout": "Logout"
 }

@@ -31,25 +31,30 @@ export function BottomNav() {
     },
     {
       labelKey: 'bottomNav.projects',
-      href: '/dashboard/projects',
+      href: '/projects',
       icon: FolderKanban,
     },
     {
       labelKey: 'bottomNav.new',
-      href: '/dashboard/new',
+      href: '/new',
       icon: Plus,
     },
     {
       labelKey: 'bottomNav.settings',
-      href: '/dashboard/settings',
+      href: '/settings',
       icon: Settings,
     },
     {
       labelKey: 'bottomNav.profile',
-      href: '/dashboard/profile',
+      href: '/profile',
       icon: User,
     },
   ];
+
+  // إخفاء الشريط السفلي في صفحات الإدارة
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-lg">
