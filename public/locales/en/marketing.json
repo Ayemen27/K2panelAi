@@ -1,8 +1,44 @@
 {
   "home": {
-    "title": "Home Page"
+    "title": "Home Page",
+    "hero": {
+      "title": "Build software faster",
+      "subtitle": "The collaborative browser-based IDE that makes it easy to write, run, and deploy code from anywhere",
+      "cta": {
+        "primary": "Start building for free",
+        "secondary": "Explore projects"
+      }
+    },
+    "featured": {
+      "title": "⭐ Featured Projects",
+      "viewAll": "View all projects",
+      "noProjects": "No featured projects available at the moment."
+    },
+    "stats": {
+      "developers": "Developers building on K2Panel",
+      "projects": "Projects created",
+      "languages": "Programming languages supported"
+    },
+    "cta": {
+      "title": "Ready to start building?",
+      "subtitle": "Join millions of developers creating amazing things on K2Panel",
+      "button": "Get started for free"
+    }
   },
   "pricing": {
-    "title": "Pricing"
+    "title": "Pricing",
+    "subtitle": "Choose the perfect plan for your needs"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "subtitle": "Explore amazing projects built on K2Panel"
+  },
+  "help": {
+    "title": "Help",
+    "subtitle": "Get help with K2Panel"
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "Discover our products and solutions"
   }
 }

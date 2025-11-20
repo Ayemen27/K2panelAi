@@ -1,19 +1,26 @@
 import type { Metadata } from "next";
 import { GalleryContent } from "./GalleryContent";
+import { getServerTranslations } from '@/lib/i18n/server-utils';
+import { getLocale } from '@/lib/i18n/locale-utils';
 
 export const metadata: Metadata = {
-  title: "Gallery - Replit",
-  description: "Explore projects built on Replit",
+  title: "Gallery - K2Panel",
+  description: "Explore projects built on K2Panel",
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const locale = getLocale();
+  const { t } = await getServerTranslations(locale, ['marketing']);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Gallery</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            {t('gallery.title')}
+          </h1>
           <p className="text-lg text-gray-600">
-            Explore amazing projects built on Replit
+            {t('gallery.subtitle')}
           </p>
         </div>
         <GalleryContent />

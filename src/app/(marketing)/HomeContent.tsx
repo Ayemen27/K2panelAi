@@ -11,8 +11,10 @@ import {
 import { ProjectCard } from '@/components/ui/ProjectCard';
 import { ProjectGridSkeleton } from '@/components/ui/LoadingSpinner';
 import { ErrorMessage } from '@/components/ui/ErrorMessage';
+import { useTranslate } from '@/lib/i18n/hooks';
 
 export function HomeContent() {
+  const { t } = useTranslate('marketing');
   const { data, loading, error, refetch } = useQuery<
     GetFeaturedProjectsData,
     GetFeaturedProjectsVariables
@@ -28,23 +30,23 @@ export function HomeContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Build software faster
+              {t('home.hero.title')}
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
-              The collaborative browser-based IDE that makes it easy to write, run, and deploy code from anywhere
+              {t('home.hero.subtitle')}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/signup"
                 className="px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors shadow-lg"
               >
-                Start building for free
+                {t('home.hero.cta.primary')}
               </Link>
               <Link
                 href="/gallery"
                 className="px-8 py-4 bg-blue-700 text-white rounded-lg font-semibold hover:bg-blue-800 transition-colors border border-blue-400"
               >
-                Explore projects
+                {t('home.hero.cta.secondary')}
               </Link>
             </div>
           </div>
@@ -55,14 +57,14 @@ export function HomeContent() {
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <h2 className="text-3xl font-bold text-gray-900">
-              ⭐ Featured Projects
+              {t('home.featured.title')}
             </h2>
           </div>
           <Link
             href="/gallery"
             className="flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold transition-colors"
           >
-            View all projects
+            {t('home.featured.viewAll')}
             <Icons.arrowRight className="w-5 h-5" />
           </Link>
         </div>
@@ -83,7 +85,7 @@ export function HomeContent() {
         ) : (
           <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
             <p className="text-gray-600 text-lg">
-              No featured projects available at the moment.
+              {t('home.featured.noProjects')}
             </p>
           </div>
         )}
@@ -97,7 +99,7 @@ export function HomeContent() {
                 10M+
               </div>
               <div className="text-gray-600">
-                Developers building on Replit
+                {t('home.stats.developers')}
               </div>
             </div>
             <div className="p-6">
@@ -105,7 +107,7 @@ export function HomeContent() {
                 50M+
               </div>
               <div className="text-gray-600">
-                Projects created
+                {t('home.stats.projects')}
               </div>
             </div>
             <div className="p-6">
@@ -113,7 +115,7 @@ export function HomeContent() {
                 100+
               </div>
               <div className="text-gray-600">
-                Programming languages supported
+                {t('home.stats.languages')}
               </div>
             </div>
           </div>
@@ -123,16 +125,16 @@ export function HomeContent() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-center text-white">
           <h2 className="text-3xl font-bold mb-4">
-            Ready to start building?
+            {t('home.cta.title')}
           </h2>
           <p className="text-xl mb-8 text-blue-100">
-            Join millions of developers creating amazing things on Replit
+            {t('home.cta.subtitle')}
           </p>
           <Link
             href="/signup"
             className="inline-block px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors shadow-lg"
           >
-            Get started for free
+            {t('home.cta.button')}
           </Link>
         </div>
       </div>
