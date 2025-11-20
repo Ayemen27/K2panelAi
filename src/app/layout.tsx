@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ApolloProvider } from "@/lib/apollo/ApolloProvider";
 import { TolgeeProvider } from "@/providers/i18n";
+import { SessionProvider } from "@/providers/SessionProvider";
 import { DEFAULT_LOCALE, getLocaleDirection, type SupportedLocale } from "@/lib/i18n/constants";
 import { headers } from 'next/headers';
 import { resolveLocale, getStaticDataForSSR } from "@/lib/i18n/server-utils";
@@ -113,11 +114,13 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ApolloProvider>
-          <TolgeeProvider locale={locale} staticData={staticData}>
-            {children}
-          </TolgeeProvider>
-        </ApolloProvider>
+        <SessionProvider>
+          <ApolloProvider>
+            <TolgeeProvider locale={locale} staticData={staticData}>
+              {children}
+            </TolgeeProvider>
+          </ApolloProvider>
+        </SessionProvider>
       </body>
     </html>
   );
