@@ -11,43 +11,45 @@ import {
   User
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslate } from '@/lib/i18n/hooks';
 
 interface NavItem {
-  label: string;
+  labelKey: string;
   href: string;
   icon: any;
 }
 
-const navItems: NavItem[] = [
-  {
-    label: 'الرئيسية',
-    href: '/dashboard',
-    icon: LayoutDashboard,
-  },
-  {
-    label: 'المشاريع',
-    href: '/dashboard/projects',
-    icon: FolderKanban,
-  },
-  {
-    label: 'جديد',
-    href: '/dashboard/new',
-    icon: Plus,
-  },
-  {
-    label: 'الإعدادات',
-    href: '/dashboard/settings',
-    icon: Settings,
-  },
-  {
-    label: 'الحساب',
-    href: '/dashboard/profile',
-    icon: User,
-  },
-];
-
 export function BottomNav() {
   const pathname = usePathname();
+  const { t } = useTranslate('layout');
+
+  const navItems: NavItem[] = [
+    {
+      labelKey: 'bottomNav.home',
+      href: '/dashboard',
+      icon: LayoutDashboard,
+    },
+    {
+      labelKey: 'bottomNav.projects',
+      href: '/dashboard/projects',
+      icon: FolderKanban,
+    },
+    {
+      labelKey: 'bottomNav.new',
+      href: '/dashboard/new',
+      icon: Plus,
+    },
+    {
+      labelKey: 'bottomNav.settings',
+      href: '/dashboard/settings',
+      icon: Settings,
+    },
+    {
+      labelKey: 'bottomNav.profile',
+      href: '/dashboard/profile',
+      icon: User,
+    },
+  ];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 shadow-lg">
@@ -111,14 +113,14 @@ export function BottomNav() {
                       : 'text-gray-500 dark:text-gray-400'
                   )}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </span>
               )}
 
               {/* Center Label */}
               {isCenter && (
                 <span className="text-[10px] font-medium text-gray-700 dark:text-gray-300 mt-1">
-                  {item.label}
+                  {t(item.labelKey)}
                 </span>
               )}
 

@@ -1,5 +1,19 @@
 {
   "overview": "نظرة عامة",
   "settings": "الإعدادات",
-  "profile": "الملف الشخصي"
+  "profile": "الملف الشخصي",
+  "admin": {
+    "title": "لوحة تحكم المسؤول",
+    "stats": {
+      "totalUsers": "إجمالي المستخدمين",
+      "activeProjects": "المشاريع النشطة",
+      "servers": "الخوادم",
+      "revenue": "الإيرادات"
+    },
+    "quickActions": "إجراءات سريعة",
+    "manageUsers": "إدارة المستخدمين",
+    "viewServers": "عرض الخوادم",
+    "systemSettings": "إعدادات النظام",
+    "viewReports": "عرض التقارير"
+  }
 }

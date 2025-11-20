@@ -85,6 +85,13 @@
       "close": "إغلاق القائمة"
     }
   },
+  "bottomNav": {
+    "home": "الرئيسية",
+    "projects": "المشاريع",
+    "new": "جديد",
+    "settings": "الإعدادات",
+    "profile": "الحساب"
+  },
   "footer": {
     "product": {
       "title": "المنتج",

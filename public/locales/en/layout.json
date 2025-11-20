@@ -85,6 +85,13 @@
       "close": "Close menu"
     }
   },
+  "bottomNav": {
+    "home": "Home",
+    "projects": "Projects",
+    "new": "New",
+    "settings": "Settings",
+    "profile": "Profile"
+  },
   "footer": {
     "product": {
       "title": "Product",

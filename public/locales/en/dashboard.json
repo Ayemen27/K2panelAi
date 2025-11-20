@@ -1,5 +1,19 @@
 {
   "overview": "Overview",
   "settings": "Settings",
-  "profile": "Profile"
+  "profile": "Profile",
+  "admin": {
+    "title": "Admin Dashboard",
+    "stats": {
+      "totalUsers": "Total Users",
+      "activeProjects": "Active Projects",
+      "servers": "Servers",
+      "revenue": "Revenue"
+    },
+    "quickActions": "Quick Actions",
+    "manageUsers": "Manage Users",
+    "viewServers": "View Servers",
+    "systemSettings": "System Settings",
+    "viewReports": "View Reports"
+  }
 }

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useSession } from 'next-auth/react';
@@ -21,6 +20,8 @@ import {
   TrendingUp,
   Clock
 } from 'lucide-react';
+import { useTranslate } from '@/lib/i18n/hooks';
+
 
 interface NavItem {
   label: string;
@@ -63,6 +64,7 @@ const navigationItems: NavItem[] = [
 ];
 
 export default function AdminDashboardPage() {
+  const { t } = useTranslate('dashboard');
   const { data: session, status } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [stats, setStats] = useState({
@@ -76,7 +78,7 @@ export default function AdminDashboardPage() {
     if (status === 'unauthenticated') {
       redirect('/login');
     }
-    
+
     if (status === 'authenticated' && session?.user?.role !== 'admin') {
       redirect('/dashboard');
     }
@@ -95,7 +97,7 @@ export default function AdminDashboardPage() {
 
   const statsCards = [
     {
-      title: 'إجمالي المستخدمين',
+      title: t('admin.stats.totalUsers'),
       value: stats.totalUsers,
       icon: Users,
       color: 'from-blue-500 to-blue-600',
@@ -103,7 +105,7 @@ export default function AdminDashboardPage() {
       textColor: 'text-blue-600'
     },
     {
-      title: 'المشاريع النشطة',
+      title: t('admin.stats.activeProjects'),
       value: stats.activeProjects,
       icon: Activity,
       color: 'from-green-500 to-green-600',
@@ -111,7 +113,7 @@ export default function AdminDashboardPage() {
       textColor: 'text-green-600'
     },
     {
-      title: 'حجم قاعدة البيانات',
+      title: t('admin.stats.databaseSize'),
       value: stats.databaseSize,
       icon: Database,
       color: 'from-purple-500 to-purple-600',
@@ -119,7 +121,7 @@ export default function AdminDashboardPage() {
       textColor: 'text-purple-600'
     },
     {
-      title: 'مفاتيح الترجمة',
+      title: t('admin.stats.translationKeys'),
       value: stats.translationKeys,
       icon: Languages,
       color: 'from-orange-500 to-orange-600',
@@ -145,8 +147,8 @@ export default function AdminDashboardPage() {
                   A
                 </div>
                 <div>
-                  <h2 className="font-bold text-gray-900">لوحة الإدارة</h2>
-                  <p className="text-xs text-gray-500">مسؤول النظام</p>
+                  <h2 className="font-bold text-gray-900">{t('admin.sidebar.title')}</h2>
+                  <p className="text-xs text-gray-500">{t('admin.sidebar.role')}</p>
                 </div>
               </div>
               <button 
@@ -156,9 +158,9 @@ export default function AdminDashboardPage() {
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-3 border border-purple-200">
-              <p className="text-sm font-medium text-purple-900">مرحباً</p>
+              <p className="text-sm font-medium text-purple-900">{t('admin.welcomeMessage')}</p>
               <p className="text-xs text-purple-700 truncate">{session?.user?.email}</p>
             </div>
           </div>
@@ -201,7 +203,7 @@ export default function AdminDashboardPage() {
               className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
             >
               <ChevronRight className="w-4 h-4 rotate-180" />
-              العودة للوحة المستخدم
+              {t('admin.returnToUserDashboard')}
             </Link>
           </div>
         </div>
@@ -228,15 +230,15 @@ export default function AdminDashboardPage() {
                 <Menu className="w-6 h-6 text-gray-600" />
               </button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">لوحة التحكم الرئيسية</h1>
-                <p className="text-sm text-gray-500 mt-1">نظرة عامة على النظام</p>
+                <h1 className="text-2xl font-bold text-gray-900">{t('admin.dashboard.title')}</h1>
+                <p className="text-sm text-gray-500 mt-1">{t('admin.dashboard.overview')}</p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <div className="hidden sm:flex items-center gap-2 px-3 py-2 bg-green-100 text-green-800 rounded-lg">
                 <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse" />
-                <span className="text-sm font-medium">النظام يعمل</span>
+                <span className="text-sm font-medium">{t('admin.systemStatus.online')}</span>
               </div>
             </div>
           </div>
@@ -267,9 +269,9 @@ export default function AdminDashboardPage() {
           <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
             <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
               <Shield className="w-6 h-6 text-purple-600" />
-              الإجراءات السريعة
+              {t('admin.quickActions')}
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {navigationItems.slice(1).map((item, idx) => (
                 <Link
@@ -297,14 +299,14 @@ export default function AdminDashboardPage() {
           <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
             <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
               <Clock className="w-6 h-6 text-blue-600" />
-              النشاط الأخير
+              {t('admin.recentActivity.title')}
             </h2>
-            
+
             <div className="space-y-3">
               {[
-                { action: 'تسجيل دخول مستخدم جديد', time: 'منذ 5 دقائق', type: 'info' },
-                { action: 'تحديث قاعدة البيانات', time: 'منذ 15 دقيقة', type: 'success' },
-                { action: 'رفع ملفات ترجمة', time: 'منذ ساعة', type: 'warning' }
+                { action: t('admin.recentActivity.userLogin'), time: 'منذ 5 دقائق', type: 'info' },
+                { action: t('admin.recentActivity.dbUpdate'), time: 'منذ 15 دقيقة', type: 'success' },
+                { action: t('admin.recentActivity.translationUpload'), time: 'منذ ساعة', type: 'warning' }
               ].map((activity, idx) => (
                 <div
                   key={idx}
@@ -327,29 +329,29 @@ export default function AdminDashboardPage() {
           {/* System Info */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl p-6 text-white shadow-lg">
-              <h3 className="text-lg font-bold mb-4">معلومات النظام</h3>
+              <h3 className="text-lg font-bold mb-4">{t('admin.systemInfo.title')}</h3>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-purple-100">إصدار النظام</span>
+                  <span className="text-purple-100">{t('admin.systemInfo.version')}</span>
                   <span className="font-bold">v1.0.0</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-purple-100">وقت التشغيل</span>
+                  <span className="text-purple-100">{t('admin.systemInfo.uptime')}</span>
                   <span className="font-bold">24 ساعة</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-purple-100">آخر نسخة احتياطية</span>
+                  <span className="text-purple-100">{t('admin.systemInfo.lastBackup')}</span>
                   <span className="font-bold">اليوم</span>
                 </div>
               </div>
             </div>
 
             <div className="bg-white rounded-2xl p-6 border-2 border-gray-200 shadow-lg">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">الأداء</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-4">{t('admin.performance.title')}</h3>
               <div className="space-y-3">
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">استخدام CPU</span>
+                    <span className="text-gray-600">{t('admin.performance.cpuUsage')}</span>
                     <span className="font-bold text-green-600">35%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -358,7 +360,7 @@ export default function AdminDashboardPage() {
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">استخدام الذاكرة</span>
+                    <span className="text-gray-600">{t('admin.performance.memoryUsage')}</span>
                     <span className="font-bold text-blue-600">62%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -367,7 +369,7 @@ export default function AdminDashboardPage() {
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">مساحة القرص</span>
+                    <span className="text-gray-600">{t('admin.performance.diskSpace')}</span>
                     <span className="font-bold text-purple-600">48%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
