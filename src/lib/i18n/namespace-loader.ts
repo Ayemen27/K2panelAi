@@ -11,6 +11,23 @@ export interface LoaderOptions {
 
 const loadedCache = new Map<string, Promise<NamespaceData>>();
 
+function flattenObject(obj: any, prefix: string = ''): Record<string, string> {
+  const result: Record<string, string> = {};
+  
+  for (const key in obj) {
+    const newKey = prefix ? `${prefix}.${key}` : key;
+    const value = obj[key];
+    
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      Object.assign(result, flattenObject(value, newKey));
+    } else {
+      result[newKey] = value;
+    }
+  }
+  
+  return result;
+}
+
 export async function loadNamespace(
   locale: SupportedLocale,
   namespace: Namespace
@@ -24,7 +41,7 @@ export async function loadNamespace(
   const loadPromise = (async () => {
     try {
       const module = await import(`../../../public/locales/${locale}/${namespace}.json`);
-      return module.default || {};
+      return flattenObject(module.default || {});
     } catch (error) {
       console.warn(`[i18n] Failed to load ${locale}/${namespace}.json:`, error);
       return {};
@@ -43,13 +60,14 @@ export async function loadAllNamespaces(
     namespaces.map(ns => loadNamespace(locale, ns))
   );
 
-  return results.reduce((acc, data, index) => {
+  const organized: NamespaceData = {};
+  
+  results.forEach((data, index) => {
     const namespace = namespaces[index];
-    return {
-      ...acc,
-      [namespace]: data,
-    };
-  }, {} as NamespaceData);
+    organized[namespace] = data;
+  });
+
+  return organized;
 }
 
 export async function loadStaticData(

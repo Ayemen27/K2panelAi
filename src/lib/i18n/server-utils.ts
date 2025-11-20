@@ -47,8 +47,8 @@ export async function getServerTranslations(
   const staticData = await loadStaticDataForProvider(locale);
   
   const wrappedStaticData: Record<string, () => Promise<any>> = {};
-  Object.keys(staticData).forEach((loc) => {
-    wrappedStaticData[loc] = async () => staticData[loc];
+  Object.keys(staticData).forEach((key) => {
+    wrappedStaticData[key] = async () => staticData[key];
   });
 
   const tolgee = Tolgee()
@@ -56,10 +56,8 @@ export async function getServerTranslations(
     .init({
       language: locale,
       availableLanguages: [...SUPPORTED_LOCALES],
-      apiUrl: process.env.NEXT_PUBLIC_TOLGEE_API_URL || '',
-      apiKey: process.env.TOLGEE_API_KEY || process.env.NEXT_PUBLIC_TOLGEE_API_KEY || '',
       defaultNs: 'common',
-      ns: namespaces,
+      ns: [...NAMESPACES],
       fallbackNs: 'common',
       staticData: wrappedStaticData,
     });
