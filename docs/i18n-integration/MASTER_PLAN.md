@@ -182,38 +182,46 @@ Component يستخدم useTranslate() أو getServerTranslations()
 
 ### المرحلة 3: ترجمة المكونات الأساسية (يوم 4-6)
 
-**المدة**: 12-16 ساعة
+**المدة**: 12-16 ساعة  
+**الحالة**: ✅ **مكتملة ومراجعة ومعتمدة** (20 نوفمبر 2025)  
+**مراجعة Architect**: ✅ **PASS**
 
 **المهام:**
 
 1. ✅ ترجمة Navigation
-   - روابط القائمة
-   - أزرار التنقل
-   - Mobile menu
+   - ✅ روابط القائمة (عبر getPrimaryNav + t())
+   - ✅ أزرار التنقل (عبر getSecondaryNav + t())
+   - ✅ Mobile menu (عبر getMobileNav + t())
 
 2. ✅ ترجمة Footer
-   - روابط Footer
-   - معلومات الشركة
-   - حقوق النشر
+   - ✅ روابط Footer (عبر getFooterColumns + t())
+   - ✅ معلومات الشركة (عبر getFooterBottom + t())
+   - ✅ حقوق النشر (عبر t('footer.copyright'))
 
 3. ✅ ترجمة صفحات Auth
-   - Login page
-   - Signup page
-   - رسائل التحقق
-   - رسائل الأخطاء
+   - ✅ Login page (عبر useTranslate('auth'))
+   - ✅ Signup page (عبر useTranslate('auth') + useTranslate('validation'))
+   - ✅ رسائل التحقق (عبر validation namespace)
+   - ✅ رسائل الأخطاء (عبر auth.login.error.*)
 
 4. ✅ إنشاء Language Switcher Component
-   - عرض اللغات المتاحة
-   - تبديل سلس
-   - حفظ التفضيلات
+   - ✅ عرض اللغات المتاحة (AR ⇄ EN)
+   - ✅ تبديل سلس (عبر useLanguage hook)
+   - ✅ حفظ التفضيلات (عبر NEXT_LOCALE cookie)
 
 **المخرجات:**
-- [ ] Navigation مترجم كاملاً
-- [ ] Footer مترجم كاملاً
-- [ ] Auth pages مترجمة كاملاً
-- [ ] Language Switcher يعمل
+- [x] Navigation مترجم كاملاً
+- [x] Footer مترجم كاملاً
+- [x] Auth pages مترجمة كاملاً
+- [x] Language Switcher يعمل
 
-**معايير القبول**: راجع [acceptance-criteria/phase-3-acceptance.md](./acceptance-criteria/phase-3-acceptance.md)
+**الإصلاحات الحرجة المنجزة:**
+- ✅ حل مشكلة Server/Client Components mismatch (staticData)
+- ✅ حل مشكلة Middleware Edge Runtime (dynamic imports)
+- ✅ فصل locale utilities إلى ملف منفصل (locale-utils.ts)
+
+**معايير القبول**: راجع [acceptance-criteria/phase-3-acceptance.md](./acceptance-criteria/phase-3-acceptance.md)  
+**تقرير الإكمال**: راجع [STAGE_3_COMPLETION_REPORT.md](./STAGE_3_COMPLETION_REPORT.md)
 
 ---
 
