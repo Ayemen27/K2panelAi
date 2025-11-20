@@ -245,25 +245,29 @@ npm run dev
 
 ### Integration Status
 - ✅ **Tolgee Platform Integration** - Connected to https://tolgee.binarjoinanelytic.info
-- ✅ **Project ID**: 2
-- ✅ **Languages**: Arabic (ar) + English (en)
-- ✅ **Translation Keys**: 189 unique keys
-- ✅ **Total Translations**: 378 (189 × 2 languages)
-- ✅ **Upload Success**: 100% ✅
+- ✅ **Project ID**: 2 (NEW - مشروع جديد بعد حذف القديم)
+- ✅ **Rate Limit**: معطّل (`TOLGEE_RATE_LIMIT_ENABLED: false`)
+- ✅ **Languages**: Arabic (ar, ID: 1000000005) + English (en, ID: 1000000004 - base)
+- ✅ **Translation System**: ديناميكي 100% (لا نصوص ثابتة)
+- ✅ **Translation Files**: 18 ملف (9 عربي + 9 إنجليزي)
+- ✅ **Total Translations**: ~378 مفتاح ترجمة
+- ✅ **Upload Success**: 100% ✅ (20 نوفمبر 2025 - مساءً)
 
 ### Files Structure
 ```
 public/locales/
-├── ar/                    # Arabic translations (189 keys)
-│   ├── auth.json         # 48 keys
-│   ├── cms.json          # 1 key
-│   ├── common.json       # 22 keys
-│   ├── dashboard.json    # 3 keys
-│   ├── errors.json       # 8 keys
-│   ├── layout.json       # 99 keys
-│   ├── marketing.json    # 2 keys
-│   └── validation.json   # 6 keys
-└── en/                    # English translations (189 keys)
+├── ar/                    # Arabic translations
+│   ├── admin.json        # 102 keys - لوحة الإدارة
+│   ├── auth.json         # 48 keys - تسجيل الدخول والتسجيل
+│   ├── cms.json          # 1 key - إدارة المحتوى
+│   ├── common.json       # 71 keys - الكلمات المشتركة
+│   ├── dashboard.json    # 3 keys - لوحة التحكم
+│   ├── errors.json       # 8 keys - رسائل الأخطاء
+│   ├── layout.json       # 99 keys - القوائم والتخطيط
+│   ├── marketing.json    # 2 keys - صفحات التسويق
+│   └── validation.json   # 6 keys - رسائل التحقق
+└── en/                    # English translations (نفس الهيكل)
+    ├── admin.json
     ├── auth.json
     ├── cms.json
     ├── common.json
@@ -290,9 +294,15 @@ npx tsx scripts/compare-translations.ts
 Add to `.env.local`:
 ```env
 NEXT_PUBLIC_TOLGEE_API_URL=https://tolgee.binarjoinanelytic.info
-NEXT_PUBLIC_TOLGEE_API_KEY=your_api_key_here
+NEXT_PUBLIC_TOLGEE_API_KEY=tgpat_i15b739qfo8shnk04hjri3uem8n9uolmt4qs3602upk56ru85r5
 NEXT_PUBLIC_TOLGEE_PROJECT_ID=2
 ```
+
+### Tolgee Admin Access
+- **URL**: https://tolgee.binarjoinanelytic.info
+- **Username**: admin
+- **Password**: admin
+- **Project**: k2panelai (ID: 2)
 
 ### Documentation
 - [Upload Success Report](./docs/i18n-integration/UPLOAD_SUCCESS_REPORT.md)
@@ -300,7 +310,37 @@ NEXT_PUBLIC_TOLGEE_PROJECT_ID=2
 
 ---
 
+### Translation System Architecture
+```typescript
+// ✅ نظام ترجمة ديناميكي
+const { t } = useTranslate('namespace');
+
+// مثال: صفحة تسجيل الدخول
+<h1>{t('login.title')}</h1>           // "مرحباً بعودتك"
+<Label>{t('login.email.label')}</Label>  // "البريد الإلكتروني"
+```
+
+**مميزات:**
+- ✅ لا نصوص ثابتة (Hard-coded) في الكود
+- ✅ تبديل اللغة في الوقت الفعلي
+- ✅ دعم RTL/LTR تلقائياً
+- ✅ SSR Support (Server-Side Rendering)
+- ✅ In-Context Editing في Development mode
+- ✅ جميع الصفحات مترجمة: Login, Signup, Dashboard, Admin
+
+---
+
 ## Recent Updates
+
+- **20 نوفمبر 2025 - مساءً**: 🌐 **إعادة مزامنة Tolgee مع مشروع جديد**
+  - ✅ تم حذف المشروع القديم وإنشاء مشروع جديد (k2panelai, ID: 2)
+  - ✅ إضافة اللغتين: العربية (ID: 1000000005) + English (ID: 1000000004 - base)
+  - ✅ رفع جميع الترجمات بنجاح: 18 ملف (9 عربي + 9 إنجليزي)
+  - ✅ API Key جديد: `tgpat_i15b...` (PAT Token)
+  - ✅ Rate Limit معطّل في Tolgee Server
+  - ✅ إجمالي الترجمات: ~378 مفتاح
+  - ✅ نظام الترجمة: **ديناميكي 100%** - لا نصوص ثابتة
+  - 📊 تم التحقق: جميع الترجمات موجودة وجاهزة للاستخدام
 
 - **20 نوفمبر 2025 - ليلاً**: 🔧 **تحديث شامل لإعدادات البورت (PORT)**
   - ✅ تم تحويل البورت إلى متغير بيئة قابل للتخصيص بالكامل
