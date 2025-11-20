@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -88,48 +89,48 @@ export default function TranslationsAdminPage() {
   const scripts = [
     {
       id: 'upload-translations',
-      name: 'رفع الترجمات',
-      description: 'رفع جميع ملفات الترجمات إلى Tolgee',
+      name: t('translationManagement.uploading'),
+      description: t('translationManagement.uploadDescription'),
       icon: Upload,
       command: 'bash scripts/upload-translations.sh',
       category: 'upload'
     },
     {
       id: 'upload-keys',
-      name: 'رفع المفاتيح',
-      description: 'رفع المفاتيح والترجمات باستخدام Keys API',
+      name: t('translationManagement.uploadKeys'),
+      description: t('translationManagement.uploadKeysDescription'),
       icon: Upload,
       command: 'npx tsx scripts/upload-keys-to-tolgee.ts',
       category: 'upload'
     },
     {
       id: 'verify-translations',
-      name: 'التحقق من الترجمات',
-      description: 'فحص جميع الترجمات في Tolgee',
+      name: t('translationManagement.verify'),
+      description: t('translationManagement.verifyDescription'),
       icon: CheckCircle2,
       command: 'npx tsx scripts/verify-translations.ts',
       category: 'verify'
     },
     {
       id: 'test-connection',
-      name: 'اختبار الاتصال',
-      description: 'فحص الاتصال بـ Tolgee API',
+      name: t('translationManagement.testConnection'),
+      description: t('translationManagement.testConnectionDescription'),
       icon: RefreshCw,
       command: 'npx tsx scripts/test-tolgee-connection.ts',
       category: 'verify'
     },
     {
       id: 'check-keys',
-      name: 'فحص المفاتيح',
-      description: 'عرض جميع المفاتيح في Tolgee',
+      name: t('translationManagement.checkKeys'),
+      description: t('translationManagement.checkKeysDescription'),
       icon: Eye,
       command: 'npx tsx scripts/check-tolgee-keys.ts',
       category: 'verify'
     },
     {
       id: 'get-admin-info',
-      name: 'معلومات المشروع',
-      description: 'جلب إحصائيات المشروع الكاملة',
+      name: t('translationManagement.projectInfo'),
+      description: t('translationManagement.projectInfoDescription'),
       icon: Database,
       command: 'npx tsx scripts/test-tolgee-admin.ts',
       category: 'info'
@@ -140,9 +141,9 @@ export default function TranslationsAdminPage() {
   const languages = ['all', 'ar', 'en'];
 
   const categories = [
-    { id: 'upload', name: 'رفع الترجمات', icon: Upload },
-    { id: 'verify', name: 'التحقق والفحص', icon: CheckCircle2 },
-    { id: 'info', name: 'المعلومات', icon: Database }
+    { id: 'upload', name: t('translationManagement.uploadCategory'), icon: Upload },
+    { id: 'verify', name: t('translationManagement.verifyCategory'), icon: CheckCircle2 },
+    { id: 'info', name: t('translationManagement.infoCategory'), icon: Database }
   ];
 
   useEffect(() => {
@@ -185,7 +186,7 @@ export default function TranslationsAdminPage() {
         ...prev,
         [scriptId]: {
           success: response.ok,
-          output: data.output || data.error || 'لا توجد مخرجات',
+          output: data.output || data.error || t('translationManagement.noOutput'),
           error: data.error,
           timestamp: new Date().toLocaleString('ar-SA'),
           keysCount: data.keysCount,
@@ -193,7 +194,6 @@ export default function TranslationsAdminPage() {
         }
       }));
 
-      // Refresh stats after operation
       fetchStats();
     } catch (error: any) {
       setResults(prev => ({
@@ -229,7 +229,7 @@ export default function TranslationsAdminPage() {
         ...prev,
         download: {
           success: true,
-          output: 'تم تنزيل الملفات بنجاح',
+          output: t('translationManagement.downloadSuccess'),
           timestamp: new Date().toLocaleString('ar-SA')
         }
       }));
@@ -253,6 +253,10 @@ export default function TranslationsAdminPage() {
     return Math.round((stats.successfulOperations / stats.totalOperations) * 100);
   };
 
+  const getLanguageName = (lang: string) => {
+    return lang === 'ar' ? t('translationManagement.arabic') : t('translationManagement.english');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-2 sm:p-4 lg:p-8" dir="rtl">
       <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
@@ -264,10 +268,10 @@ export default function TranslationsAdminPage() {
             </div>
             <div className="min-w-0 flex-1">
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent truncate">
-                إدارة الترجمات
+                {t('translationManagement.title')}
               </h1>
               <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                تنفيذ ومراقبة جميع سكربتات نظام الترجمة
+                {t('translationManagement.subtitle')}
               </p>
             </div>
           </div>
@@ -276,7 +280,7 @@ export default function TranslationsAdminPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                اختر Namespace
+                {t('translationManagement.selectNamespace')}
               </label>
               <select
                 value={selectedNamespace}
@@ -285,7 +289,7 @@ export default function TranslationsAdminPage() {
               >
                 {namespaces.map(ns => (
                   <option key={ns} value={ns}>
-                    {ns === 'all' ? 'جميع Namespaces' : ns}
+                    {ns === 'all' ? t('translationManagement.allNamespaces') : ns}
                   </option>
                 ))}
               </select>
@@ -293,7 +297,7 @@ export default function TranslationsAdminPage() {
 
             <div>
               <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                اختر اللغة
+                {t('translationManagement.selectLanguage')}
               </label>
               <select
                 value={selectedLanguage}
@@ -302,7 +306,7 @@ export default function TranslationsAdminPage() {
               >
                 {languages.map(lang => (
                   <option key={lang} value={lang}>
-                    {lang === 'all' ? 'جميع اللغات' : lang === 'ar' ? 'العربية' : 'English'}
+                    {lang === 'all' ? t('translationManagement.allLanguages') : getLanguageName(lang)}
                   </option>
                 ))}
               </select>
@@ -325,7 +329,7 @@ export default function TranslationsAdminPage() {
                     <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-blue-600 font-medium">إجمالي العمليات</p>
+                    <p className="text-xs sm:text-sm text-blue-600 font-medium">{t('translationManagement.totalOperations')}</p>
                     <p className="text-lg sm:text-2xl font-bold text-blue-900 truncate">{stats.totalOperations}</p>
                   </div>
                 </div>
@@ -337,7 +341,7 @@ export default function TranslationsAdminPage() {
                     <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-green-600 font-medium">معدل النجاح</p>
+                    <p className="text-xs sm:text-sm text-green-600 font-medium">{t('translationManagement.successRate')}</p>
                     <p className="text-lg sm:text-2xl font-bold text-green-900 truncate">{getSuccessRate()}%</p>
                   </div>
                 </div>
@@ -349,7 +353,7 @@ export default function TranslationsAdminPage() {
                     <Upload className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-purple-600 font-medium">المفاتيح المرفوعة</p>
+                    <p className="text-xs sm:text-sm text-purple-600 font-medium">{t('translationManagement.uploadedKeys')}</p>
                     <p className="text-lg sm:text-2xl font-bold text-purple-900 truncate">{stats.totalKeysUploaded}</p>
                   </div>
                 </div>
@@ -361,7 +365,7 @@ export default function TranslationsAdminPage() {
                     <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs sm:text-sm text-orange-600 font-medium">الأخطاء النشطة</p>
+                    <p className="text-xs sm:text-sm text-orange-600 font-medium">{t('translationManagement.activeErrors')}</p>
                     <p className="text-lg sm:text-2xl font-bold text-orange-900 truncate">{errors.length}</p>
                   </div>
                 </div>
@@ -372,7 +376,7 @@ export default function TranslationsAdminPage() {
             <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 border border-gray-200">
               <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-blue-600" />
-                إحصائيات المفاتيح حسب اللغة والـ Namespace
+                {t('translationManagement.keysStatistics')}
               </h2>
 
               <div className="overflow-x-auto -mx-4 sm:mx-0">
@@ -380,12 +384,12 @@ export default function TranslationsAdminPage() {
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">اللغة</th>
-                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Namespace</th>
-                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">إجمالي</th>
-                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">مترجمة</th>
-                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">فارغة</th>
-                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">أخطاء</th>
+                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('translationManagement.language')}</th>
+                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('translationManagement.namespace')}</th>
+                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('translationManagement.total')}</th>
+                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('translationManagement.translated')}</th>
+                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('translationManagement.empty')}</th>
+                        <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">{t('translationManagement.errors')}</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -395,7 +399,7 @@ export default function TranslationsAdminPage() {
                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                               stat.language === 'ar' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
                             }`}>
-                              {stat.language === 'ar' ? 'العربية' : 'English'}
+                              {getLanguageName(stat.language)}
                             </span>
                           </td>
                           <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900">{stat.namespace}</td>
@@ -416,7 +420,7 @@ export default function TranslationsAdminPage() {
               <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 border border-red-200">
                 <h2 className="text-lg sm:text-xl font-bold text-red-900 mb-4 flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5 text-red-600" />
-                  الأخطاء النشطة ({errors.length})
+                  {t('translationManagement.activeErrorsList')} ({errors.length})
                 </h2>
 
                 <div className="space-y-2 max-h-64 overflow-y-auto">
@@ -443,7 +447,7 @@ export default function TranslationsAdminPage() {
             <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 border border-gray-200">
               <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <Clock className="w-5 h-5 text-blue-600" />
-                آخر العمليات
+                {t('translationManagement.recentOperations')}
               </h2>
 
               <div className="space-y-2">
@@ -465,8 +469,8 @@ export default function TranslationsAdminPage() {
                       </div>
                     </div>
                     <div className="text-left flex-shrink-0">
-                      <p className="text-xs text-gray-500">{op.keys_count} مفتاح</p>
-                      <p className="text-xs text-gray-400">{(op.duration_ms / 1000).toFixed(1)}s</p>
+                      <p className="text-xs text-gray-500">{op.keys_count} {t('translationManagement.keys')}</p>
+                      <p className="text-xs text-gray-400">{(op.duration_ms / 1000).toFixed(1)}{t('translationManagement.seconds')}</p>
                     </div>
                   </div>
                 ))}
@@ -479,7 +483,7 @@ export default function TranslationsAdminPage() {
         <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 border border-gray-200">
           <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
             <Play className="w-5 h-5 text-blue-600" />
-            إجراءات سريعة
+            {t('translationManagement.quickActions')}
           </h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
@@ -493,7 +497,7 @@ export default function TranslationsAdminPage() {
               ) : (
                 <Download className="w-4 h-4 sm:w-5 sm:h-5" />
               )}
-              <span>تنزيل الملفات المحلية</span>
+              <span>{t('translationManagement.downloadLocal')}</span>
             </Button>
 
             <Button
@@ -501,7 +505,7 @@ export default function TranslationsAdminPage() {
               className="h-auto py-3 sm:py-4 flex flex-col items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-sm sm:text-base"
             >
               <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span>فتح Tolgee Dashboard</span>
+              <span>{t('translationManagement.openTolgee')}</span>
             </Button>
 
             <Button
@@ -514,7 +518,7 @@ export default function TranslationsAdminPage() {
               ) : (
                 <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
               )}
-              <span>تحديث الإحصائيات</span>
+              <span>{t('translationManagement.refreshStats')}</span>
             </Button>
           </div>
         </div>
@@ -553,12 +557,12 @@ export default function TranslationsAdminPage() {
                     {loading === script.id ? (
                       <>
                         <Loader2 className="w-4 h-4 ml-2 animate-spin" />
-                        جاري التنفيذ...
+                        {t('translationManagement.executing')}
                       </>
                     ) : (
                       <>
                         <Play className="w-4 h-4 ml-2" />
-                        تنفيذ
+                        {t('translationManagement.execute')}
                       </>
                     )}
                   </Button>
@@ -579,16 +583,16 @@ export default function TranslationsAdminPage() {
                         <span className={`text-xs sm:text-sm font-medium ${
                           results[script.id].success ? 'text-green-900' : 'text-red-900'
                         }`}>
-                          {results[script.id].success ? 'نجح التنفيذ' : 'فشل التنفيذ'}
+                          {results[script.id].success ? t('translationManagement.executionSuccess') : t('translationManagement.executionFailed')}
                         </span>
                         {results[script.id].keysCount && (
                           <span className="text-xs text-gray-500">
-                            {results[script.id].keysCount} مفتاح
+                            {results[script.id].keysCount} {t('translationManagement.keys')}
                           </span>
                         )}
                         {results[script.id].duration && (
                           <span className="text-xs text-gray-500">
-                            {(results[script.id].duration! / 1000).toFixed(1)}s
+                            {(results[script.id].duration! / 1000).toFixed(1)}{t('translationManagement.seconds')}
                           </span>
                         )}
                         <span className="text-xs text-gray-500 mr-auto">
@@ -620,3 +624,4 @@ export default function TranslationsAdminPage() {
     </div>
   );
 }
+
