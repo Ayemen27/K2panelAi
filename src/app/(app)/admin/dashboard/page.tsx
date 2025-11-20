@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { 
-  Users, 
+  User, 
   Activity, 
   Database, 
   Languages,
@@ -86,7 +86,7 @@ export default function AdminDashboardPage() {
           <StatCard
             title={t('dashboard.users.total')}
             value="0"
-            icon={<Users className="w-6 h-6 text-blue-600" />}
+            icon={<User className="w-6 h-6 text-blue-600" />}
             bgColor="bg-blue-50"
           />
           <StatCard
@@ -118,7 +118,7 @@ export default function AdminDashboardPage() {
             <QuickAction
               title={t('dashboard.quickActions.manageUsers')}
               description={t('navigation.usersDesc')}
-              icon={<Users className="w-5 h-5 text-white" />}
+              icon={<User className="w-5 h-5 text-white" />}
               onClick={() => router.push('/admin/users')}
             />
             <QuickAction
