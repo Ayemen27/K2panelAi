@@ -1,3 +1,4 @@
+
 'use client';
 
 import { TolgeeProvider as TolgeeReactProvider, Tolgee, DevTools } from '@tolgee/react';
@@ -12,8 +13,6 @@ export interface TolgeeProviderProps {
 }
 
 export function TolgeeProvider({ children, locale, staticData }: TolgeeProviderProps) {
-  const apiUrl = process.env.NEXT_PUBLIC_TOLGEE_API_URL;
-  const apiKey = process.env.NEXT_PUBLIC_TOLGEE_API_KEY;
   const isDevelopment = process.env.NODE_ENV === 'development';
 
   const tolgee = useMemo(() => {
@@ -28,22 +27,20 @@ export function TolgeeProvider({ children, locale, staticData }: TolgeeProviderP
       language: locale || DEFAULT_LOCALE,
       fallbackLanguage: FALLBACK_LOCALE,
       availableLanguages: [...SUPPORTED_LOCALES],
-      apiUrl: apiUrl || '',
-      apiKey: apiKey || '',
       defaultNs: 'common',
       ns: [...NAMESPACES],
       fallbackNs: 'common',
       staticData,
-      // Force use of static data in development if API fails
-      fetch: isDevelopment ? undefined : fetch,
+      // Don't fetch from API, use only static data
+      apiUrl: undefined,
+      apiKey: undefined,
     });
-  }, [locale, apiUrl, apiKey, isDevelopment, staticData]);
+  }, [locale, isDevelopment, staticData]);
 
   return (
     <TolgeeReactProvider 
       tolgee={tolgee} 
-      fallback="Loading..."
-      // Enable SSR mode with static data
+      fallback="..."
       ssr={{ 
         language: locale,
         staticData 
