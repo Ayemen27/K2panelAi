@@ -96,6 +96,14 @@ export default function TranslationsAdminPage() {
       category: 'upload'
     },
     {
+      id: 'upload-direct',
+      name: 'رفع مباشر (Translation API)',
+      description: 'رفع الترجمات مباشرة باستخدام Translation API - موصى به',
+      icon: Upload,
+      command: 'npx tsx scripts/upload-translations-direct.ts',
+      category: 'upload'
+    },
+    {
       id: 'upload-keys',
       name: t('translationManagement.uploadKeys'),
       description: t('translationManagement.uploadKeysDescription'),

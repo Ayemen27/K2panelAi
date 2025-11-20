@@ -216,17 +216,26 @@ async function main() {
 
       const existingLangId = langMap[langCode];
 
-      if (existingLangId) {
-        console.log(`   🔗 ${fileName} → ${langCode} (Import ID: ${importLang.id}, Existing ID: ${existingLangId})`);
-        const success = await selectExistingLanguage(importLang.id, existingLangId);
-        
-        if (success) {
-          processedImportIds.add(importLang.id);
-        } else {
-          console.error(`   ❌ فشل ربط ${fileName}`);
-        }
-      } else {
+      if (!existingLangId) {
         console.error(`   ⚠️  لم يتم العثور على لغة موجودة: ${langCode} للملف ${fileName}`);
+        continue;
+      }
+
+      // Skip if already processed
+      if (processedImportIds.has(importLang.id)) {
+        console.log(`   ⏭️  تم تخطي ${fileName} (معالج مسبقاً)`);
+        continue;
+      }
+
+      console.log(`   🔗 ${fileName} → ${langCode} (Import ID: ${importLang.id}, Existing ID: ${existingLangId})`);
+      
+      const success = await selectExistingLanguage(importLang.id, existingLangId);
+      
+      if (success) {
+        processedImportIds.add(importLang.id);
+        console.log(`      ✅ تم الربط بنجاح`);
+      } else {
+        console.error(`      ❌ فشل الربط`);
       }
     }
 
