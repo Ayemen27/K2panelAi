@@ -17,11 +17,6 @@ export function TolgeeProvider({ children, locale, staticData }: TolgeeProviderP
   const isDevelopment = process.env.NODE_ENV === 'development';
 
   const tolgee = useMemo(() => {
-    const wrappedStaticData: Record<string, () => Promise<any>> = {};
-    Object.keys(staticData).forEach((loc) => {
-      wrappedStaticData[loc] = async () => staticData[loc];
-    });
-
     const instance = Tolgee()
       .use(FormatIcu());
 
@@ -38,7 +33,7 @@ export function TolgeeProvider({ children, locale, staticData }: TolgeeProviderP
       defaultNs: 'common',
       ns: [...NAMESPACES],
       fallbackNs: 'common',
-      staticData: wrappedStaticData,
+      staticData,
     });
   }, [locale, apiUrl, apiKey, isDevelopment, staticData]);
 

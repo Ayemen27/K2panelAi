@@ -24,16 +24,13 @@ export async function loadStaticDataForProvider(
   results.forEach((result) => {
     if (result.status === 'fulfilled') {
       const { locale: loc, data } = result.value;
-      staticData[loc] = data;
+      
+      for (const namespace in data) {
+        const key = `${loc}:${namespace}`;
+        staticData[key] = data[namespace];
+      }
     } else {
       console.error('[loadStaticDataForProvider] Promise rejected:', result.reason);
-    }
-  });
-
-  SUPPORTED_LOCALES.forEach((loc) => {
-    if (!staticData[loc]) {
-      console.warn(`[loadStaticDataForProvider] Missing data for ${loc}, using empty fallback`);
-      staticData[loc] = {};
     }
   });
 
