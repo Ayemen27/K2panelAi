@@ -20,22 +20,62 @@ const path = require('path');
 const ENV_FILE = path.join(__dirname, '..', '.env.local');
 const SERVER_URL = 'https://k2panel.online';
 
+let cachedEnv = null;
+
 /**
- * قراءة PORT من .env.local
+ * تحميل جميع المتغيرات من .env.local
  */
-function readPortFromEnv() {
+function loadLocalEnv() {
+  if (cachedEnv !== null) {
+    return cachedEnv;
+  }
+  
+  cachedEnv = {};
+  
   try {
     if (fs.existsSync(ENV_FILE)) {
       const envContent = fs.readFileSync(ENV_FILE, 'utf-8');
-      const portMatch = envContent.match(/^PORT=(.+)$/m);
-      if (portMatch) {
-        return portMatch[1].trim();
+      const lines = envContent.split('\n');
+      
+      for (const line of lines) {
+        // تجاهل التعليقات والأسطر الفارغة
+        if (line.trim().startsWith('#') || line.trim() === '') {
+          continue;
+        }
+        
+        // استخراج KEY=VALUE
+        const match = line.match(/^([^=]+)=(.*)$/);
+        if (match) {
+          const key = match[1].trim();
+          const value = match[2].trim();
+          cachedEnv[key] = value;
+        }
       }
     }
   } catch (error) {
-    console.warn('⚠️ تحذير: لم يتم قراءة PORT من .env.local');
+    console.warn('⚠️ تحذير: لم يتم قراءة .env.local بشكل كامل');
   }
-  return '5000'; // القيمة الافتراضية
+  
+  return cachedEnv;
+}
+
+/**
+ * قراءة متغير بيئة من process.env أو .env.local
+ */
+function getEnv(key, defaultValue = '') {
+  // أولاً: تحقق من process.env
+  if (process.env[key]) {
+    return process.env[key];
+  }
+  
+  // ثانياً: تحقق من .env.local
+  const localEnv = loadLocalEnv();
+  if (localEnv[key]) {
+    return localEnv[key];
+  }
+  
+  // ثالثاً: القيمة الافتراضية
+  return defaultValue;
 }
 
 /**
@@ -62,21 +102,22 @@ function validateUrl(url) {
  */
 function detectEnvironment() {
   // 1. إذا كان هناك NEXTAUTH_URL_OVERRIDE → استخدامه مباشرة
-  if (process.env.NEXTAUTH_URL_OVERRIDE) {
-    const url = process.env.NEXTAUTH_URL_OVERRIDE;
-    if (!validateUrl(url)) {
+  const override = getEnv('NEXTAUTH_URL_OVERRIDE');
+  if (override) {
+    if (!validateUrl(override)) {
       console.error('⚠️ NEXTAUTH_URL_OVERRIDE غير صحيح، سيتم استخدام الكشف التلقائي');
     } else {
       return {
         type: 'override',
-        url: url
+        url: override
       };
     }
   }
   
   // 2. إذا كان REPLIT_DOMAINS موجود → بيئة Replit
-  if (process.env.REPLIT_DOMAINS) {
-    const domain = process.env.REPLIT_DOMAINS.split(',')[0];
+  const replitDomains = getEnv('REPLIT_DOMAINS');
+  if (replitDomains) {
+    const domain = replitDomains.split(',')[0];
     return {
       type: 'replit',
       url: `https://${domain}`
@@ -84,7 +125,8 @@ function detectEnvironment() {
   }
   
   // 3. إذا كان SERVER_ENV=production → بيئة السيرفر
-  if (process.env.SERVER_ENV === 'production') {
+  const serverEnv = getEnv('SERVER_ENV');
+  if (serverEnv === 'production') {
     return {
       type: 'server',
       url: SERVER_URL
@@ -92,7 +134,7 @@ function detectEnvironment() {
   }
   
   // 4. تحقق من hostname
-  const hostname = process.env.HOSTNAME || '';
+  const hostname = getEnv('HOSTNAME');
   if (hostname.includes('k2panel') || hostname.includes('production')) {
     return {
       type: 'server',
@@ -106,7 +148,7 @@ function detectEnvironment() {
   console.warn('   - SERVER_ENV=production للسيرفر');
   console.warn('   - NEXTAUTH_URL_OVERRIDE=https://your-domain.com');
   
-  const port = readPortFromEnv();
+  const port = getEnv('PORT', '5000');
   return {
     type: 'local',
     url: `http://localhost:${port}`
