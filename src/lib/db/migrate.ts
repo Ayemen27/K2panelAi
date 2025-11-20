@@ -39,21 +39,9 @@ export async function migrate(): Promise<MigrationResult> {
     const appliedMigrations = await getAppliedMigrations(client);
     console.log(`📊 Already applied: ${appliedMigrations.size} migrations`);
 
-    console.log('📝 Step 3: Running base schema.sql if not already applied...');
-    if (!appliedMigrations.has('000_base_schema.sql')) {
-      const schemaPath = path.join(process.cwd(), 'src/lib/db/schema.sql');
-      const schema = fs.readFileSync(schemaPath, 'utf-8');
-      await client.query(schema);
-      await recordMigration(client, '000_base_schema.sql');
-      results.migrations.push('000_base_schema.sql');
-      console.log('✅ Base schema created successfully');
-    } else {
-      console.log('⏭️ Base schema already applied, skipping...');
-    }
-
-    console.log('📝 Step 4: Running new migration files...');
+    console.log('📝 Step 3: Running numbered migrations...');
     const migrationsDir = path.join(process.cwd(), 'database', 'migrations');
-    
+
     if (fs.existsSync(migrationsDir)) {
       const files = fs.readdirSync(migrationsDir);
       const migrationFiles = files
@@ -72,7 +60,7 @@ export async function migrate(): Promise<MigrationResult> {
           console.log(`🔄 Running migration: ${file}`);
           const filePath = path.join(migrationsDir, file);
           const sql = fs.readFileSync(filePath, 'utf-8');
-          
+
           await client.query(sql);
           await recordMigration(client, file);
           results.migrations.push(file);
@@ -88,11 +76,23 @@ export async function migrate(): Promise<MigrationResult> {
       console.log('⚠️ No migrations directory found, skipping...');
     }
 
+    console.log('📝 Step 4: Running base schema.sql if not already applied...');
+    if (!appliedMigrations.has('000_base_schema.sql')) {
+      const schemaPath = path.join(process.cwd(), 'src/lib/db/schema.sql');
+      const schema = fs.readFileSync(schemaPath, 'utf-8');
+      await client.query(schema);
+      await recordMigration(client, '000_base_schema.sql');
+      results.migrations.push('000_base_schema.sql');
+      console.log('✅ Base schema created successfully');
+    } else {
+      console.log('⏭️ Base schema already applied, skipping...');
+    }
+
     const newMigrations = results.migrations.filter(m => !m.includes('idempotent'));
     results.message = results.success 
       ? `✅ Successfully ran ${newMigrations.length} new migrations (${appliedMigrations.size} already applied)`
       : `⚠️ Completed with errors: ${results.errors?.length || 0} failed`;
-    
+
     console.log(results.message);
     console.log('✅ Database migration completed successfully!');
     return results;
@@ -136,7 +136,7 @@ export async function checkDatabase() {
       WHERE table_schema = 'public'
       ORDER BY table_name;
     `);
-    
+
     console.log('📊 Database tables:', result.rows.map((r: any) => r.table_name));
     return result.rows;
   } catch (error) {
