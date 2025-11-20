@@ -236,7 +236,74 @@ npm run dev
 - **User**: k2panelai_user
 - **Port**: 5432
 
+## 🌐 Internationalization (i18n) with Tolgee
+
+### Integration Status
+- ✅ **Tolgee Platform Integration** - Connected to https://tolgee.binarjoinanelytic.info
+- ✅ **Project ID**: 2
+- ✅ **Languages**: Arabic (ar) + English (en)
+- ✅ **Translation Keys**: 189 unique keys
+- ✅ **Total Translations**: 378 (189 × 2 languages)
+- ✅ **Upload Success**: 100% ✅
+
+### Files Structure
+```
+public/locales/
+├── ar/                    # Arabic translations (189 keys)
+│   ├── auth.json         # 48 keys
+│   ├── cms.json          # 1 key
+│   ├── common.json       # 22 keys
+│   ├── dashboard.json    # 3 keys
+│   ├── errors.json       # 8 keys
+│   ├── layout.json       # 99 keys
+│   ├── marketing.json    # 2 keys
+│   └── validation.json   # 6 keys
+└── en/                    # English translations (189 keys)
+    ├── auth.json
+    ├── cms.json
+    ├── common.json
+    ├── dashboard.json
+    ├── errors.json
+    ├── layout.json
+    ├── marketing.json
+    └── validation.json
+```
+
+### Scripts Available
+```bash
+# Upload all translations to Tolgee (recommended)
+bash scripts/upload-translations.sh
+
+# Verify translations status
+npx tsx scripts/verify-translations.ts
+
+# Compare local vs Tolgee translations
+npx tsx scripts/compare-translations.ts
+```
+
+### Environment Variables
+Add to `.env.local`:
+```env
+NEXT_PUBLIC_TOLGEE_API_URL=https://tolgee.binarjoinanelytic.info
+NEXT_PUBLIC_TOLGEE_API_KEY=your_api_key_here
+NEXT_PUBLIC_TOLGEE_PROJECT_ID=2
+```
+
+### Documentation
+- [Upload Success Report](./docs/i18n-integration/UPLOAD_SUCCESS_REPORT.md)
+- [Scripts Guide](./scripts/README.md)
+
+---
+
 ## Recent Updates
+
+- **20 نوفمبر 2025**: 🌐 تكامل كامل مع Tolgee للترجمات
+  - ✅ رفع جميع الترجمات إلى Tolgee بنجاح (378 ترجمة)
+  - ✅ إنشاء سكريبتات إدارة الترجمات
+  - ✅ توثيق كامل للعملية والسكريبتات
+  - ✅ دعم كامل للغتين (العربية + الإنجليزية)
+  - ✅ استخدام Tolgee Import API
+  - 📄 تقرير النجاح: [UPLOAD_SUCCESS_REPORT.md](./docs/i18n-integration/UPLOAD_SUCCESS_REPORT.md)
 
 - **19 نوفمبر 2025 - مساءً**: 🧹 تنظيف السيرفر ونشر التطبيق
   - ✅ تنظيف شامل للسيرفر: حذف ~1GB من المجلدات القديمة
