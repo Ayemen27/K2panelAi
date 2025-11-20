@@ -4,9 +4,9 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { 
-  Home, 
-  Folder, 
-  PlusCircle, 
+  Home,
+  Folder,
+  PlusCircle,
   Settings,
   User
 } from 'lucide-react';

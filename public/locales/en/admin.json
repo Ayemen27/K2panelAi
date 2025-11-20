@@ -17,6 +17,13 @@
     "hours": "{{count}} hour ago",
     "days": "{{count}} days ago"
   },
+  "units": {
+    "bytes": "Bytes",
+    "kb": "KB",
+    "mb": "MB",
+    "gb": "GB",
+    "tb": "TB"
+  },
   "systemInfo": {
     "uptimeValue": "24 hours",
     "lastBackupValue": "Today"

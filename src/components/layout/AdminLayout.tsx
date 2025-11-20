@@ -2,9 +2,9 @@
 
 import { useState, ReactNode } from 'react';
 import { 
-  User, 
-  BarChart, 
-  HardDrive, 
+  User,
+  BarChart,
+  HardDrive,
   Globe,
   Server,
   Menu,
