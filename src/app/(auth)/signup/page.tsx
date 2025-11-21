@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FiEye, FiEyeOff, FiMail, FiLock, FiUser, FiGithub, FiBrowser, FiCode, FiCheckCircle } from 'react-icons/fi';
+import { FiEye, FiEyeOff, FiMail, FiLock, FiUser, FiGithub, FiChevronDown, FiCodepen, FiCheckCircle } from 'react-icons/fi';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -277,7 +277,7 @@ export default function SignupPage() {
               type="button"
               className="flex items-center justify-center h-12 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all transform hover:scale-105 active:scale-95"
             >
-              <FiBrowser className="w-5 h-5 text-gray-700" />
+              <FiChevronDown className="w-5 h-5 text-gray-700" />
             </button>
             <button
               type="button"
@@ -289,7 +289,7 @@ export default function SignupPage() {
               type="button"
               className="flex items-center justify-center h-12 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all transform hover:scale-105 active:scale-95"
             >
-              <FiCode className="w-5 h-5 text-gray-700" />
+              <FiCodepen className="w-5 h-5 text-gray-700" />
             </button>
           </div>
 
