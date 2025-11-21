@@ -108,7 +108,7 @@ export default function TranslationsAdminPage() {
       id: 'upload-keys',
       name: t('translationManagement.uploadKeys'),
       description: t('translationManagement.uploadKeysDescription'),
-      icon: Upload,
+      icon: FiUpload,
       command: 'npx tsx scripts/upload-keys-to-tolgee.ts',
       category: 'upload'
     },
@@ -116,7 +116,7 @@ export default function TranslationsAdminPage() {
       id: 'verify-translations',
       name: t('translationManagement.verify'),
       description: t('translationManagement.verifyDescription'),
-      icon: CheckCircle2,
+      icon: FiCheckCircle,
       command: 'npx tsx scripts/verify-translations.ts',
       category: 'verify'
     },
@@ -124,7 +124,7 @@ export default function TranslationsAdminPage() {
       id: 'test-connection',
       name: t('translationManagement.testConnection'),
       description: t('translationManagement.testConnectionDescription'),
-      icon: RefreshCw,
+      icon: FiRefreshCw,
       command: 'npx tsx scripts/test-tolgee-connection.ts',
       category: 'verify'
     },
@@ -132,7 +132,7 @@ export default function TranslationsAdminPage() {
       id: 'check-keys',
       name: t('translationManagement.checkKeys'),
       description: t('translationManagement.checkKeysDescription'),
-      icon: Eye,
+      icon: FiEye,
       command: 'npx tsx scripts/check-tolgee-keys.ts',
       category: 'verify'
     },
@@ -140,7 +140,7 @@ export default function TranslationsAdminPage() {
       id: 'get-admin-info',
       name: t('translationManagement.projectInfo'),
       description: t('translationManagement.projectInfoDescription'),
-      icon: Database,
+      icon: FiDatabase,
       command: 'npx tsx scripts/test-tolgee-admin.ts',
       category: 'info'
     }
@@ -150,9 +150,9 @@ export default function TranslationsAdminPage() {
   const languages = ['all', 'ar', 'en'];
 
   const categories = [
-    { id: 'upload', name: t('translationManagement.uploadCategory'), icon: Upload },
-    { id: 'verify', name: t('translationManagement.verifyCategory'), icon: CheckCircle2 },
-    { id: 'info', name: t('translationManagement.infoCategory'), icon: Database }
+    { id: 'upload', name: t('translationManagement.uploadCategory'), icon: FiUpload },
+    { id: 'verify', name: t('translationManagement.verifyCategory'), icon: FiCheckCircle },
+    { id: 'info', name: t('translationManagement.infoCategory'), icon: FiDatabase }
   ];
 
   useEffect(() => {
