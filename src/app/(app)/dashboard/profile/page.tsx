@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslate, useLanguage } from '@/lib/i18n/hooks';
 import { getLocaleDirection } from '@/lib/i18n/constants';
 import type { SupportedLocale } from '@/lib/i18n/constants';
-import { Camera, Edit2, Mail, Phone, MapPin, Calendar, Save, Copy, Check } from 'lucide-react';
+import { Camera, Edit, Mail, Phone, MapPin, Calendar, Save, Copy, Check } from 'lucide-react';
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -83,7 +83,7 @@ export default function ProfilePage() {
                   onClick={() => setIsEditing(!isEditing)}
                   className="flex items-center justify-center gap-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors font-medium"
                 >
-                  <Edit2 className="w-4 h-4" />
+                  <Edit className="w-4 h-4" />
                   تعديل
                 </button>
               </div>

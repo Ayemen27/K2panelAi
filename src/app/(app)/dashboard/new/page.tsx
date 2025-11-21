@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslate, useLanguage } from '@/lib/i18n/hooks';
 import { getLocaleDirection } from '@/lib/i18n/constants';
 import type { SupportedLocale } from '@/lib/i18n/constants';
-import { ArrowRight, Settings2, Zap, Smartphone, Database, Globe2 } from 'lucide-react';
+import { ArrowRight, Settings, Zap, Smartphone, Database, Globe2 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CreateProjectPage() {
@@ -54,7 +54,7 @@ export default function CreateProjectPage() {
       id: 'api',
       name: 'API وخدمات',
       description: 'واجهات برمجية قوية',
-      icon: Settings2,
+      icon: Settings,
       color: 'from-green-500 to-emerald-600',
     },
     {

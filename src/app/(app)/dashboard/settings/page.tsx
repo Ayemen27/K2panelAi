@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslate, useLanguage } from '@/lib/i18n/hooks';
 import { getLocaleDirection } from '@/lib/i18n/constants';
 import type { SupportedLocale } from '@/lib/i18n/constants';
-import { Save, Bell, Shield, Eye, ToggleRight, ToggleLeft, Globe2 } from 'lucide-react';
+import { Save, Clock, ShieldAlert, Eye, ToggleRight, ToggleLeft, Globe2 } from 'lucide-react';
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
@@ -54,7 +54,7 @@ export default function SettingsPage() {
   const settingSections = [
     {
       title: 'الإشعارات',
-      icon: Bell,
+      icon: Clock,
       color: 'from-blue-500 to-blue-600',
       settings: [
         {
@@ -76,7 +76,7 @@ export default function SettingsPage() {
     },
     {
       title: 'الأمان والخصوصية',
-      icon: Shield,
+      icon: ShieldAlert,
       color: 'from-red-500 to-pink-600',
       settings: [
         {
