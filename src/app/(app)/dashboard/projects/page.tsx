@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslate, useLanguage } from '@/lib/i18n/hooks';
 import { getLocaleDirection } from '@/lib/i18n/constants';
 import type { SupportedLocale } from '@/lib/i18n/constants';
-import { FolderPlus, Search, MoreVertical, ArrowRight } from 'lucide-react';
+import { FiFolderPlus, FiSearch, FiMoreVertical, FiArrowRight } from 'react-icons/fi';
 import Link from 'next/link';
 
 export default function ProjectsPage() {
@@ -75,7 +75,7 @@ export default function ProjectsPage() {
         {/* Search and New Project Button */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+            <FiSearch className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
             <input
               type="text"
               placeholder="ابحث عن مشروع..."
@@ -86,7 +86,7 @@ export default function ProjectsPage() {
           </div>
           <Link href="/dashboard/new">
             <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all duration-200">
-              <FolderPlus className="w-5 h-5" />
+              <FiFolderPlus className="w-5 h-5" />
               <span>مشروع جديد</span>
             </button>
           </Link>

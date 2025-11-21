@@ -18,7 +18,7 @@ import {
   FiEye,
   FiCalendar,
   FiUser,
-  FiFlame,
+  FiZap,
   FiCheckCircle,
 } from 'react-icons/fi';
 
@@ -88,7 +88,7 @@ export const Icons = {
   eye: FiEye,
   calendar: FiCalendar,
   user: FiUser,
-  flame: FiFlame,
+  flame: FiZap,
   checkCircle: FiCheckCircle,
 }
 

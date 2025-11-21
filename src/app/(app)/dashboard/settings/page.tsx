@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslate, useLanguage } from '@/lib/i18n/hooks';
 import { getLocaleDirection } from '@/lib/i18n/constants';
 import type { SupportedLocale } from '@/lib/i18n/constants';
-import { Save, Clock, ShieldAlert, Eye, ToggleRight, ToggleLeft, Globe2 } from 'lucide-react';
+import { FiSave, FiClock, FiAlertTriangle, FiEye, FiToggleRight, FiToggleLeft, FiGlobe } from 'react-icons/fi';
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
@@ -54,7 +54,7 @@ export default function SettingsPage() {
   const settingSections = [
     {
       title: 'الإشعارات',
-      icon: Clock,
+      icon: FiClock,
       color: 'from-blue-500 to-blue-600',
       settings: [
         {
@@ -76,7 +76,7 @@ export default function SettingsPage() {
     },
     {
       title: 'الأمان والخصوصية',
-      icon: ShieldAlert,
+      icon: FiAlertTriangle,
       color: 'from-red-500 to-pink-600',
       settings: [
         {

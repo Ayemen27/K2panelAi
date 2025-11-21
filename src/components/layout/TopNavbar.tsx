@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import {
   FiMenu,
   FiX,
-  FiBarChart3,
+  FiBarChart2,
   FiDatabase,
   FiUsers,
   FiGlobe,
@@ -36,7 +36,7 @@ export function TopNavbar() {
   // Admin Navigation Links
   const adminLinks = [
     {
-      icon: FiBarChart3,
+      icon: FiBarChart2,
       label: t('admin.dashboard') || 'Dashboard',
       href: '/admin/dashboard',
     },

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslate, useLanguage } from '@/lib/i18n/hooks';
 import { getLocaleDirection } from '@/lib/i18n/constants';
 import type { SupportedLocale } from '@/lib/i18n/constants';
-import { Camera, Edit, Mail, Phone, MapPin, Calendar, Save, Copy, Check } from 'lucide-react';
+import { FiCamera, FiEdit, FiMail, FiPhone, FiMapPin, FiCalendar, FiSave, FiCopy, FiCheck } from 'react-icons/fi';
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -63,7 +63,7 @@ export default function ProfilePage() {
                 {profile.name?.[0]?.toUpperCase() || 'U'}
               </div>
               <button className="absolute bottom-0 right-0 bg-white dark:bg-gray-700 rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow">
-                <Camera className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                <FiCamera className="w-5 h-5 text-gray-600 dark:text-gray-300" />
               </button>
             </div>
 
@@ -83,7 +83,7 @@ export default function ProfilePage() {
                   onClick={() => setIsEditing(!isEditing)}
                   className="flex items-center justify-center gap-2 px-4 py-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors font-medium"
                 >
-                  <Edit className="w-4 h-4" />
+                  <FiEdit className="w-4 h-4" />
                   تعديل
                 </button>
               </div>
@@ -97,7 +97,7 @@ export default function ProfilePage() {
           <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
             {/* Join Date */}
             <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400 mb-4">
-              <Calendar className="w-5 h-5 text-purple-600" />
+              <FiCalendar className="w-5 h-5 text-purple-600" />
               <span className="text-sm">
                 انضمت في: <span className="font-medium">نوفمبر 2025</span>
               </span>

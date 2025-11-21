@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslate, useLanguage } from '@/lib/i18n/hooks';
 import { getLocaleDirection } from '@/lib/i18n/constants';
 import type { SupportedLocale } from '@/lib/i18n/constants';
-import { ArrowRight, Settings, Flame, Smartphone, Database, Globe2 } from 'lucide-react';
+import { FiArrowRight, FiSettings, FiZap, FiSmartphone, FiDatabase, FiGlobe } from 'react-icons/fi';
 import Link from 'next/link';
 
 export default function CreateProjectPage() {
@@ -40,28 +40,28 @@ export default function CreateProjectPage() {
       id: 'web',
       name: 'تطبيق ويب',
       description: 'تطبيق ويب تفاعلي حديث',
-      icon: Globe2,
+      icon: FiGlobe,
       color: 'from-blue-500 to-blue-600',
     },
     {
       id: 'mobile',
       name: 'تطبيق جوال',
       description: 'تطبيق جوال iOS و Android',
-      icon: Smartphone,
+      icon: FiSmartphone,
       color: 'from-purple-500 to-pink-600',
     },
     {
       id: 'api',
       name: 'API وخدمات',
       description: 'واجهات برمجية قوية',
-      icon: Settings,
+      icon: FiSettings,
       color: 'from-green-500 to-emerald-600',
     },
     {
       id: 'fullstack',
       name: 'Full Stack',
       description: 'تطبيق متكامل أمامي وخلفي',
-      icon: Flame,
+      icon: FiZap,
       color: 'from-red-500 to-pink-600',
     },
   ];

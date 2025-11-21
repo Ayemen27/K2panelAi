@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslate, useLanguage } from '@/lib/i18n/hooks';
 import { getLocaleDirection } from '@/lib/i18n/constants';
 import type { SupportedLocale } from '@/lib/i18n/constants';
-import { FileText, Download, Eye, MoreVertical, Upload, Search } from 'lucide-react';
+import { FiFileText, FiDownload, FiEye, FiMoreVertical, FiUpload, FiSearch } from 'react-icons/fi';
 import Link from 'next/link';
 
 export default function ResourcesPage() {
@@ -87,7 +87,7 @@ export default function ResourcesPage() {
         {/* Search and Upload Button */}
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+            <FiSearch className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
             <input
               type="text"
               placeholder="ابحث عن ملف..."
@@ -97,7 +97,7 @@ export default function ResourcesPage() {
             />
           </div>
           <button className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all duration-200">
-            <Upload className="w-5 h-5" />
+            <FiUpload className="w-5 h-5" />
             <span>تحميل ملف</span>
           </button>
         </div>
