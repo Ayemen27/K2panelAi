@@ -4,11 +4,11 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { 
-  FiFiUser, 
-  FiFiActivity, 
-  FiFiDatabase, 
+  FiUser, 
+  FiActivity, 
+  FiDatabase, 
   FiGlobe,
-  FiFiServer
+  FiServer
 } from 'react-icons/fi';
 import { AdminLayout } from '@/components/layout/AdminLayout';
 import { useTranslate } from '@/lib/i18n/hooks';
@@ -86,25 +86,25 @@ export default function AdminDashboardPage() {
           <StatCard
             title={t('dashboard.users.total')}
             value="0"
-            icon={<User className="w-6 h-6 text-blue-600" />}
+            icon={<FiUser className="w-6 h-6 text-blue-600" />}
             bgColor="bg-blue-50"
           />
           <StatCard
             title={t('dashboard.projects.active')}
             value="0"
-            icon={<Activity className="w-6 h-6 text-green-600" />}
+            icon={<FiActivity className="w-6 h-6 text-green-600" />}
             bgColor="bg-green-50"
           />
           <StatCard
             title={t('dashboard.servers.health')}
             value="MB 0"
-            icon={<Database className="w-6 h-6 text-purple-600" />}
+            icon={<FiDatabase className="w-6 h-6 text-purple-600" />}
             bgColor="bg-purple-50"
           />
           <StatCard
             title={t('dashboard.users.new')}
             value="0"
-            icon={<Languages className="w-6 h-6 text-orange-600" />}
+            icon={<FiGlobe className="w-6 h-6 text-orange-600" />}
             bgColor="bg-orange-50"
           />
         </div>
@@ -118,7 +118,7 @@ export default function AdminDashboardPage() {
             <QuickAction
               title={t('dashboard.quickActions.manageUsers')}
               description={t('navigation.usersDesc')}
-              icon={<User className="w-5 h-5 text-white" />}
+              icon={<FiUser className="w-5 h-5 text-white" />}
               onClick={() => router.push('/admin/users')}
             />
             <QuickAction
@@ -130,13 +130,13 @@ export default function AdminDashboardPage() {
             <QuickAction
               title={t('dashboard.quickActions.systemSettings')}
               description={t('navigation.settingsDesc')}
-              icon={<Database className="w-5 h-5 text-white" />}
+              icon={<FiDatabase className="w-5 h-5 text-white" />}
               onClick={() => router.push('/admin/settings')}
             />
             <QuickAction
               title={t('dashboard.quickActions.viewLogs')}
               description={t('navigation.translationsDesc')}
-              icon={<Activity className="w-5 h-5 text-white" />}
+              icon={<FiActivity className="w-5 h-5 text-white" />}
               onClick={() => router.push('/admin/translations')}
             />
           </div>
