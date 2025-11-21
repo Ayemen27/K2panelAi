@@ -83,7 +83,8 @@
     "mobile": {
       "menu": "Menu",
       "close": "Close menu"
-    }
+    },
+    "account": "ACCOUNT"
   },
   "bottomNav": {
     "home": "Home",
@@ -91,6 +92,24 @@
     "new": "New",
     "settings": "Settings",
     "profile": "Profile"
+  },
+  "admin": {
+    "label": "Admin",
+    "dashboard": "Dashboard",
+    "database": "Database",
+    "users": "Users",
+    "translations": "Translations",
+    "settings": "Settings"
+  },
+  "user": {
+    "label": "Menu",
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "resources": "Resources",
+    "profile": "Profile"
+  },
+  "common": {
+    "logout": "Logout"
   },
   "footer": {
     "product": {

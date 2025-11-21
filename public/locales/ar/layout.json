@@ -83,7 +83,8 @@
     "mobile": {
       "menu": "القائمة",
       "close": "إغلاق القائمة"
-    }
+    },
+    "account": "الحساب"
   },
   "bottomNav": {
     "home": "الرئيسية",
@@ -99,6 +100,16 @@
     "users": "المستخدمون",
     "translations": "الترجمات",
     "settings": "الإعدادات"
+  },
+  "user": {
+    "label": "القائمة",
+    "dashboard": "لوحة التحكم",
+    "projects": "المشاريع",
+    "resources": "الموارد",
+    "profile": "الملف الشخصي"
+  },
+  "common": {
+    "logout": "تسجيل الخروج"
   },
   "footer": {
     "product": {
