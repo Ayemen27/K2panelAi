@@ -5,7 +5,8 @@ import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FiEye, FiEyeOff, FiMail, FiLock, FiGithub, FiChrome, FiApple } from 'react-icons/fi';
+import { FiEye, FiEyeOff, FiMail, FiLock, FiGithub } from 'react-icons/fi';
+import { SiGoogle, SiApple } from 'react-icons/si';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -193,7 +194,7 @@ export default function LoginPage() {
               onClick={() => handleSocialLogin('google')}
               className="flex items-center justify-center h-12 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all transform hover:scale-105 active:scale-95"
             >
-              <FiChrome className="w-5 h-5 text-gray-700" />
+              <SiGoogle className="w-5 h-5 text-gray-700" />
             </button>
             <button
               type="button"
@@ -207,7 +208,7 @@ export default function LoginPage() {
               onClick={() => handleSocialLogin('apple')}
               className="flex items-center justify-center h-12 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all transform hover:scale-105 active:scale-95"
             >
-              <FiApple className="w-5 h-5 text-gray-700" />
+              <SiApple className="w-5 h-5 text-gray-700" />
             </button>
           </div>
 
