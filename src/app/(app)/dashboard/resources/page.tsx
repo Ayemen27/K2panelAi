@@ -113,7 +113,7 @@ export default function ResourcesPage() {
                 <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                   {/* File Icon */}
                   <div className={`flex-shrink-0 w-12 h-12 rounded-lg ${resource.color} flex items-center justify-center`}>
-                    <FileText className="w-6 h-6" />
+                    <FiFileText className="w-6 h-6" />
                   </div>
 
                   {/* File Info */}
@@ -156,7 +156,7 @@ export default function ResourcesPage() {
           </div>
         ) : (
           <div className="text-center py-16">
-            <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <FiFileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               لم يتم العثور على موارد
             </h3>
