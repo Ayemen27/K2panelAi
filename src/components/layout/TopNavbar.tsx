@@ -12,13 +12,13 @@ import {
   Globe2,
   Server,
   Settings,
-  LogOut,
-  Bell,
+  ArrowRight,
+  AlertCircle,
   Search,
   Home,
   Folder,
   User as UserIcon,
-  BookOpen
+  Book
 } from 'lucide-react';
 import { useTranslate } from '@/lib/i18n/hooks';
 import { useSession, signOut } from 'next-auth/react';
@@ -75,7 +75,7 @@ export function TopNavbar() {
       href: '/dashboard/projects',
     },
     {
-      icon: BookOpen,
+      icon: Book,
       label: t('user.resources') || 'Resources',
       href: '/dashboard/resources',
     },
@@ -171,7 +171,7 @@ export function TopNavbar() {
             {/* Notifications (only for authenticated users) */}
             {isAuthenticated && (
               <button className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors relative">
-                <Bell className="w-5 h-5" />
+                <AlertCircle className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
             )}
@@ -305,7 +305,7 @@ export function TopNavbar() {
                   onClick={handleLogout}
                   className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200"
                 >
-                  <LogOut className="w-4 h-4 flex-shrink-0" />
+                  <ArrowRight className="w-4 h-4 flex-shrink-0" />
                   <span className="text-sm">{t('common.logout') || 'Logout'}</span>
                 </button>
               </>
